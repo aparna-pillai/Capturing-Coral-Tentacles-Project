@@ -1,7 +1,7 @@
 # Source for image upload PyQt code:
 # https://stackoverflow.com/questions/60614561/how-to-ask-user-to-input-an-image-in-pyqt5
 # Source for counting dots
-# #https://stackoverflow.com/questions/60603243/detect-small-dots-in-image 
+# https://stackoverflow.com/questions/60603243/detect-small-dots-in-image 
 
 import sys
 from PyQt5.QtWidgets import *
