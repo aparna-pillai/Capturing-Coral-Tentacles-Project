@@ -36,6 +36,7 @@ class Window(QMainWindow):
         self.savedPicButton = QPushButton("Saved Pictures and Counts")
         
         self.countButton = QPushButton("Count")
+        self.countButton.clicked.connect(self.countTentacles)
         
         self.countLabel = QLabel("Tentacle Count:")
         self.countDisplay = QLineEdit("{0}".format(count))
@@ -88,6 +89,11 @@ class Window(QMainWindow):
         self.smallGridLayout.addWidget(self.removeMarkerButton, 5, 0)
 
         self.generalLayout.addLayout(self.smallGridLayout, 0, 1)
+
+    def countTentacles(self):
+        self.countDisplay.setText("100")
+        self.fullExtDisplay.setText("84")
+        self.partExtDisplay.setText("16")
 
 class PhotoLabel(QLabel):
 
