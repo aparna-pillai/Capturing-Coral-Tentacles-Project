@@ -33,7 +33,8 @@ class Window(QMainWindow):
         self.generalLayout.addWidget(self.photo, 0, 0)
 
     def _createButtonsAndLabels(self, count):
-        self.savedPicButton = QPushButton("Saved Pictures and Counts")
+        self.galleryButton = QPushButton("Gallery: Saved Pictures && Counts")
+        self.savePicButton = QPushButton("Save Picture")
         
         self.countButton = QPushButton("Count")
         self.countButton.clicked.connect(self.countTentacles)
@@ -49,13 +50,22 @@ class Window(QMainWindow):
         self.addPartMarkerButton = QPushButton("Add 1 Partially Extended Marker")
         self.removeMarkerButton = QPushButton("Remove Selected Marker")
 
-        self.savedPicButton.setStyleSheet(
+        self.galleryButton.setStyleSheet(
             "border: 3px solid;"
             "border-top-color: blue;"
             "border-left-color: blue;"
             "border-right-color: blue;"
             "border-bottom-color: blue;"
             "color: blue;"
+        )
+
+        self.savePicButton.setStyleSheet(
+            "border: 3px solid;"
+            "border-top-color: green;"
+            "border-left-color: green;"
+            "border-right-color: green;"
+            "border-bottom-color: green;"
+            "color: green;"
         )
 
         self.countButton.setStyleSheet(
@@ -81,12 +91,13 @@ class Window(QMainWindow):
         self.smallerGridLayout.addWidget(self.partExtDisplay, 2, 1)
         
         self.smallGridLayout = QGridLayout()
-        self.smallGridLayout.addWidget(self.savedPicButton, 0, 0)
-        self.smallGridLayout.addWidget(self.countButton, 1, 0)
-        self.smallGridLayout.addLayout(self.smallerGridLayout, 2, 0)
-        self.smallGridLayout.addWidget(self.addFullMarkerButton, 3, 0)
-        self.smallGridLayout.addWidget(self.addPartMarkerButton, 4, 0)
-        self.smallGridLayout.addWidget(self.removeMarkerButton, 5, 0)
+        self.smallGridLayout.addWidget(self.galleryButton, 0, 0)
+        self.smallGridLayout.addWidget(self.savePicButton, 1, 0)
+        self.smallGridLayout.addWidget(self.countButton, 2, 0)
+        self.smallGridLayout.addLayout(self.smallerGridLayout, 3, 0)
+        self.smallGridLayout.addWidget(self.addFullMarkerButton, 4, 0)
+        self.smallGridLayout.addWidget(self.addPartMarkerButton, 5, 0)
+        self.smallGridLayout.addWidget(self.removeMarkerButton, 6, 0)
 
         self.generalLayout.addLayout(self.smallGridLayout, 0, 1)
 
