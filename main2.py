@@ -16,33 +16,44 @@ PATH = ""
 
 from Image import Image
 
-class Capturing_Coral_Manager(QMainWindow):
-    
+class Window(QWidget):
     def __init__(self):
         super().__init__()
         self.setWindowTitle("Capturing Coral Tentacles")
+        # Create a top-level layout
+        layout = QVBoxLayout()
+        self.setLayout(layout)
+        # Create the tab widget with two tabs
+        tabs = QTabWidget()
+        tabs.addTab(self.generalTabUI(), "Main")
+        tabs.addTab(self.networkTabUI(), "Gallery")
+        layout.addWidget(tabs)
+
+    def generalTabUI(self):
+        #"""Create the General page UI."""
+        generalTab = QWidget()
+        #layout = QVBoxLayout()
+        #layout.addWidget(QCheckBox("General Option 1"))
+        #layout.addWidget(QCheckBox("General Option 2"))
+        #generalTab.setLayout(layout)
+    
         self.generalLayout = QGridLayout()
 
-        centralWidget = QWidget(self)
-        centralWidget.setLayout(self.generalLayout)
-        self.setCentralWidget(centralWidget)
-
-        self._createPhoto()
-        self._createButtonsAndLabels(COUNT)
-
-    def _createPhoto(self):
+        #centralWidget = QWidget(self)
+        #centralWidget.setLayout(self.generalLayout)
+        #self.setCentralWidget(centralWidget)
+        
         self.photo = Image()
         self.generalLayout.addWidget(self.photo, 0, 0)
 
-    def _createButtonsAndLabels(self, count):
         self.galleryButton = QPushButton("Gallery: Saved Pictures && Counts")
         self.savePicButton = QPushButton("Save Picture")
         
         self.countButton = QPushButton("Count")
-        self.countButton.clicked.connect(self.countTentacles)
+        #self.countButton.clicked.connect(self.countTentacles)
         
         self.countLabel = QLabel("Tentacle Count:")
-        self.countDisplay = QLineEdit("{0}".format(count))
+        self.countDisplay = QLineEdit("{0}".format(COUNT))
         self.fullExtLabel = QLabel("Fully Extended:")
         self.fullExtDisplay = QLineEdit("0")
         self.partExtLabel = QLabel("Partially Extended:")
@@ -93,7 +104,7 @@ class Capturing_Coral_Manager(QMainWindow):
         self.smallerGridLayout.addWidget(self.partExtDisplay, 2, 1)
         
         self.smallGridLayout = QGridLayout()
-        self.smallGridLayout.addWidget(self.galleryButton, 0, 0)
+        #self.smallGridLayout.addWidget(self.galleryButton, 0, 0)
         self.smallGridLayout.addWidget(self.savePicButton, 1, 0)
         self.smallGridLayout.addWidget(self.countButton, 2, 0)
         self.smallGridLayout.addLayout(self.smallerGridLayout, 3, 0)
@@ -103,14 +114,20 @@ class Capturing_Coral_Manager(QMainWindow):
 
         self.generalLayout.addLayout(self.smallGridLayout, 0, 1)
 
-    def countTentacles(self):
-        self.countDisplay.setText("100")
-        self.fullExtDisplay.setText("84")
-        self.partExtDisplay.setText("16")
+        generalTab.setLayout(self.generalLayout)
+        return generalTab
+    
+    def networkTabUI(self):
+        """Create the Network page UI."""
+        networkTab = QWidget()
+        layout = QVBoxLayout()
+        layout.addWidget(QCheckBox("Network Option 1"))
+        layout.addWidget(QCheckBox("Network Option 2"))
+        networkTab.setLayout(layout)
+        return networkTab
 
-
-if __name__ == '__main__':
+if __name__ == "__main__":
     app = QApplication(sys.argv)
-    gui = Capturing_Coral_Manager()
-    gui.show()
+    window = Window()
+    window.show()
     sys.exit(app.exec_())
