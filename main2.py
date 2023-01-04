@@ -104,7 +104,7 @@ class Window(QWidget):
         self.smallerGridLayout.addWidget(self.partExtDisplay, 2, 1)
         
         self.smallGridLayout = QGridLayout()
-        #self.smallGridLayout.addWidget(self.galleryButton, 0, 0)
+        self.smallGridLayout.addWidget(self.galleryButton, 0, 0)
         self.smallGridLayout.addWidget(self.savePicButton, 1, 0)
         self.smallGridLayout.addWidget(self.countButton, 2, 0)
         self.smallGridLayout.addLayout(self.smallerGridLayout, 3, 0)
