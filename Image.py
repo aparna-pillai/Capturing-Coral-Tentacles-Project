@@ -5,6 +5,9 @@ from PhotoLabel import PhotoLabel
 from PyQt5.QtWidgets import *
 from PyQt5.QtCore import *
 from PyQt5.QtGui import *
+from PyQt5 import QtCore
+
+from PIL import Image, ImageTk
 
 import cv2 as cv
 import numpy as np
@@ -21,10 +24,11 @@ class Image(QWidget):
         btn.clicked.connect(self.open_image)
         
         grid = QGridLayout(self)
+        #basewidth = 100
+        #img = Image.open(self.photo)
         grid.addWidget(btn, 0, 0, Qt.AlignTop)
         grid.addWidget(self.photo, 1, 0)
         self.setAcceptDrops(True)
-        self.resize(300, 200)
 
     def open_image(self, filename=None):
         if not filename:
@@ -32,8 +36,11 @@ class Image(QWidget):
             if not filename:
                 return
             photo_path = str(filename)
+            print(photo_path)
             
-            self.photo.setPixmap(QPixmap(filename))
+            pix = QPixmap(filename)
+            self.photo.setPixmap(pix.scaledToHeight(400, Qt.FastTransformation))
+
         
         global PATH
         PATH = str(photo_path)
