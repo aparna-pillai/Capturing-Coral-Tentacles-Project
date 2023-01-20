@@ -10,6 +10,7 @@ from PyQt5.QtGui import *
 
 import cv2 as cv
 import numpy as np
+import mysql.connector
 
 COUNT = 0
 PATH = ""
@@ -121,10 +122,28 @@ class Window(QWidget):
         """Create the Network page UI."""
         networkTab = QWidget()
         layout = QVBoxLayout()
-        layout.addWidget(QCheckBox("Network Option 1"))
-        layout.addWidget(QCheckBox("Network Option 2"))
+        self.btn = QPushButton("DB Connection")
+        self.btn.clicked.connect(self.DBConnect)
+        layout.addWidget(self.btn)
+        
+        #layout.addWidget(QCheckBox("Network Option 2"))
         networkTab.setLayout(layout)
+        
         return networkTab
+    
+    def DBConnect(self):
+        try:
+            mydb = mysql.connector.connect(
+                host="sqlclassdb-instance-1.cqjxl5z5vyvr.us-east-2.rds.amazonaws.com",
+                user="coralteam",
+                password="Gfa874jMsdaFah"
+            )
+            QMessageBox.about(self, "Connection", "Database Connected Successfully")
+            print(mydb)
+        
+        except mydb.Error as e:
+            QMessageBox.about(self, "Connect", "Failed To Connect to Database")
+            
 
 if __name__ == "__main__":
     app = QApplication(sys.argv)
