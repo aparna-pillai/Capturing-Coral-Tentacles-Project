@@ -4,12 +4,14 @@
 # https://stackoverflow.com/questions/60603243/detect-small-dots-in-image 
 
 import sys
+from tkinter import mainloop
 from PyQt5.QtWidgets import *
 from PyQt5.QtCore import *
 from PyQt5.QtGui import *
 
 import cv2 as cv
 import numpy as np
+from numpy import asarray
 
 COUNT = 0
 PATH = ""
@@ -49,6 +51,8 @@ class Capturing_Coral_Manager(QMainWindow):
         self.partExtDisplay = QLineEdit("0")
 
         self.addFullMarkerButton = QPushButton("Add 1 Fully Extended Marker")
+        self.addFullMarkerButton.clicked.connect(self.addMarker)
+
         self.addPartMarkerButton = QPushButton("Add 1 Partially Extended Marker")
         self.removeMarkerButton = QPushButton("Remove Selected Marker")
 
@@ -103,10 +107,19 @@ class Capturing_Coral_Manager(QMainWindow):
 
         self.generalLayout.addLayout(self.smallGridLayout, 0, 1)
 
+
     def countTentacles(self):
-        self.countDisplay.setText("100")
+        self.setcount = "100"
+        self.countDisplay.setText(self.setcount)
         self.fullExtDisplay.setText("84")
         self.partExtDisplay.setText("16")
+
+    def addMarker(self): 
+      self.updatedcount = int(self.setcount) + 1
+      self.countDisplay.setText(str(self.updatedcount))
+        
+
+        #self.addFullMarkerButton.clicked.connect(lambda: addMarker)
 
 
 if __name__ == '__main__':
