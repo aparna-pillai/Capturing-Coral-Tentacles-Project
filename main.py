@@ -108,6 +108,7 @@ class Capturing_Coral_Manager(QMainWindow):
         self.smallGridLayout.addWidget(self.removeMarkerButton, 6, 0)
 
         self.generalLayout.addLayout(self.smallGridLayout, 0, 1)
+        
 
 
     def countTentacles(self):
