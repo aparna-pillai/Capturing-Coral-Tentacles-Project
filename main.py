@@ -54,7 +54,10 @@ class Capturing_Coral_Manager(QMainWindow):
         self.addFullMarkerButton.clicked.connect(self.addMarker)
 
         self.addPartMarkerButton = QPushButton("Add 1 Partially Extended Marker")
+        self.addPartMarkerButton.clicked.connect(self.addMarker)
+
         self.removeMarkerButton = QPushButton("Remove Selected Marker")
+        self.addPartMarkerButton.clicked.connect(self.addMarker)
 
         self.galleryButton.setStyleSheet(
             "border: 3px solid;"
