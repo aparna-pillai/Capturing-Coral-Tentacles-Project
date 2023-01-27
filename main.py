@@ -51,13 +51,12 @@ class Capturing_Coral_Manager(QMainWindow):
         self.partExtDisplay = QLineEdit("0")
 
         self.addFullMarkerButton = QPushButton("Add 1 Fully Extended Marker")
-        self.addFullMarkerButton.clicked.connect(self.addMarker)
+        self.addFullMarkerButton.clicked.connect(self.addFullMarker)
 
         self.addPartMarkerButton = QPushButton("Add 1 Partially Extended Marker")
-        self.addPartMarkerButton.clicked.connect(self.addMarker)
+        self.addPartMarkerButton.clicked.connect(self.addPartMarker)
 
         self.removeMarkerButton = QPushButton("Remove Selected Marker")
-        self.addPartMarkerButton.clicked.connect(self.addMarker)
 
         self.galleryButton.setStyleSheet(
             "border: 3px solid;"
@@ -112,14 +111,19 @@ class Capturing_Coral_Manager(QMainWindow):
 
 
     def countTentacles(self):
-        self.setcount = "100"
-        self.countDisplay.setText(self.setcount)
+        self.fullsetcount = "84"
+        self.partsetcount = "16"
+        self.countDisplay.setText("100")
         self.fullExtDisplay.setText("84")
         self.partExtDisplay.setText("16")
 
-    def addMarker(self): 
-      self.updatedcount = int(self.setcount) + 1
-      self.countDisplay.setText(str(self.updatedcount))
+    def addFullMarker(self): 
+      self.updatedcount = int(self.fullsetcount) + 1
+      self.fullExtDisplay.setText(str(self.updatedcount))
+
+    def addPartMarker(self): 
+      self.updatedcount = int(self.partsetcount) + 1
+      self.partExtDisplay.setText(str(self.updatedcount))
         
 
         #self.addFullMarkerButton.clicked.connect(lambda: addMarker)
