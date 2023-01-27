@@ -11,6 +11,8 @@ from PyQt5.QtGui import *
 import cv2 as cv
 import numpy as np
 import mysql.connector
+import os
+from dotenv import load_dotenv
 
 COUNT = 0
 PATH = ""
@@ -123,6 +125,7 @@ class Window(QWidget):
         networkTab = QWidget()
         layout = QVBoxLayout()
         self.btn = QPushButton("DB Connection")
+        load_dotenv('config.env')
         self.btn.clicked.connect(self.DBConnect)
         layout.addWidget(self.btn)
         
@@ -132,11 +135,12 @@ class Window(QWidget):
         return networkTab
     
     def DBConnect(self):
+         
         try:
             mydb = mysql.connector.connect(
-                host="sqlclassdb-instance-1.cqjxl5z5vyvr.us-east-2.rds.amazonaws.com",
-                user="coralteam",
-                password="Gfa874jMsdaFah"
+                host=os.environ.get('HOST'),
+                user=os.environ.get('USERNAME'),
+                password=os.getenv('PASSWORD')               
             )
             QMessageBox.about(self, "Connection", "Database Connected Successfully")
             print(mydb)
