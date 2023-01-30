@@ -3,6 +3,7 @@
 # Source for counting dots
 # https://stackoverflow.com/questions/60603243/detect-small-dots-in-image 
 
+import datetime
 import sys
 from PyQt5.QtWidgets import *
 from PyQt5.QtCore import *
@@ -10,7 +11,7 @@ from PyQt5.QtGui import *
 
 import cv2 as cv
 import numpy as np
-import mysql.connector
+import mysql.connector as mc
 import os
 from dotenv import load_dotenv
 
@@ -18,6 +19,7 @@ COUNT = 0
 PATH = ""
 
 from Image import Image
+from GalleryInfoWindow import GalleryInfoWindow
 
 class Window(QWidget):
     def __init__(self):
@@ -29,7 +31,7 @@ class Window(QWidget):
         # Create the tab widget with two tabs
         tabs = QTabWidget()
         tabs.addTab(self.generalTabUI(), "Main")
-        tabs.addTab(self.networkTabUI(), "Gallery")
+        tabs.addTab(self.galleryTabUI(), "Gallery")
         layout.addWidget(tabs)
 
     def generalTabUI(self):
@@ -49,8 +51,8 @@ class Window(QWidget):
         self.photo = Image()
         self.generalLayout.addWidget(self.photo, 0, 0)
 
-        self.galleryButton = QPushButton("Gallery: Saved Pictures && Counts")
         self.savePicButton = QPushButton("Save Picture to Gallery")
+        #self.savePicButton.clicked.connect(self.galleryInfo)
         
         self.countButton = QPushButton("Count")
         #self.countButton.clicked.connect(self.countTentacles)
@@ -65,15 +67,6 @@ class Window(QWidget):
         self.addFullMarkerButton = QPushButton("Add 1 Fully Extended Marker")
         self.addPartMarkerButton = QPushButton("Add 1 Partially Extended Marker")
         self.removeMarkerButton = QPushButton("Remove Selected Marker")
-
-        self.galleryButton.setStyleSheet(
-            "border: 3px solid;"
-            "border-top-color: blue;"
-            "border-left-color: blue;"
-            "border-right-color: blue;"
-            "border-bottom-color: blue;"
-            "color: blue;"
-        )
 
         self.savePicButton.setStyleSheet(
             "border: 3px solid;"
@@ -96,8 +89,7 @@ class Window(QWidget):
         self.setStyleSheet(
             "QLabel {color: purple;}"
         )
-
-
+        
         self.smallerGridLayout = QGridLayout()
         self.smallerGridLayout.addWidget(self.countLabel, 0, 0)
         self.smallerGridLayout.addWidget(self.countDisplay, 0, 1)
@@ -120,34 +112,67 @@ class Window(QWidget):
         generalTab.setLayout(self.generalLayout)
         return generalTab
     
-    def networkTabUI(self):
+    def galleryTabUI(self):
         """Create the Network page UI."""
-        networkTab = QWidget()
+        galleryTab = QWidget()
         layout = QVBoxLayout()
-        self.btn = QPushButton("DB Connection")
+
+        self.tableWidget = QTableWidget()
+        self.tableWidget.setRowCount(8)
+        self.tableWidget.setColumnCount(5)
+        self.tableWidget.setHorizontalHeaderLabels(["IMAGE_ID", "FILENAME", "TENTACLE COUNT", "NAME OF PERSON", "DATE UPLOADED"])
+        self.tableWidget.setObjectName("tableWidget")
+        layout.addWidget(self.tableWidget) 
+        
+        self.btn = QPushButton("Load")
         load_dotenv('config.env')
         self.btn.clicked.connect(self.DBConnect)
+        
         layout.addWidget(self.btn)
         
         #layout.addWidget(QCheckBox("Network Option 2"))
-        networkTab.setLayout(layout)
+        galleryTab.setLayout(layout)
         
-        return networkTab
+        return galleryTab
     
+        
     def DBConnect(self):
          
         try:
-            mydb = mysql.connector.connect(
+            mydb = mc.connect(
                 host=os.environ.get('HOST'),
                 user=os.environ.get('USERNAME'),
-                password=os.getenv('PASSWORD')               
+                password=os.getenv('PASSWORD'), 
+                database=os.getenv('DATABASE')             
             )
-            QMessageBox.about(self, "Connection", "Database Connected Successfully")
-            print(mydb)
-        
-        except mydb.Error as e:
-            QMessageBox.about(self, "Connect", "Failed To Connect to Database")
             
+            mycursor = mydb.cursor()
+
+            mycursor.execute("SELECT * FROM image_info")
+
+            result = mycursor.fetchall()
+            self.tableWidget.setRowCount(0)
+            for row_number, row_data in enumerate(result):
+                print(row_number)
+                self.tableWidget.insertRow(row_number)
+                for column_number, data in enumerate(row_data):
+                    #print(column_number)
+                    self.tableWidget.setItem(row_number, column_number, QTableWidgetItem(str(data)))
+
+
+            #QMessageBox.about(self, "Connection", "Database Connected Successfully")
+            print(mydb)
+         #connection.close()
+        except mydb.Error as e:
+           print("Failed To Connect to Database")
+            
+    #def galleryInfo(self):
+     #   w = GalleryInfoWindow()
+      #  w.show()
+       # print("Hi")
+        
+    def countTentacles(self):
+        print(COUNT)
 
 if __name__ == "__main__":
     app = QApplication(sys.argv)
