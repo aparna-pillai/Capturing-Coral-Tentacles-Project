@@ -25,6 +25,7 @@ class Window(QWidget):
     def __init__(self):
         super().__init__()
         self.setWindowTitle("Capturing Coral Tentacles")
+        self.setGeometry(0, 0, 1000, 800)
         # Create a top-level layout
         layout = QVBoxLayout()
         self.setLayout(layout)
