@@ -8,6 +8,7 @@ from tkinter import mainloop
 from PyQt5.QtWidgets import *
 from PyQt5.QtCore import *
 from PyQt5.QtGui import *
+from tkinter import *
 
 import cv2 as cv
 import numpy as np
@@ -35,6 +36,7 @@ class Capturing_Coral_Manager(QMainWindow):
     def _createPhoto(self):
         self.photo = Image()
         self.generalLayout.addWidget(self.photo, 0, 0)
+        
 
     def _createButtonsAndLabels(self, count):
         self.galleryButton = QPushButton("Gallery: Saved Pictures && Counts")
@@ -118,13 +120,14 @@ class Capturing_Coral_Manager(QMainWindow):
         self.fullExtDisplay.setText("84")
         self.partExtDisplay.setText("16")
 
-    def addFullMarker(self): 
-      self.updatedcount = int(self.fullsetcount) + 1
-      self.fullExtDisplay.setText(str(self.updatedcount))
+    def addFullMarker(self):
+        window = Tk()
+        marker = Label(window, bg="red", width=6, height=3)
+        marker.place(x=0, y=0)
 
     def addPartMarker(self): 
-      self.updatedcount = int(self.partsetcount) + 1
-      self.partExtDisplay.setText(str(self.updatedcount))
+        self.updatedcount = int(self.partsetcount) + 1
+        self.partExtDisplay.setText(str(self.updatedcount))
         
 
         #self.addFullMarkerButton.clicked.connect(lambda: addMarker)
