@@ -53,7 +53,7 @@ class Capturing_Coral_Manager(QMainWindow):
         self.partExtDisplay = QLineEdit("0")
 
         self.addFullMarkerButton = QPushButton("Add 1 Fully Extended Marker")
-        self.addFullMarkerButton.clicked.connect(self.addFullMarker)
+        self.addFullMarkerButton.clicked.connect(lambda: self.addFullMarker(PATH))
 
         self.addPartMarkerButton = QPushButton("Add 1 Partially Extended Marker")
         self.addPartMarkerButton.clicked.connect(self.addPartMarker)
@@ -145,8 +145,8 @@ class Capturing_Coral_Manager(QMainWindow):
         #     painter.setPen(pen)
         #     painter.drawRect(207, 152, 409, 222)
         #     painter.end()
-        path = r'C:/Users/geena/Documents/Computer Science/Capturing-Coral-Tentacles-Project-1/coral_photos/IMG-6268.JPG'
-        image = cv.imread(path)
+        #path = r'C:/Users/geena/Documents/Computer Science/Capturing-Coral-Tentacles-Project-1/coral_photos/IMG-6268.JPG'
+        image = cv.imread(filename)
         window_name = 'Capturing Coral Tentacles'
         start_point = (5, 5)
         end_point = (220, 220)
@@ -159,19 +159,6 @@ class Capturing_Coral_Manager(QMainWindow):
     def addPartMarker(self): 
         self.updatedcount = int(self.partsetcount) + 1
         self.partExtDisplay.setText(str(self.updatedcount))
-
-def open_image(self, filename=None):
-        if not filename:
-            filename, _ = QFileDialog.getOpenFileName(self, 'Select Photo', QDir.currentPath(), 'Images (*.png *.jpg)')
-            if not filename:
-                return
-            photo_path = str(filename)
-            # print("Checking if string: {}".format(isinstance(path, str)))
-            
-            self.photo.setPixmap(QPixmap(filename))
-        
-        global PATH
-        PATH = str(photo_path)
 
 
 if __name__ == '__main__':

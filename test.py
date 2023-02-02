@@ -14,6 +14,7 @@ import numpy as np
 import mysql.connector as mc
 import os
 from dotenv import load_dotenv
+from PIL import Image
 
 COUNT = 0
 PATH = ""
@@ -103,6 +104,7 @@ class Window(QWidget):
         self.partExtDisplay = QLineEdit("0")
 
         self.addFullMarkerButton = QPushButton("Add 1 Fully Extended Marker")
+        #self.addFullMarkerButton.clicked.connect(lambda: self.addFullMarker(self.photo))
         self.addPartMarkerButton = QPushButton("Add 1 Partially Extended Marker")
         self.removeMarkerButton = QPushButton("Remove Selected Marker")
 
