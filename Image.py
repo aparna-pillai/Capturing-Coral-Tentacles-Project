@@ -12,9 +12,6 @@ from PIL import Image, ImageTk
 import cv2 as cv
 import numpy as np
 
-COUNT = 0
-PATH = ""
-
 class Image(QWidget):
 
     def __init__(self):
