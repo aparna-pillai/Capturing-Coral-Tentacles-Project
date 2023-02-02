@@ -13,6 +13,7 @@ from tkinter import *
 import cv2 as cv
 import numpy as np
 from numpy import asarray
+import tkinter as tk
 
 COUNT = 0
 PATH = ""
@@ -37,7 +38,6 @@ class Capturing_Coral_Manager(QMainWindow):
         self.photo = Image()
         self.generalLayout.addWidget(self.photo, 0, 0)
         
-
     def _createButtonsAndLabels(self, count):
         self.galleryButton = QPushButton("Gallery: Saved Pictures && Counts")
         self.savePicButton = QPushButton("Save Picture")
@@ -121,15 +121,57 @@ class Capturing_Coral_Manager(QMainWindow):
         self.partExtDisplay.setText("16")
 
     def addFullMarker(self, filename):
-        image = cv.imread(filename)
-        marker = Label(image, bg="red", width=6, height=3)
-        marker.place(x=0, y=0)
+        # photo_path = str(filename)
+        # image = cv.imread(photo_path)
+        # print(QDir.currentPath())
+        # print(PATH)
+        # marker = Label(image, bg="red", width=6, height=3)
+        # marker.place(x=0, y=0)
+
+        # print(QDir.currentPath())
+        # print(PATH)
+
+        # if event.button() == Qt.LeftButton:
+        #     pen = QPen()
+        #     pen.setWidth(3)
+        #     pen.setColor(QColor(255, 0, 0))
+
+        #     brush = QBrush()
+        #     brush.setColor(QColor(255 ,0, 0))
+        #     brush.setStyle(Qt.SolidPattern)
+
+        #     painter = QPainter(self)
+        #     painter.setBrush(brush)
+        #     painter.setPen(pen)
+        #     painter.drawRect(207, 152, 409, 222)
+        #     painter.end()
+        path = r'C:/Users/geena/Documents/Computer Science/Capturing-Coral-Tentacles-Project-1/coral_photos/IMG-6268.JPG'
+        image = cv.imread(path)
+        window_name = 'Capturing Coral Tentacles'
+        start_point = (5, 5)
+        end_point = (220, 220)
+        color = (255, 0, 0)
+        thickness = 2
+        rectangle = cv.rectangle(image, start_point, end_point, color, thickness)
+        cv. imshow(window_name, rectangle)
+
 
     def addPartMarker(self): 
         self.updatedcount = int(self.partsetcount) + 1
         self.partExtDisplay.setText(str(self.updatedcount))
-           
-        #self.addFullMarkerButton.clicked.connect(lambda: addMarker)
+
+def open_image(self, filename=None):
+        if not filename:
+            filename, _ = QFileDialog.getOpenFileName(self, 'Select Photo', QDir.currentPath(), 'Images (*.png *.jpg)')
+            if not filename:
+                return
+            photo_path = str(filename)
+            # print("Checking if string: {}".format(isinstance(path, str)))
+            
+            self.photo.setPixmap(QPixmap(filename))
+        
+        global PATH
+        PATH = str(photo_path)
 
 
 if __name__ == '__main__':
