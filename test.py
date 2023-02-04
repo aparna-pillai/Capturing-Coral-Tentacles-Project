@@ -104,7 +104,7 @@ class Window(QWidget):
         self.partExtDisplay = QLineEdit("0")
 
         self.addFullMarkerButton = QPushButton("Add 1 Fully Extended Marker")
-        #self.addFullMarkerButton.clicked.connect(lambda: self.addFullMarker(self.photo))
+        self.addFullMarkerButton.clicked.connect(self.addFullMarker)
         self.addPartMarkerButton = QPushButton("Add 1 Partially Extended Marker")
         self.removeMarkerButton = QPushButton("Remove Selected Marker")
 
@@ -219,7 +219,9 @@ class Window(QWidget):
         
     def countTentacles(self):
         print(COUNT)
-        
+    
+    def addFullMarker(self):
+        self.photo.addMarker()
 
 if __name__ == "__main__":
     app = QApplication(sys.argv)
