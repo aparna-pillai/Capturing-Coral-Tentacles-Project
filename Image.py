@@ -22,6 +22,7 @@ class Image(QWidget):
         super().__init__()
         self.photo = PhotoLabel()
         btn = QPushButton('Browse')
+        pix = QPixmap()
         btn.clicked.connect(self.open_image)
         
         grid = QGridLayout(self)
@@ -41,7 +42,11 @@ class Image(QWidget):
             
             pix = QPixmap(filename)
             self.photo.setPixmap(pix.scaledToHeight(400, Qt.FastTransformation))
-
-        
+       
         global PATH
         PATH = str(photo_path)
+        print(return_filename())
+
+    def return_filename(l):
+        print("Hopefully: " + PATH)
+        return PATH
