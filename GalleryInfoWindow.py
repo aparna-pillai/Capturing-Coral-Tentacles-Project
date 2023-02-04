@@ -12,16 +12,21 @@ from PIL import Image, ImageTk
 import cv2 as cv
 import numpy as np
 
-COUNT = 0
-PATH = ""
+
 
 class GalleryInfoWindow(QWidget):
     def __init__(self):
         super().__init__()
-        self.setWindowTitle("Gathering Gallery Info")
-        # Create a top-level layout
         layout = QVBoxLayout()
-        self.label = QLabel("New Window")
+        self.label = QLabel("Another Window")
+        
+        self.smallerGridLayout = QGridLayout()
+        self.smallerGridLayout.addWidget(self.countLabel, 0, 0)
+        self.smallerGridLayout.addWidget(self.countDisplay, 0, 1)
+        
+        
+        layout.addWidget(self.label)
         self.setLayout(layout)
+    
     
     
