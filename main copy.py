@@ -53,11 +53,7 @@ class Capturing_Coral_Manager(QMainWindow):
         self.partExtDisplay = QLineEdit("0")
 
         self.addFullMarkerButton = QPushButton("Add 1 Fully Extended Marker")
-<<<<<<< HEAD
         self.addFullMarkerButton.clicked.connect(lambda: self.addFullMarker(self.photo))
-=======
-        self.addFullMarkerButton.clicked.connect(lambda: self.addFullMarker(PATH))
->>>>>>> d397aadf2696ca741f7cea446ab19f5ee773ee3d
 
         self.addPartMarkerButton = QPushButton("Add 1 Partially Extended Marker")
         self.addPartMarkerButton.clicked.connect(self.addPartMarker)
@@ -124,7 +120,6 @@ class Capturing_Coral_Manager(QMainWindow):
         self.fullExtDisplay.setText("84")
         self.partExtDisplay.setText("16")
 
-<<<<<<< HEAD
     def addFullMarker(self, filename=None):
         pix = QPixmap(filename)
         # create painter instance with pixmap
@@ -143,42 +138,6 @@ class Capturing_Coral_Manager(QMainWindow):
             # self.ui.label_imageDisplay.show()
 
         self.photo.setPixmap(pix.scaledToHeight(400, Qt.FastTransformation))
-=======
-    def addFullMarker(self, filename):
-        # photo_path = str(filename)
-        # image = cv.imread(photo_path)
-        # print(QDir.currentPath())
-        # print(PATH)
-        # marker = Label(image, bg="red", width=6, height=3)
-        # marker.place(x=0, y=0)
-
-        # print(QDir.currentPath())
-        # print(PATH)
-
-        # if event.button() == Qt.LeftButton:
-        #     pen = QPen()
-        #     pen.setWidth(3)
-        #     pen.setColor(QColor(255, 0, 0))
-
-        #     brush = QBrush()
-        #     brush.setColor(QColor(255 ,0, 0))
-        #     brush.setStyle(Qt.SolidPattern)
-
-        #     painter = QPainter(self)
-        #     painter.setBrush(brush)
-        #     painter.setPen(pen)
-        #     painter.drawRect(207, 152, 409, 222)
-        #     painter.end()
-        #path = r'C:/Users/geena/Documents/Computer Science/Capturing-Coral-Tentacles-Project-1/coral_photos/IMG-6268.JPG'
-        image = cv.imread(filename)
-        window_name = 'Capturing Coral Tentacles'
-        start_point = (5, 5)
-        end_point = (220, 220)
-        color = (255, 0, 0)
-        thickness = 2
-        rectangle = cv.rectangle(image, start_point, end_point, color, thickness)
-        cv. imshow(window_name, rectangle)
->>>>>>> d397aadf2696ca741f7cea446ab19f5ee773ee3d
 
 
     def addPartMarker(self): 
