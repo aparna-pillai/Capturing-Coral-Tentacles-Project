@@ -53,7 +53,7 @@ class Capturing_Coral_Manager(QMainWindow):
         self.partExtDisplay = QLineEdit("0")
 
         self.addFullMarkerButton = QPushButton("Add 1 Fully Extended Marker")
-        self.addFullMarkerButton.clicked.connect(lambda: self.addFullMarker(self.photo))
+        self.addFullMarkerButton.clicked.connect(self.addFullMarker)
 
         self.addPartMarkerButton = QPushButton("Add 1 Partially Extended Marker")
         self.addPartMarkerButton.clicked.connect(self.addPartMarker)
@@ -120,24 +120,8 @@ class Capturing_Coral_Manager(QMainWindow):
         self.fullExtDisplay.setText("84")
         self.partExtDisplay.setText("16")
 
-    def addFullMarker(self, filename=None):
-        pix = QPixmap(filename)
-        # create painter instance with pixmap
-        self.painterInstance = QPainter(pix)
-
-            # set rectangle color and thickness
-        self.penRectangle = QPen(Qt.red)
-        self.penRectangle.setWidth(3)
-
-            # draw rectangle on painter
-        self.painterInstance.setPen(self.penRectangle)
-        self.painterInstance.drawRect(0,0,10,10)
-
-            # set pixmap onto the label widget
-            # self.ui.label_imageDisplay.setPixmap(self.pixmap_image)
-            # self.ui.label_imageDisplay.show()
-
-        self.photo.setPixmap(pix.scaledToHeight(400, Qt.FastTransformation))
+    def addFullMarker(self):
+        self.photo.addMarker()
 
 
     def addPartMarker(self): 

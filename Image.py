@@ -18,9 +18,11 @@ class Image(QWidget):
     def __init__(self):
         super().__init__()
         self.photo = PhotoLabel()
+        self.fileName = ""
         btn = QPushButton('Browse')
-        pix = QPixmap()
+        self.pix = QPixmap()
         btn.clicked.connect(self.open_image)
+        
         
         grid = QGridLayout(self)
         #basewidth = 100
@@ -36,14 +38,27 @@ class Image(QWidget):
                 return
             photo_path = str(filename)
             print(photo_path)
-            
-            pix = QPixmap(filename)
-            self.photo.setPixmap(pix.scaledToHeight(400, Qt.FastTransformation))
+        self.fileName = filename  
+        self.pix = QPixmap(filename)
+    
+        
+        self.photo.setPixmap(self.pix.scaledToHeight(400, Qt.FastTransformation))
        
         global PATH
         PATH = str(photo_path)
-        print(return_filename())
 
-    def return_filename(l):
-        print("Hopefully: " + PATH)
-        return PATH
+    def addMarker(self):
+        self.painterInstance = QPainter(self.pix)
+
+            # set rectangle color and thickness
+        self.penRectangle = QPen(Qt.red)
+        self.penRectangle.setWidth(3)
+
+            # draw rectangle on painter
+        self.painterInstance.setPen(self.penRectangle)
+        self.painterInstance.drawRect(0,0,20,20)
+        
+        self.photo.setPixmap(self.pix.scaledToHeight(400, Qt.FastTransformation))
+        
+    def get_filename(self):
+        return self.fileName
