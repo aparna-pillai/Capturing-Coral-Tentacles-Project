@@ -13,7 +13,23 @@ from PIL import Image, ImageTk
 import cv2 as cv
 import numpy as np
 
+<<<<<<< HEAD
+def drag_start(event):
+    widget = event.widget
+    widget.startX = event.x
+    widget.startY = event.y
+
+def drag_motion(event):
+    widget = event.widget
+    x = widget.winfo_x() - widget.startX + event.x
+    y = widget.winfo_y() - widget.startY + event.y
+    widget.place(x=x,y=y)
+
+
+class Image(QWidget):
+=======
 #photo_path = ""
+>>>>>>> 3ac44d4c7d3027bf000458c86325d3a663f8fd05
 
 class Image(QWidget):
     
@@ -70,4 +86,15 @@ class Image(QWidget):
         
         self.photo.setPixmap(self.pix.scaledToHeight(400, Qt.FastTransformation))
 
+<<<<<<< HEAD
+        self.painterInstance.bind("<Button-1>",drag_start)
+        self.painterInstance.bind("<B1-Motion>",drag_motion)
+
+        self.painterInstance.bind("<Button-1>",drag_start)
+        self.painterInstance.bind("<B1-Motion>",drag_motion)
         
+    def get_filename(self):
+        return self.fileName
+=======
+        
+>>>>>>> 3ac44d4c7d3027bf000458c86325d3a663f8fd05
