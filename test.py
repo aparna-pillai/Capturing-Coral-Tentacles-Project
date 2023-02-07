@@ -60,7 +60,7 @@ class Window(QWidget):
         self.savePicButton.clicked.connect(self.galleryInfo)
         
         self.countButton = QPushButton("Count")
-        self.countButton.clicked.connect(self.countTentacles)
+        #self.countButton.clicked.connect(self.countTentacles)
         
         self.countLabel = QLabel("Tentacle Count:")
         self.countDisplay = QLineEdit("{0}".format("0"))
@@ -126,8 +126,8 @@ class Window(QWidget):
 
         self.tableWidget = QTableWidget()
         #self.tableWidget.setRowCount(8)
-        self.tableWidget.setColumnCount(5)
-        self.tableWidget.setHorizontalHeaderLabels(["IMAGE_ID", "FILENAME", "TENTACLE COUNT", "NAME OF PERSON", "DATE UPLOADED"])
+        self.tableWidget.setColumnCount(4)
+        self.tableWidget.setHorizontalHeaderLabels(["FILENAME", "TENTACLE COUNT", "NAME OF PERSON", "DATE UPLOADED"])
         self.tableWidget.setObjectName("tableWidget")
         layout.addWidget(self.tableWidget) 
         
@@ -174,24 +174,61 @@ class Window(QWidget):
            print("Failed To Connect to Database")
             
     def galleryInfo(self, checked):
-        if self.g is None:
+        #if self.g is None:
             self.g = GalleryInfoWindow()
-            self.g.submitButton.clicked.connect(self.countTentacles)
+            self.g.submitButton.clicked.connect(self.gatheringInfo)
             self.g.setGeometry(self.frameGeometry().width(), 0, 300, 300)
             self.g.show()
-        else:
-            self.g = None
+        #else:
             
+          #  self.g.close()
+          #  self.g = None
+            
+    def gatheringInfo(self):        
+        try:
+            mydb = mc.connect(
+                host=os.environ.get('HOST'),
+                user=os.environ.get('USERNAME'),
+                password=os.getenv('PASSWORD'), 
+                database=os.getenv('DATABASE')             
+            )
+                        
+
+            #mySql_insert_query = """INSERT INTO image_info(image_id, filename, tentacle_count, name_of_person, date_uploaded) 
+              #      VALUES (?, ?, ?, ?, ?)""", (self.g.get_id(), self.photo.get_filename(), self.count, self.g.get_name(),  date.today())
+            
+            
+
+                                                  
+            #"""INSERT INTO image_info
+             #                       VALUES (2, "Hi", 2, "Aditi", DATE '2015-12-17') """
+            
+    
+            mycursor = mydb.cursor()
+            
+            #mycursor.execute(mySql_insert_query)
+            
+            mycursor.execute("INSERT INTO image_info VALUES (%s, %s, %s, %s)", (self.photo.get_filename(), self.count, self.g.get_name(),  date.today()))
+            
+            mydb.commit()
+
+            #QMessageBox.about(self, "Connection", "Database Connected Successfully")
+            print(mydb)
+            self.g.close()
+            mydb.close()
+        except mydb.Error as e:
+           print("Failed To Connect to Database")
            
-    def countTentacles(self):
-        print("YAAAS: " + self.photo.get_filename())
-        print(self.g.get_id())
-        print(self.count)
-        print(self.g.get_name())
-        print(date.today())
-        #print(COUNT)
-        #print(GalleryInfoWindow.id)
-        #print(self.photo.get_filename)
+        
+    # def countTentacles(self):
+    #     print("YAAAS: " + self.photo.get_filename())
+    #     print(self.g.get_id())
+    #     print(self.count)
+    #     print(self.g.get_name())
+    #     print(date.today())
+    #     #print(COUNT)
+    #     #print(GalleryInfoWindow.id)
+    #     #print(self.photo.get_filename)
     
     def addFullMarker(self):
         self.photo.addMarker()
