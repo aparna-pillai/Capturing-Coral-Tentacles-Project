@@ -6,8 +6,6 @@ from PyQt5.QtGui import *
 import cv2 as cv
 import numpy as np
 
-COUNT = 0
-PATH = ""
 
 class PhotoLabel(QLabel):
 
