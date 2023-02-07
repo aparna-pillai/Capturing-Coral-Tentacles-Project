@@ -52,10 +52,11 @@ class GalleryInfoWindow(QWidget):
         #layout.addWidget(self.label)
         self.setLayout(layout)
     
-    def show_line(self, path):
+    def show_line(self):
         #print(Image.path)
         print(self.name_of_person_Display.text())
         GalleryInfoWindow.code += 1
+        
         
         try:
             mydb = mc.connect(
@@ -65,12 +66,15 @@ class GalleryInfoWindow(QWidget):
                 database=os.getenv('DATABASE')             
             )
             
+            print()
+            
+            
 
             mySql_insert_query = """INSERT INTO image_info
                                     VALUES (2, "Hi", 2, "Aditi", DATE '2015-12-17') """
             
             
-                        #"""INSERT INTO image_info (self.id, "Hi", 3, self.name_of_person_Display, date.today()) 
+                        #"""INSERT INTO image_info (self.id, self.photo_filename, 3, self.name_of_person_Display, date.today()) 
                           #              VALUES (%s, %s, %s, %s, %s) """
             
 
