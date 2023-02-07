@@ -17,7 +17,7 @@ from dotenv import load_dotenv
 from PIL import Image
 from datetime import date
 
-from Image import *
+from Image2 import *
 from GalleryInfoWindow import *
 class Window(QWidget):
 
@@ -50,7 +50,7 @@ class Window(QWidget):
         #centralWidget.setLayout(self.generalLayout)
         #self.setCentralWidget(centralWidget)
         
-        self.photo = Image()
+        self.photo = Image2()
 
         self.generalLayout.addWidget(self.photo, 0, 0)
 
