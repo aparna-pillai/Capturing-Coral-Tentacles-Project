@@ -20,6 +20,7 @@ from Image import Image
 class GalleryInfoWindow(QWidget):
     code = 0
     id = 1
+    submitButton = None
     #today = date.today()
     
     def __init__(self):
@@ -36,8 +37,9 @@ class GalleryInfoWindow(QWidget):
         self.date_Label = QLabel("Date Added:")
         self.date_Display = QLabel("{0}".format(date.today()))
         
+        self.submitButton = None
         self.submitButton = QPushButton("SUBMIT!")
-        self.submitButton.clicked.connect(self.show_line)
+        #self.submitButton.clicked.connect(self.show_line)
         
         layout.addWidget(self.image_id_Label, 0, 0)
         layout.addWidget(self.image_id_Display, 0, 1)
@@ -51,12 +53,18 @@ class GalleryInfoWindow(QWidget):
         
         #layout.addWidget(self.label)
         self.setLayout(layout)
+ 
+    def get_id(self):
+        return self.id  
+    
+    def get_name(self):
+        return self.name_of_person_Display.text()
+
     
     def show_line(self):
         #print(Image.path)
-        print(self.name_of_person_Display.text())
+        #print(self.name_of_person_Display.text())
         GalleryInfoWindow.code += 1
-        
         
         try:
             mydb = mc.connect(
@@ -65,10 +73,7 @@ class GalleryInfoWindow(QWidget):
                 password=os.getenv('PASSWORD'), 
                 database=os.getenv('DATABASE')             
             )
-            
-            print()
-            
-            
+                        
 
             mySql_insert_query = """INSERT INTO image_info
                                     VALUES (2, "Hi", 2, "Aditi", DATE '2015-12-17') """

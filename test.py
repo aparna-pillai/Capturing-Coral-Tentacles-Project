@@ -20,8 +20,7 @@ from datetime import date
 from Image import *
 from GalleryInfoWindow import *
 class Window(QWidget):
-    code = 0
-    id = 1
+
     
     def __init__(self):
         super().__init__()
@@ -30,8 +29,8 @@ class Window(QWidget):
         # Create a top-level layout
         layout = QVBoxLayout()
         self.setLayout(layout)
+        self.count = 10
         # Create the tab widget with two tabs
-        self.id = Window.code
         tabs = QTabWidget()
         tabs.addTab(self.generalTabUI(), "Main")
         tabs.addTab(self.galleryTabUI(), "Gallery")
@@ -177,80 +176,19 @@ class Window(QWidget):
     def galleryInfo(self, checked):
         if self.g is None:
             self.g = GalleryInfoWindow()
+            self.g.submitButton.clicked.connect(self.countTentacles)
             self.g.setGeometry(self.frameGeometry().width(), 0, 300, 300)
             self.g.show()
         else:
             self.g = None
-        # self.infolayout = QGridLayout()
-        # self.image_id_Label = QLabel("Image ID:")
-        # self.image_id_Display = QLabel("{0}".format(self.id))
-        
-        # self.name_of_person_Label = QLabel("Name:")
-        # self.name_of_person_Display = QLineEdit()
-        # self.name_of_person_Display.setPlaceholderText("Enter your name here")
-        
-        # self.date_Label = QLabel("Date Added:")
-        # self.date_Display = QLabel("{0}".format(date.today()))
-        
-        # self.submitButton = QPushButton("SUBMIT!")
-        # self.submitButton.clicked.connect(self.show_line)
-        
-        
-        # self.infolayout.addWidget(self.image_id_Label, 0, 0)
-        # self.infolayout.addWidget(self.image_id_Display, 0, 1)
-        # self.infolayout.addWidget(self.name_of_person_Label, 1, 0)
-        # self.infolayout.addWidget(self.name_of_person_Display, 1, 1)
-        # self.infolayout.addWidget(self.date_Label, 2, 0)
-        # self.infolayout.addWidget(self.date_Display, 2, 1)
-        # self.infolayout.addWidget(self.submitButton, 3, 0)
-        
-        # self.generalLayout.addLayout(self.infolayout, 1, 0)
-        
-    def show_line(self):
-        #print(Image.path)
-        print(self.name_of_person_Display.text())
-        Window.code += 1
-        print(self.id)
-        print(Window.code)
-        
-
-    def insertDate(self):
-        try:
-            mydb = mc.connect(
-                host=os.environ.get('HOST'),
-                user=os.environ.get('USERNAME'),
-                password=os.getenv('PASSWORD'), 
-                database=os.getenv('DATABASE')             
-            )
             
-            print("YAAAS: " + self.photo.get_filename())
-            
-
-            mySql_insert_query = """INSERT INTO image_info
-                                    VALUES (2, "Hi", 2, "Aditi", DATE '2015-12-17') """
-            
-            
-                        #"""INSERT INTO image_info (self.g.get_imageID, self.photo.get_filename(), 3, self.name_of_person_Display, date.today()) 
-                          #              VALUES (%s, %s, %s, %s, %s) """
-            
-
-                            
-                            
-                           
-            mycursor = mydb.cursor()
-            
-            mycursor.execute(mySql_insert_query)
-            mydb.commit()
-
-            #QMessageBox.about(self, "Connection", "Database Connected Successfully")
-            print(mydb)
-            self.close()
-            mydb.close()
-        except mydb.Error as e:
-           print("Failed To Connect to Database")
            
     def countTentacles(self):
         print("YAAAS: " + self.photo.get_filename())
+        print(self.g.get_id())
+        print(self.count)
+        print(self.g.get_name())
+        print(date.today())
         #print(COUNT)
         #print(GalleryInfoWindow.id)
         #print(self.photo.get_filename)
