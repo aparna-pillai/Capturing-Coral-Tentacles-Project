@@ -1,6 +1,8 @@
 from tkinter import *
 from Image import Image
 
+window = Tk()
+
 def drag_start(event):
     widget = event.widget
     widget.startX = event.x
@@ -24,4 +26,4 @@ label.bind("<B1-Motion>",drag_motion)
 label2.bind("<Button-1>",drag_start)
 label2.bind("<B1-Motion>",drag_motion)
 
-app.mainloop()
+window.mainloop()
