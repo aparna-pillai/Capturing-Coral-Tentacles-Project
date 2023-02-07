@@ -15,48 +15,10 @@ import mysql.connector as mc
 import os
 from dotenv import load_dotenv
 from PIL import Image
+from datetime import date
 
-COUNT = 0
-PATH = ""
-IMAGE_ID = 0
-
-from Image import Image
-#from GalleryInfoWindow import GalleryInfoWindow
-
-class GalleryInfoWindow(QWidget):
-    def __init__(self):
-        super().__init__()
-        layout = QGridLayout()
-        #self.label = QLabel("Another Window")
-        
-        self.image_id_Label = QLabel("Image ID:")
-        self.image_id_Display = QLineEdit("{0}".format(IMAGE_ID))
-        
-        self.filename_Label = QLabel("Filename:")
-        self.filename_Display = QLineEdit("{0}".format(PATH))
-        
-        self.tentacle_count_Label = QLabel("Tentacle Count:")
-        self.tentacle_count_Display = QLineEdit("{0}".format(COUNT))
-        
-        self.name_of_person_Label = QLabel("Name:")
-        self.name_of_person_Display = QLineEdit()
-        
-        #self.smallerGridLayout = QGridLayout()
-        layout.addWidget(self.image_id_Label, 0, 0)
-        layout.addWidget(self.image_id_Display, 0, 1)
-        layout.addWidget(self.filename_Label, 1, 0)
-        layout.addWidget(self.filename_Display, 1, 1)
-        layout.addWidget(self.tentacle_count_Label, 2, 0)
-        layout.addWidget(self.tentacle_count_Display, 2, 1)
-        layout.addWidget(self.name_of_person_Label, 3, 0)
-        layout.addWidget(self.name_of_person_Display, 3, 1)
-        
-        print(self.name_of_person_Display.text())
-        
-        
-        #layout.addWidget(self.label)
-        self.setLayout(layout)
-        
+from Image import *
+from GalleryInfoWindow import *
 class Window(QWidget):
     def __init__(self):
         super().__init__()
@@ -86,6 +48,7 @@ class Window(QWidget):
         #self.setCentralWidget(centralWidget)
         
         self.photo = Image()
+
         self.generalLayout.addWidget(self.photo, 0, 0)
 
         self.g = None
@@ -94,10 +57,10 @@ class Window(QWidget):
         self.savePicButton.clicked.connect(self.galleryInfo)
         
         self.countButton = QPushButton("Count")
-        #self.countButton.clicked.connect(self.countTentacles)
+        self.countButton.clicked.connect(self.countTentacles)
         
         self.countLabel = QLabel("Tentacle Count:")
-        self.countDisplay = QLineEdit("{0}".format(COUNT))
+        self.countDisplay = QLineEdit("{0}".format("0"))
         self.fullExtLabel = QLabel("Fully Extended:")
         self.fullExtDisplay = QLineEdit("0")
         self.partExtLabel = QLabel("Partially Extended:")
@@ -203,7 +166,7 @@ class Window(QWidget):
 
             #QMessageBox.about(self, "Connection", "Database Connected Successfully")
             print(mydb)
-         #connection.close()
+            mydb.close()
         except mydb.Error as e:
            print("Failed To Connect to Database")
             
@@ -213,12 +176,14 @@ class Window(QWidget):
             self.g.setGeometry(self.frameGeometry().width(), 0, 300, 300)
             self.g.show()
         else:
-            self.g.close()
             self.g = None
-            
+
         
     def countTentacles(self):
-        print(COUNT)
+        print("YAAAS: " + self.photo.get_filename())
+        #print(COUNT)
+        #print(GalleryInfoWindow.id)
+        #print(self.photo.get_filename)
     
     def addFullMarker(self):
         self.photo.addMarker()

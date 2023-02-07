@@ -13,16 +13,20 @@ from PIL import Image, ImageTk
 import cv2 as cv
 import numpy as np
 
-class Image(QWidget):
+#photo_path = ""
 
+class Image(QWidget):
+    
     def __init__(self):
         super().__init__()
         self.photo = PhotoLabel()
-        self.fileName = ""
+        
         btn = QPushButton('Browse')
         self.pix = QPixmap()
         btn.clicked.connect(self.open_image)
         
+        self.path = ""
+        self.file = ""
         
         grid = QGridLayout(self)
         #basewidth = 100
@@ -30,23 +34,29 @@ class Image(QWidget):
         grid.addWidget(btn, 0, 0, Qt.AlignTop)
         grid.addWidget(self.photo, 1, 0)
         self.setAcceptDrops(True)
-
+        
     def open_image(self, filename=None):
+        #global photo_path
         if not filename:
             filename, _ = QFileDialog.getOpenFileName(self, 'Select Photo', QDir.currentPath(), 'Images (*.png *.jpg)')
             if not filename:
                 return
-            photo_path = str(filename)
-            print(photo_path)
-        self.fileName = filename  
+            self.path = str(filename)
+            url = QUrl.fromLocalFile(filename)
+            self.file = QFileInfo(filename).fileName()
+            #path = str(filename)
+            #print("Hello: " + self.path)
+        
         self.pix = QPixmap(filename)
     
         
         self.photo.setPixmap(self.pix.scaledToHeight(400, Qt.FastTransformation))
        
-        global PATH
-        PATH = str(photo_path)
-
+        #self.path = str(photo_path)
+        
+    def get_filename(self):
+        return self.file
+        
     def addMarker(self):
         self.painterInstance = QPainter(self.pix)
 
@@ -59,6 +69,5 @@ class Image(QWidget):
         self.painterInstance.drawRect(0,0,20,20)
         
         self.photo.setPixmap(self.pix.scaledToHeight(400, Qt.FastTransformation))
+
         
-    def get_filename(self):
-        return self.fileName
