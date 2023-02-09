@@ -20,6 +20,7 @@ COUNT = 0
 PATH = ""
 
 from Image import Image
+from Marker import GraphicView, MovingObject
 
 class Capturing_Coral_Manager(QMainWindow):
     
@@ -38,6 +39,7 @@ class Capturing_Coral_Manager(QMainWindow):
     def _createPhoto(self):
         self.photo = Image()
         self.generalLayout.addWidget(self.photo, 0, 0)
+    
         
     def _createButtonsAndLabels(self, count):
         self.galleryButton = QPushButton("Gallery: Saved Pictures && Counts")
@@ -122,7 +124,8 @@ class Capturing_Coral_Manager(QMainWindow):
         self.partExtDisplay.setText("16")
 
     def addFullMarker(self):
-        self.photo.addMarker()
+        self.photo.open_image()
+        
 
 
     def addPartMarker(self): 

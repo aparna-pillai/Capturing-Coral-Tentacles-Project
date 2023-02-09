@@ -6,6 +6,7 @@ from PyQt5.QtWidgets import *
 from PyQt5.QtCore import *
 from PyQt5.QtGui import *
 from PyQt5 import QtCore
+from PyQt5.QtWidgets import QApplication, QGraphicsView, QGraphicsScene, QGraphicsEllipseItem
 from tkinter import *
 
 from PIL import Image, ImageTk
@@ -13,21 +14,7 @@ from PIL import Image, ImageTk
 import cv2 as cv
 import numpy as np
 
-<<<<<<< HEAD
 #photo_path = ""
-=======
-def drag_start(event):
-    widget = event.widget
-    widget.startX = event.x
-    widget.startY = event.y
-
-def drag_motion(event):
-    widget = event.widget
-    x = widget.winfo_x() - widget.startX + event.x
-    y = widget.winfo_y() - widget.startY + event.y
-    widget.place(x=x,y=y)
-
->>>>>>> 9b0125471316385043d70e0148ec33684cfafcc0
 
 class Image(QWidget):
     
@@ -71,37 +58,32 @@ class Image(QWidget):
     def get_filename(self):
         return self.file
         
-    def addMarker(self):
-        self.painterInstance = QPainter(self.pix)
+    # def addMarker(self):
+    #     self.painterInstance = QPainter(self.pix)
 
-        # set rectangle color and thickness
-        self.penRectangle = QPen(Qt.red)
-        self.penRectangle.setWidth(3)
+    #     # set rectangle color and thickness
+    #     self.penRectangle = QPen(Qt.red)
+    #     self.penRectangle.setWidth(3)
 
-        #     # draw rectangle on painter
-        self.painterInstance.setPen(self.penRectangle)
-        self.painterInstance.drawRect(0,0,20,20)
+    #     #     # draw rectangle on painter
+    #     self.painterInstance.setPen(self.penRectangle)
+    #     self.painterInstance.drawRect(0,0,20,20)
         
-        self.photo.setPixmap(self.pix.scaledToHeight(400, Qt.FastTransformation))
+    #     self.photo.setPixmap(self.pix.scaledToHeight(400, Qt.FastTransformation))
 
-<<<<<<< HEAD
-        def drag_start(event):
-            widget = event.widget
-            widget.startX = event.x
-            widget.startY = event.y
+    #     def drag_start(event):
+    #         widget = event.widget
+    #         widget.startX = event.x
+    #         widget.startY = event.y
 
-        def drag_motion(event):
-            widget = event.widget
-            x = widget.winfo_x() - widget.startX + event.x
-            y = widget.winfo_y() - widget.startY + event.y
-            widget.place(x=x,y=y)
-=======
-        self.painterInstance.bind("<Button-1>",drag_start)
-        self.painterInstance.bind("<B1-Motion>",drag_motion)
->>>>>>> 9b0125471316385043d70e0148ec33684cfafcc0
+    #     def drag_motion(event):
+    #         widget = event.widget
+    #         x = widget.winfo_x() - widget.startX + event.x
+    #         y = widget.winfo_y() - widget.startY + event.y
+    #         widget.place(x=x,y=y)
 
-        self.painterInstance.bind("<Button-1>",drag_start)
-        self.painterInstance.bind("<B1-Motion>",drag_motion)
+    #     self.painterInstance.bind("<Button-1>",drag_start)
+    #     self.painterInstance.bind("<B1-Motion>",drag_motion)
         
-    def get_filename(self):
-        return self.fileName
+    # def get_filename(self):
+    #     return self.fileName
