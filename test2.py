@@ -31,7 +31,7 @@ class PhotoLabel(QLabel):
     def paintEvent(self, event):
         super().paintEvent(event)
         if self.clicked:
-            painter = QPainter(self.pix)
+            painter = QPainter(self.photo)
             painter.setBrush(Qt.red)
             painter.drawEllipse(event.pos(), 20, 20)
 
@@ -73,10 +73,12 @@ class Image(QWidget):
         self.photo.setPixmap(self.pix.scaledToHeight(400, Qt.SmoothTransformation))
         
     def add_circle(self):
-        ellipse = QGraphicsEllipseItem(0, 0, 100, 100)
-        ellipse.setBrush(QBrush(Qt.red))
-        ellipse.setFlag(QGraphicsItem.ItemIsMovable)
-        self.scene.addItem(ellipse)
+        painter = QPainter(self.photo.photo)
+        painter.setBrush(Qt.red)
+        painter.drawEllipse(QPoint(100, 100), 20, 20)
+        self.photo.setPixmap(self.photo.photo)
+
+
 
 if __name__ == '__main__':
     app = QApplication(sys.argv)
