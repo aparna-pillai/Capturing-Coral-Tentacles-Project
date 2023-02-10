@@ -23,8 +23,11 @@ class Image(QWidget):
         self.photo = PhotoLabel()
         
         btn = QPushButton('Browse')
+        marker_btn = QPushButton('Add Marker')
+
         self.pix = QPixmap()
         btn.clicked.connect(self.open_image)
+        marker_btn.clicked.connect(self.add_marker)
         
         self.path = ""
         self.file = ""
@@ -33,7 +36,28 @@ class Image(QWidget):
         #basewidth = 100
         #img = Image.open(self.photo)
         grid.addWidget(btn, 0, 0, Qt.AlignTop)
+        
         grid.addWidget(self.photo, 1, 0)
+        grid.addWidget(marker_btn, 0, 1, Qt.AlignTop)
+
+        self.marker_counter = QLabel("Marker Count: 0")
+        grid.addWidget(self.marker_counter, 0, 3, Qt.AlignTop)
+        
+        btn_print = QPushButton('Print Marker Coordinates')
+        btn_print.clicked.connect(self.print_markers)
+        grid.addWidget(btn_print, 0, 4, Qt.AlignTop)
+
+        # btn_print = QPushButton('Print Circles')
+        # btn_print.clicked.connect(self.print_circles)
+        # grid.addWidget(btn_print, 0, 2, Qt.AlignTop)
+
+        self.scene = QGraphicsScene()
+        self.view = QGraphicsView(self.scene)
+        grid.addWidget(self.view, 1, 0, 1, 4)
+        
+        self.marker_count = 0
+        self.markers = []
+
         self.setAcceptDrops(True)
         
     def open_image(self, filename=None):
@@ -49,15 +73,27 @@ class Image(QWidget):
             #print("Hello: " + self.path)
         
         self.pix = QPixmap(filename)
-    
-        
-        self.photo.setPixmap(self.pix.scaledToHeight(400, Qt.FastTransformation))
+        self.scene.clear()
+        self.scene.addPixmap(self.pix)
+        #self.setGeometry(0, 0, self.pix.width(), self.pix.height())
+
+        self.photo.setPixmap(self.pix.scaledToHeight(700, Qt.FastTransformation))
        
         #self.path = str(photo_path)
         
-    def get_filename(self):
-        return self.file
-        
+    def add_marker(self):
+        ellipse = QGraphicsEllipseItem(0, 0, 15, 15)
+        ellipse.setBrush(QBrush(Qt.red))
+        ellipse.setFlag(QGraphicsItem.ItemIsMovable)
+        self.scene.addItem(ellipse)
+        self.marker_count += 1
+        self.marker_counter.setText("Marker Count: {}".format(self.marker_count))
+        self.markers.append(ellipse)
+    
+    def print_markers(self):
+        for marker in self.markers:
+            print("({}, {}).".format(marker.x(), marker.y()))  
+
     # def addMarker(self):
     #     self.painterInstance = QPainter(self.pix)
 

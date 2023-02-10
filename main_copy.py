@@ -55,11 +55,11 @@ class Capturing_Coral_Manager(QMainWindow):
         self.partExtLabel = QLabel("Partially Extended:")
         self.partExtDisplay = QLineEdit("0")
 
-        self.addFullMarkerButton = QPushButton("Add 1 Fully Extended Marker")
-        self.addFullMarkerButton.clicked.connect(self.addFullMarker)
+        # self.addFullMarkerButton = QPushButton("Add 1 Fully Extended Marker")
+        # self.addFullMarkerButton.clicked.connect(self.addFullMarker)
 
-        self.addPartMarkerButton = QPushButton("Add 1 Partially Extended Marker")
-        self.addPartMarkerButton.clicked.connect(self.addPartMarker)
+        # self.addPartMarkerButton = QPushButton("Add 1 Partially Extended Marker")
+        # self.addPartMarkerButton.clicked.connect(self.addPartMarker)
 
         self.removeMarkerButton = QPushButton("Remove Selected Marker")
 
@@ -108,8 +108,8 @@ class Capturing_Coral_Manager(QMainWindow):
         self.smallGridLayout.addWidget(self.savePicButton, 1, 0)
         self.smallGridLayout.addWidget(self.countButton, 2, 0)
         self.smallGridLayout.addLayout(self.smallerGridLayout, 3, 0)
-        self.smallGridLayout.addWidget(self.addFullMarkerButton, 4, 0)
-        self.smallGridLayout.addWidget(self.addPartMarkerButton, 5, 0)
+        # self.smallGridLayout.addWidget(self.addFullMarkerButton, 4, 0)
+        # self.smallGridLayout.addWidget(self.addPartMarkerButton, 5, 0)
         self.smallGridLayout.addWidget(self.removeMarkerButton, 6, 0)
 
         self.generalLayout.addLayout(self.smallGridLayout, 0, 1)
@@ -123,14 +123,14 @@ class Capturing_Coral_Manager(QMainWindow):
         self.fullExtDisplay.setText("84")
         self.partExtDisplay.setText("16")
 
-    def addFullMarker(self):
-        self.photo.open_image()
+    # def addFullMarker(self):
+    #     self.photo.open_image()
         
 
 
-    def addPartMarker(self): 
-        self.updatedcount = int(self.partsetcount) + 1
-        self.partExtDisplay.setText(str(self.updatedcount))
+    # def addPartMarker(self): 
+    #     self.updatedcount = int(self.partsetcount) + 1
+    #     self.partExtDisplay.setText(str(self.updatedcount))
 
 
 if __name__ == '__main__':
