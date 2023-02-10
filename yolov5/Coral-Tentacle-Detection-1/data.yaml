@@ -1,0 +1,12 @@
+names:
+- tentacles
+nc: 1
+roboflow:
+  license: CC BY 4.0
+  project: coral-tentacle-detection
+  url: https://universe.roboflow.com/capstone-capturing-coral-tentacles/coral-tentacle-detection/dataset/1
+  version: 1
+  workspace: capstone-capturing-coral-tentacles
+test: ../test/images
+train: Coral-Tentacle-Detection-1/train/images
+val: Coral-Tentacle-Detection-1/valid/images
