@@ -92,7 +92,7 @@ class Image(QWidget):
     
     def print_markers(self):
         for marker in self.markers:
-            print("({}, {}).".format(marker.x(), marker.y()))  
+            print("({}, {})".format(marker.x(), marker.y()))  
 
     # def addMarker(self):
     #     self.painterInstance = QPainter(self.pix)
