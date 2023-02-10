@@ -24,6 +24,7 @@ class Capturing_Coral_Manager(QMainWindow):
     def __init__(self):
         super().__init__()
         self.setWindowTitle("Capturing Coral Tentacles")
+        self.showMaximized()
         self.generalLayout = QGridLayout()
 
         centralWidget = QWidget(self)
