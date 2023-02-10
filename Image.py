@@ -83,7 +83,7 @@ class Image(QWidget):
         
     def add_marker(self):
         ellipse = QGraphicsEllipseItem(0, 0, 15, 15)
-        ellipse.setBrush(QBrush(Qt.red))
+        ellipse.setBrush(QBrush(Qt.yellow))
         ellipse.setFlag(QGraphicsItem.ItemIsMovable)
         self.scene.addItem(ellipse)
         self.marker_count += 1
