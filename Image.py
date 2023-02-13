@@ -77,7 +77,7 @@ class Image(QWidget):
         self.scene.addPixmap(self.pix)
         #self.setGeometry(0, 0, self.pix.width(), self.pix.height())
 
-        self.photo.setPixmap(self.pix.scaledToHeight(400, Qt.FastTransformation))
+        self.photo.setPixmap(self.pix.scaledToHeight(625, Qt.FastTransformation))
        
         #self.path = str(photo_path)
         
