@@ -1,10 +1,6 @@
 import os.path
 import shutil
-import torch
-import sys
 import cv2
-import glob
-import numpy as np
 
 from yolov5.detect import run
 
@@ -19,43 +15,22 @@ def count_tentacles(img):
     if (os.path.isdir(path)):
         shutil.rmtree(path)
 
-    # model = torch.hub.load('ultralytics/yolov5', 'custom', path='best.pt', force_reload=True)
-
+    # Run the model
     run(source=img)
-    cv2.destroyAllWindows()
 
-    filename = parent_folder + '\yolov5\\runs\detect\exp\labels\IMG-6268.txt'
+    # NOTE: Need to close the image window before anything after this line will run.
+
+    # Read labels text file for displaying count
+    path_end = os.path.basename(os.path.normpath(image))
+    path_actual_name = path_end.rsplit('.', 1)[0]
+
+    filename = parent_folder + '\yolov5\\runs\detect\exp\labels\\' + path_actual_name + '.txt'
 
     with open(filename, 'r') as textfile:
         lines = len(textfile.readlines())
         print(lines, "tentacles")
-    
-    # model.conf = 0.3
-    # model.hide_labels = True
-    # model.data = 'Coral-Tentacle-Detection-1/data.yaml'
-    # model.project = 'yolov5/runs/detect'
-    # model.name = 'exp'
 
-    # results = model(img, size=640)
-    
-    # results = model(img, conf=0.3, hide_labels=True, data='Coral-Tentacle-Detection-1/data.yaml', 
-    # imgsz=[640, 640], project='yolov5\runs\detect', name='exp')
-
-    # formatted_results = results_to_string(results)
-    # print(formatted_results, "tentacles")
-
-    # results.pandas().xyxy[0]
-
-    # results.show()
-
-def results_to_string(results):
-    return_string = ""
-    if results.pred[0].shape[0]:
-        for c in results.pred[0][:, -1].unique():
-            n = (results.pred[0][:, -1] == c).sum()
-            return_string += f"{n}"
-    
-    return return_string
+    cv2.destroyAllWindows()
 
 def main():
     count_tentacles(image)
