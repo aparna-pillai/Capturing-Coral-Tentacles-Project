@@ -17,7 +17,7 @@ import numpy as np
 from Image import Image
 
 
-class GalleryInfoWindow(QWidget):
+class RecordInfoWindow(QWidget):
     #code = 0
     #id = 1
     submitButton = None
