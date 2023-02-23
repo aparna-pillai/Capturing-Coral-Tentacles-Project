@@ -18,8 +18,24 @@ class Image2(QWidget):
     def __init__(self):
         super().__init__()
         self.photo = PhotoLabel()
+        self.photo.setFixedWidth(800)
+        self.photo.setFixedHeight(500)
+        
+        
         
         btn = QPushButton('Browse')
+        btn.setFixedWidth(800)
+        btn.setFixedHeight(50)
+        
+        btn.setStyleSheet(
+            "border: 3px solid;"
+            "border-top-color: #3f72af;"
+            "border-left-color: #3f72af;"
+            "border-right-color: #3f72af;"
+            "border-bottom-color: #3f72af;"
+            "color: #00adb5;"
+        )
+        
         self.pix = QPixmap()
         btn.clicked.connect(self.open_image)
         
