@@ -20,7 +20,6 @@ from datetime import date
 from Image2 import *
 from RecordInfoWindow import *
 class Window(QWidget):
-
     
     def __init__(self):
         super().__init__()
@@ -61,10 +60,10 @@ class Window(QWidget):
         self.savePicButton.clicked.connect(self.recordInfo)
         
         self.countButton = QPushButton("Count")
-        #self.countButton.clicked.connect(self.countTentacles)
+        self.countButton.clicked.connect(self.countTentacles)
         
         self.countLabel = QLabel("Tentacle Count:")
-        self.countDisplay = QLineEdit("{0}".format("0"))
+        self.countDisplay = QLineEdit("{0}".format(0))
 
         self.addFullMarkerButton = QPushButton("Add Marker")
         self.addFullMarkerButton.clicked.connect(self.addFullMarker)
@@ -278,10 +277,10 @@ class Window(QWidget):
            print("Failed To Connect to Database")
             
     def recordInfo(self, checked):
-        #if self.photo.get_filename() == "":
-        #    QMessageBox.about(self, "Warning", "You did not upload an image!")
+        if self.photo.get_filename() == "":
+            QMessageBox.about(self, "Warning", "You did not upload an image!")
         #if self.g is None:
-        #else:
+        else:
             self.g = RecordInfoWindow()
             self.g.submitButton.clicked.connect(self.gatheringInfo)
             self.g.setGeometry(int(self.frameGeometry().width()/2) - 150, int(self.frameGeometry().height()/2) - 150, 300, 300)
@@ -314,7 +313,7 @@ class Window(QWidget):
                 mycursor = mydb.cursor()
                 
                 #mycursor.execute(mySql_insert_query)
-                mycursor.execute("INSERT INTO image_info VALUES (%s, %s, %s, %s)", (self.photo.get_filename(), self.count, self.g.get_name(),  date.today()))
+                mycursor.execute("INSERT INTO image_info VALUES (%s, %s, %s, %s)", (self.photo.get_filename(), self.photo.marker_count+self.count, self.g.get_name(),  date.today()))
                 mydb.commit()
 
                 #QMessageBox.about(self, "Connection", "Database Connected Successfully")
@@ -327,7 +326,11 @@ class Window(QWidget):
             except mydb.Error as e:
                 print("Failed To Connect to Database")
 
-           
+    def countTentacles(self):
+        self.count = 10
+        self.countDisplay.setText("{0}".format(self.count))
+
+            
         
     # def countTentacles(self):
     #     print("YAAAS: " + self.photo.get_filename())
@@ -340,7 +343,8 @@ class Window(QWidget):
     #     #print(self.photo.get_filename)
     
     def addFullMarker(self):
-        self.photo.addMarker()
+        self.photo.add_marker()
+        self.countDisplay.setText("{0}".format(self.photo.marker_count+self.count))
 
 if __name__ == "__main__":
     app = QApplication(sys.argv)
