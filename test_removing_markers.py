@@ -30,20 +30,16 @@ class Image(QWidget):
         btn.clicked.connect(self.open_image)
         marker_btn.clicked.connect(self.add_marker)
         remove_marker_btn.clicked.connect(self.remove_marker)
-
         
         self.path = ""
         self.file = ""
         
         grid = QGridLayout(self)
-        #basewidth = 100
-        #img = Image.open(self.photo)
+        
         grid.addWidget(btn, 0, 0, Qt.AlignTop)
         
-        grid.addWidget(self.photo, 1, 0)
         grid.addWidget(marker_btn, 0, 1, Qt.AlignTop)
         grid.addWidget(remove_marker_btn, 0, 2, Qt.AlignTop)
-
 
         self.marker_counter = QLabel("Marker Count: 0")
         grid.addWidget(self.marker_counter, 0, 3, Qt.AlignTop)
@@ -51,10 +47,6 @@ class Image(QWidget):
         btn_print = QPushButton('Print Marker Coordinates')
         btn_print.clicked.connect(self.print_markers)
         grid.addWidget(btn_print, 0, 4, Qt.AlignTop)
-
-        # btn_print = QPushButton('Print Circles')
-        # btn_print.clicked.connect(self.print_circles)
-        # grid.addWidget(btn_print, 0, 2, Qt.AlignTop)
 
         self.scene = QGraphicsScene()
         self.view = QGraphicsView(self.scene)
@@ -64,8 +56,8 @@ class Image(QWidget):
         self.markers = []
 
         self.setAcceptDrops(True)
-
-        self.selected_marker = None
+        
+        self.selected_marker = None  
         
     def open_image(self, filename=None):
         if not filename:
@@ -75,31 +67,25 @@ class Image(QWidget):
             self.path = str(filename)
             url = QUrl.fromLocalFile(filename)
             self.file = QFileInfo(filename).fileName()
-            #path = str(filename)
-            #print("Hello: " + self.path)
-        
+            
         self.pix = QPixmap(filename)
         self.scene.clear()
         self.scene.addPixmap(self.pix)
-        #self.setGeometry(0, 0, self.pix.width(), self.pix.height())
 
         self.photo.setPixmap(self.pix.scaledToHeight(625, Qt.FastTransformation))
-       
-        #self.path = str(photo_path)
         
     def add_marker(self):
         ellipse = QGraphicsEllipseItem(0, 0, 15, 15)
         ellipse.setBrush(QBrush(Qt.yellow))
-
         ellipse.setFlag(QGraphicsItem.ItemIsMovable)
-        ellipse.setFlag(QGraphicsItem.ItemIsSelectable)
-
+        ellipse.setFlag(QGraphicsItem.ItemIsSelectable)  
         self.scene.addItem(ellipse)
         self.marker_count += 1
         self.marker_counter.setText("Marker Count: {}".format(self.marker_count))
         self.markers.append(ellipse)
-
+    
     def set_selected_marker(self, marker):
+        #set selected marker
         self.selected_marker = marker  
     
     def remove_marker(self):
@@ -111,7 +97,12 @@ class Image(QWidget):
                 self.marker_counter.setText("Marker Count: {}".format(self.marker_count))
                 return
 
-    
     def print_markers(self):
         for marker in self.markers:
-            print("({}, {})".format(marker.x(), marker.y()))  
+            print("({}, {})".format(marker.x(), marker.y()))
+
+if __name__ == "__main__":
+    app = QApplication(sys.argv)
+    window = Image()
+    window.show()
+    sys.exit(app.exec_())
