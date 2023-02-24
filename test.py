@@ -127,12 +127,13 @@ class Window(QWidget):
 
         self.tableWidget = QTableWidget()
         #self.tableWidget.setRowCount(8)
-        self.tableWidget.setColumnCount(4)
-        self.tableWidget.setHorizontalHeaderLabels(["FILENAME", "TENTACLE COUNT", "NAME OF PERSON", "DATE UPLOADED"]) 
+        self.tableWidget.setColumnCount(5)
+        self.tableWidget.setHorizontalHeaderLabels(["FILENAME", "TENTACLE COUNT", "NAME OF PERSON", "DATE UPLOADED", "NOTES"]) 
         header = self.tableWidget.horizontalHeader()       
-        header.setSectionResizeMode(0, QHeaderView.Stretch)
+        header.setSectionResizeMode(0, QHeaderView.ResizeToContents)
         header.setSectionResizeMode(1, QHeaderView.ResizeToContents)
         header.setSectionResizeMode(2, QHeaderView.ResizeToContents)
+        header.setSectionResizeMode(4, QHeaderView.Stretch)
         self.tableWidget.setObjectName("tableWidget")
         # scroll bar
         scroll_bar = QScrollBar(self)
@@ -313,7 +314,7 @@ class Window(QWidget):
                 mycursor = mydb.cursor()
                 
                 #mycursor.execute(mySql_insert_query)
-                mycursor.execute("INSERT INTO image_info VALUES (%s, %s, %s, %s)", (self.photo.get_filename(), self.photo.marker_count+self.count, self.g.get_name(),  date.today()))
+                mycursor.execute("INSERT INTO image_info VALUES (%s, %s, %s, %s, %s)", (self.photo.get_filename(), self.photo.marker_count+self.count, self.g.get_name(),  date.today(), self.g.get_notes()))
                 mydb.commit()
 
                 #QMessageBox.about(self, "Connection", "Database Connected Successfully")
