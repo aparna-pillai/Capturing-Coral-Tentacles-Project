@@ -1,10 +1,12 @@
 import os.path
 import shutil
 import cv2
+from PIL import Image
 
 from yolov5.detect import run
 
-image = 'coral_photos/IMG-6268.JPG'
+image = 'coral_photos/IMG-6289.JPG'
+# image = 'yolov5\Coral-Tentacle-Detection-1\\test\images\IMG-6289_JPG.rf.ce9338dc077961ea1741b6e7e0d8d4b5.jpg'
 # Temporary placeholder
 
 def count_tentacles(img):
@@ -15,8 +17,13 @@ def count_tentacles(img):
     if (os.path.isdir(path)):
         shutil.rmtree(path)
 
+    # open_image = Image.open(img)
+    resized_img = Image.open(img).resize((640, 640))
+    resized_img.save('resized.jpg')
+
     # Run the model
-    run(source=img)
+    # NOTE: Image size must be 640 x 640 or it won't count properly.
+    run(source='resized.jpg', imgsz=(640, 640))
 
     # NOTE: Need to close the image window before anything after this line will run.
 
@@ -26,11 +33,19 @@ def count_tentacles(img):
 
     filename = parent_folder + '\yolov5\\runs\detect\exp\labels\\' + path_actual_name + '.txt'
 
-    with open(filename, 'r') as textfile:
-        lines = len(textfile.readlines())
-        print(lines, "tentacles")
+    print(get_count(parent_folder + '\yolov5\\runs\detect\exp\labels\\resized.txt'))
+
+    # with open(filename, 'r') as textfile:
+    #     lines = len(textfile.readlines())
+    #     print(lines, "tentacles")
 
     cv2.destroyAllWindows()
+
+def get_count(path_name):
+    with open(path_name, 'r') as textfile:
+        lines = len(textfile.readlines())
+
+    return lines
 
 def main():
     count_tentacles(image)

@@ -52,7 +52,7 @@ from utils.torch_utils import select_device, smart_inference_mode
 
 @smart_inference_mode()
 def run(
-        weights=ROOT / '../best.pt',  # model path or triton URL
+        weights=ROOT / 'runs/train/exp/weights/best.pt',  # model path or triton URL
         source=ROOT / 'data/images',  # file/dir/URL/glob/screen/0(webcam)
         data=ROOT / 'Coral-Tentacle-Detection-1/data.yaml',  # dataset.yaml path
         imgsz=(640, 640),  # inference size (height, width)
