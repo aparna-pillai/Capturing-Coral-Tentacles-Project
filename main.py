@@ -118,29 +118,22 @@ class Capturing_Coral_Manager(QMainWindow):
 
     def countTentacles(self):
         # Get labeled image and set path of the Image to new path
-        # The image is generated, but it doesn't display in the Capturing Coral Tentacles window
-        labeled_image = count_tentacles_actual(self.photo.path)
-        self.photo.path = labeled_image
-        self.photo.file = labeled_image
-        print(self.photo.path)
+        labeled_image_path = count_tentacles_actual(self.photo.path)
+        self.photo.path = labeled_image_path
+        
+        self.photo.pix = QPixmap(labeled_image_path)
+        self.photo.scene.clear()
+        self.photo.scene.addPixmap(self.photo.pix)
+        self.photo.photo.setPixmap(self.photo.pix.scaledToHeight(625, Qt.FastTransformation))
 
         # Get tentacle count
         self.countDisplay.setText(str(get_count()))
 
-        # Temporary measure to check if resized image can be displayed
-        image_to_show = cv.imread(self.photo.path)
-        cv.imshow('Labeled Image', image_to_show)
-        cv.waitKey(0)
-        cv.destroyAllWindows()
-
         # Delete the new resized.JPG created in the main folder (for some reason)
-        labeled_image_end = labeled_image.rsplit('\\', 1)[1]
+        labeled_image_end = labeled_image_path.rsplit('\\', 1)[1]
         if (os.path.exists(labeled_image_end)):
-            os.remove(labeled_image.rsplit('\\', 1)[1])
-
-        # self.countDisplay.setText("100")
-        # self.fullExtDisplay.setText("84")
-        # self.partExtDisplay.setText("16")
+            os.remove(labeled_image_path.rsplit('\\', 1)[1])
+            
 
     def addFullMarker(self, filename):
         image = cv.imread(filename)
