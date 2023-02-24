@@ -133,13 +133,11 @@ class Capturing_Coral_Manager(QMainWindow):
         cv.waitKey(0)
         cv.destroyAllWindows()
 
-        # Delete the new resized.JPG created in the main folder for some reason
+        # Delete the new resized.JPG created in the main folder (for some reason)
         labeled_image_end = labeled_image.rsplit('\\', 1)[1]
         if (os.path.exists(labeled_image_end)):
             os.remove(labeled_image.rsplit('\\', 1)[1])
 
-        # self.fullsetcount = "84"
-        # self.partsetcount = "16"
         # self.countDisplay.setText("100")
         # self.fullExtDisplay.setText("84")
         # self.partExtDisplay.setText("16")
