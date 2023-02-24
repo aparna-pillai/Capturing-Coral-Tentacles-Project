@@ -15,7 +15,8 @@ class PhotoLabel(QLabel):
         self.setText('\n\n (Image will appear here) \n\n')
         self.setStyleSheet('''
         QLabel {
-            border: 4px dashed #aaa;
+            border: 4px dashed #00adb5;
+            color: #3f72af;
         }''')
         
     def setPixmap(self, *args, **kwargs):
