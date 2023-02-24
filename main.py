@@ -9,15 +9,17 @@ from PyQt5.QtWidgets import *
 from PyQt5.QtCore import *
 from PyQt5.QtGui import *
 from tkinter import *
+from Image import Image
 
 import cv2 as cv
+import os
 import numpy as np
 from numpy import asarray
 
+from coral_count import count_tentacles_actual, get_count
+
 COUNT = 0
 PATH = ""
-
-from Image import Image
 
 class Capturing_Coral_Manager(QMainWindow):
     
@@ -115,11 +117,32 @@ class Capturing_Coral_Manager(QMainWindow):
 
 
     def countTentacles(self):
-        self.fullsetcount = "84"
-        self.partsetcount = "16"
-        self.countDisplay.setText("100")
-        self.fullExtDisplay.setText("84")
-        self.partExtDisplay.setText("16")
+        # Get labeled image and set path of the Image to new path
+        # The image is generated, but it doesn't display in the Capturing Coral Tentacles window
+        labeled_image = count_tentacles_actual(self.photo.path)
+        self.photo.path = labeled_image
+        self.photo.file = labeled_image
+        print(self.photo.path)
+
+        # Get tentacle count
+        self.countDisplay.setText(str(get_count()))
+
+        # Temporary measure to check if resized image can be displayed
+        image_to_show = cv.imread(self.photo.path)
+        cv.imshow('Labeled Image', image_to_show)
+        cv.waitKey(0)
+        cv.destroyAllWindows()
+
+        # Delete the new resized.JPG created in the main folder for some reason
+        labeled_image_end = labeled_image.rsplit('\\', 1)[1]
+        if (os.path.exists(labeled_image_end)):
+            os.remove(labeled_image.rsplit('\\', 1)[1])
+
+        # self.fullsetcount = "84"
+        # self.partsetcount = "16"
+        # self.countDisplay.setText("100")
+        # self.fullExtDisplay.setText("84")
+        # self.partExtDisplay.setText("16")
 
     def addFullMarker(self, filename):
         image = cv.imread(filename)
