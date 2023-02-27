@@ -19,6 +19,9 @@ from datetime import date
 
 from Image2 import *
 from RecordInfoWindow import *
+
+from coral_count import count_tentacles_actual, get_count
+
 class Window(QWidget):
     
     def __init__(self):
@@ -248,7 +251,6 @@ class Window(QWidget):
             self.tableWidget.removeRow(currentRow)
     
     def DBConnect(self):
-         
         try:
             mydb = mc.connect(
                 host=os.environ.get('HOST'),
@@ -328,10 +330,23 @@ class Window(QWidget):
                 print("Failed To Connect to Database")
 
     def countTentacles(self):
-        self.count = 10
-        self.countDisplay.setText("{0}".format(self.count))
+        # Get labeled image and set path of the Image2 to new path
+        labeled_image_path = count_tentacles_actual(self.photo.path)
+        self.photo.path = labeled_image_path
+        print(labeled_image_path)
 
-            
+        # Resize and add image to pixmap for display
+        self.photo.pix = QPixmap(labeled_image_path)
+        self.photo.smaller_pixmap = self.photo.pix.scaled(self.photo.view.width(), self.photo.view.height())
+        self.photo.scene.clear()
+        self.photo.scene.addPixmap(self.photo.smaller_pixmap)
+
+        # Get tentacle count
+        self.countDisplay.setText(str(get_count()))
+
+        # Delete the new resized.JPG created in the main folder (for some reason)
+        if (os.path.exists('resized.JPG')):
+            os.remove('resized.JPG')
         
     # def countTentacles(self):
     #     print("YAAAS: " + self.photo.get_filename())

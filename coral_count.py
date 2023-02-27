@@ -4,16 +4,9 @@ from PIL import Image
 
 from yolov5.detect import run
 
-# image = 'coral_photos/IMG-6289.JPG'
-# Temporary placeholder
 
 def count_tentacles_actual(img):
-    # Prepare new image name
-    path_end = os.path.basename(os.path.normpath(img))
-    path_extension = path_end.rsplit('.', 1)[1]  # .JPG, .PNG, etc.
-    new_image_name = 'resized.' + path_extension
-
-    # Clear out old results
+    # Clear out old results (old exp folder)
     parent_folder = os.getcwd()
     path = parent_folder + '\yolov5\\runs\detect'
 
@@ -22,13 +15,13 @@ def count_tentacles_actual(img):
 
     # Resize image to 640 x 640 (or it won't count properly)
     resized_img = Image.open(img).resize((640, 640))
-    resized_img.save(new_image_name)
+    resized_img.save('resized.JPG')
 
     # Run the model
-    run(source=new_image_name)
+    run(source='resized.JPG')
 
     # Return filename of new labeled image
-    return (os.getcwd() + '\yolov5\\runs\detect\exp\\' + new_image_name)
+    return (os.getcwd() + '\yolov5\\runs\detect\exp\\resized.JPG')
 
 def get_count():
     filename = os.getcwd() + '\yolov5\\runs\detect\exp\labels\\resized.txt'
@@ -37,9 +30,13 @@ def get_count():
 
     return lines
 
-# def main():
-#     print(count_tentacles(image))
-#     print(get_count())
+def get_coordinates():
+    filename = os.getcwd() + '\yolov5\\runs\detect\exp\labels\\resized.txt'
+    file = open(filename, 'r')
+    file_lines = file.readlines()
 
-# if __name__ == "__main__":
-#     main()
+    for line in file_lines:
+        array = line.split(' ')
+        print("X-center: " + array[1] + ", Y-center: " + array[2])
+
+    file.close()
