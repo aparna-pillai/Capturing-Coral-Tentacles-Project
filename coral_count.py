@@ -26,7 +26,7 @@ def count_tentacles_actual(img):
 def get_count():
     filename = os.getcwd() + '\yolov5\\runs\detect\exp\labels\\resized.txt'
     with open(filename, 'r') as textfile:
-        lines = len(textfile.readlines())
+        lines = len(textfile.readlines()) 
 
     return lines
 
