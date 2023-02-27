@@ -14,7 +14,7 @@ import numpy as np
 import mysql.connector as mc
 import os
 from dotenv import load_dotenv
-from PIL import Image
+#from PIL import Image
 from datetime import date
 
 from Image2 import *

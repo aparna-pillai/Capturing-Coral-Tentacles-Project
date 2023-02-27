@@ -9,7 +9,7 @@ from PyQt5 import QtCore
 import mysql.connector as mc
 import os
 
-from PIL import Image, ImageTk
+#from PIL import Image, ImageTk
 from datetime import date
 
 import cv2 as cv
