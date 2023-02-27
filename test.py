@@ -333,7 +333,6 @@ class Window(QWidget):
         # Get labeled image and set path of the Image2 to new path
         labeled_image_path = count_tentacles_actual(self.photo.path)
         self.photo.path = labeled_image_path
-        print(labeled_image_path)
 
         # Resize and add image to pixmap for display
         self.photo.pix = QPixmap(labeled_image_path)
@@ -344,19 +343,9 @@ class Window(QWidget):
         # Get tentacle count
         self.countDisplay.setText(str(get_count()))
 
-        # Delete the new resized.JPG created in the main folder (for some reason)
-        if (os.path.exists('resized.JPG')):
-            os.remove('resized.JPG')
-        
-    # def countTentacles(self):
-    #     print("YAAAS: " + self.photo.get_filename())
-    #     print(self.g.get_id())
-    #     print(self.count)
-    #     print(self.g.get_name())
-    #     print(date.today())
-    #     #print(COUNT)
-    #     #print(GalleryInfoWindow.id)
-    #     #print(self.photo.get_filename)
+        # Delete the new resized.jpg created in the main folder (for some reason)
+        if (os.path.exists('resized.jpg')):
+            os.remove('resized.jpg')
     
     def addFullMarker(self):
         self.photo.add_marker()
