@@ -21,6 +21,7 @@ from Image2 import *
 from RecordInfoWindow import *
 
 from coral_count import count_tentacles_actual, get_count
+from coordinates import plot_points
 
 class Window(QWidget):
     
@@ -32,7 +33,7 @@ class Window(QWidget):
         # Create a top-level layout
         layout = QVBoxLayout()
         self.setLayout(layout)
-        self.count = 10
+        self.count = 0
         # Create the tab widget with two tabs
         tabs = QTabWidget()
         tabs.addTab(self.generalTabUI(), "Main")
@@ -333,14 +334,17 @@ class Window(QWidget):
         # Get labeled image and set path of the Image2 to new path
         labeled_image_path = count_tentacles_actual(self.photo.path)
         self.photo.path = labeled_image_path
+        # coordinates_image = plot_points(self.photo.path)
+        # self.photo.path = coordinates_image
 
         # Resize and add image to pixmap for display
-        self.photo.pix = QPixmap(labeled_image_path)
+        self.photo.pix = QPixmap(self.photo.path)
         self.photo.smaller_pixmap = self.photo.pix.scaled(self.photo.view.width(), self.photo.view.height())
         self.photo.scene.clear()
         self.photo.scene.addPixmap(self.photo.smaller_pixmap)
 
         # Get tentacle count
+        self.count = get_count()
         self.countDisplay.setText(str(get_count()))
 
         # Delete the new resized.jpg created in the main folder (for some reason)
