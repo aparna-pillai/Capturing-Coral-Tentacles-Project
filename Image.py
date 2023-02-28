@@ -9,7 +9,7 @@ from PyQt5 import QtCore
 from PyQt5.QtWidgets import QApplication, QGraphicsView, QGraphicsScene, QGraphicsEllipseItem
 from tkinter import *
 
-#from PIL import Image, ImageTk
+from PIL import Image, ImageTk
 
 import cv2 as cv
 import numpy as np
