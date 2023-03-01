@@ -29,3 +29,21 @@ def get_count():
         lines = len(textfile.readlines()) 
 
     return lines
+
+def get_coordinates():
+    filename = os.getcwd() + '\yolov5\\runs\detect\exp\labels\\resized.txt'
+    file = open(filename, 'r')
+    file_lines = file.readlines()
+    large_array = []
+
+    for line in file_lines:
+        array = line.split(' ')
+        new_array = []
+
+        new_array.append(float(array[1]))   # x_center of bounding box
+        new_array.append(float(array[2]))   # y_center of bounding box
+        
+        large_array.append(new_array)
+
+    file.close()
+    return large_array
