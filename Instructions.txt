@@ -1,18 +1,17 @@
 To be able to run this project in VS Code, the following steps must be done.
 
 *Initial Setup*
-In terminal:
-    pip install -r requirements.txt
-    git clone https://github.com/ultralytics/yolov5
-    pip install -r yolov5/requirements.txt
+    In terminal:
+        pip install -r requirements.txt
+        git clone https://github.com/ultralytics/yolov5
+        pip install -r yolov5/requirements.txt
 
 *Dataset Download*
-In terminal:
-    pip install roboflow
+    In terminal:
+        pip install roboflow
 
-Open a Python shell in terminal and execute the following lines:
-    from roboflow import Roboflow
-    rf = Roboflow(api_key="buPitnxBypsxxPYEfGzD")
-    project = rf.workspace("capstone-capturing-coral-tentacles").project("coral-tentacle-detection")
-    dataset = project.version(1).download("yolov5")
-
+    Open a Python shell in terminal and execute the following lines:
+        from roboflow import Roboflow
+        rf = Roboflow(api_key="buPitnxBypsxxPYEfGzD")
+        project = rf.workspace("capstone-capturing-coral-tentacles").project("coral-tentacle-detection")
+        dataset = project.version(1).download("yolov5")
