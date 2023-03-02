@@ -1,7 +1,7 @@
 config.env
-__pycache__
-.vscode
+# __pycache__
+# .vscode
 
-yolov5
-Coral-Tentacle-Detection-1
-runs
+# yolov5
+# Coral-Tentacle-Detection-1
+# runs
