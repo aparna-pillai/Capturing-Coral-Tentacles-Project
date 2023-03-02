@@ -357,7 +357,7 @@ class Window(QWidget):
             self.photo.scene.addItem(ellipse)
             self.photo.marker_count += 1
             self.photo.markers.append(ellipse)
-            print(self.photo.markers)
+            # print(self.photo.markers)
     
     def addFullMarker(self):
         self.photo.add_marker()
