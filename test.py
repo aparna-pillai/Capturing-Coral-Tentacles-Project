@@ -228,7 +228,7 @@ class Window(QWidget):
             try:
                 mydb = mc.connect(
                     host=os.environ.get('HOST'),
-                    user=os.environ.get('USERNAME'),
+                    user = os.getenv('NAME'),
                     password=os.getenv('PASSWORD'), 
                     database=os.getenv('DATABASE')             
                 )
@@ -256,7 +256,7 @@ class Window(QWidget):
         try:
             mydb = mc.connect(
                 host=os.environ.get('HOST'),
-                user=os.environ.get('USERNAME'),
+                user=os.getenv('NAME'),
                 password=os.getenv('PASSWORD'), 
                 database=os.getenv('DATABASE')             
             )
@@ -299,7 +299,7 @@ class Window(QWidget):
             try:
                 mydb = mc.connect(
                     host=os.environ.get('HOST'),
-                    user=os.environ.get('USERNAME'),
+                    user=os.getenv('NAME'),
                     password=os.getenv('PASSWORD'), 
                     database=os.getenv('DATABASE')             
                 )
