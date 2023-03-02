@@ -19,7 +19,7 @@ def count_tentacles_actual(img):
 
     # Run the model
     run(
-        weights='best.pt', 
+        weights='coral_model.pt', 
         data = 'Coral-Tentacle-Detection-1/data.yaml',
         source='resized.jpg',
         imgsz=(640, 640),
