@@ -318,7 +318,7 @@ class Window(QWidget):
                 mycursor = mydb.cursor()
                 
                 #mycursor.execute(mySql_insert_query)
-                mycursor.execute("INSERT INTO image_info VALUES (%s, %s, %s, %s, %s)", (self.photo.get_filename(), self.photo.marker_count+self.count, self.g.get_name(),  date.today(), self.g.get_notes()))
+                mycursor.execute("INSERT INTO image_info VALUES (%s, %s, %s, %s, %s)", (self.photo.get_filename(), self.photo.marker_count, self.g.get_name(),  date.today(), self.g.get_notes()))
                 mydb.commit()
 
                 #QMessageBox.about(self, "Connection", "Database Connected Successfully")
@@ -357,6 +357,7 @@ class Window(QWidget):
             self.photo.scene.addItem(ellipse)
             self.photo.marker_count += 1
             self.photo.markers.append(ellipse)
+            print(self.photo.markers)
     
     def addFullMarker(self):
         self.photo.add_marker()
