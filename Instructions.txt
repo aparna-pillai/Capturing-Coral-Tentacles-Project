@@ -3,8 +3,11 @@ To be able to run this project in VS Code, the following steps must be done.
 *Initial Setup*
     In terminal:
         pip install -r requirements.txt
+
         git clone https://github.com/ultralytics/yolov5
         pip install -r yolov5/requirements.txt
+        
+        git lfs install
 
 *Dataset Download*
     In terminal:
