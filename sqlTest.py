@@ -139,7 +139,7 @@ class Window(QWidget):
         try:
             mydb = mysql.connector.connect(
                 host=os.environ.get('HOST'),
-                user=os.environ.get('USERNAME'),
+                user=os.environ.get('NAME'),
                 password=os.getenv('PASSWORD')               
             )
             QMessageBox.about(self, "Connection", "Database Connected Successfully")

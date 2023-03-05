@@ -23,7 +23,6 @@ from RecordInfoWindow import *
 
 from coral_count import count_tentacles_actual, get_count, get_coordinates
 
-
 class Window(QWidget):
     
     def __init__(self):
@@ -36,10 +35,36 @@ class Window(QWidget):
         self.setLayout(layout)
         self.count = 0
         # Create the tab widget with two tabs
-        tabs = QTabWidget()
-        tabs.addTab(self.generalTabUI(), "Main")
-        tabs.addTab(self.recordTabUI(), "Record")
-        layout.addWidget(tabs)
+        self.tabs = QTabWidget()
+        general_tab = self.generalTabUI()
+        record_tab = self.recordTabUI()
+
+        self.tabs.addTab(general_tab, "Main")
+        self.tabs.addTab(record_tab, "Record")
+        layout.addWidget(self.tabs)
+
+        # Keyboard shortcuts
+        self.count_shortcut = QShortcut(Qt.Key_C, self)
+        self.save_shortcut = QShortcut(QKeySequence("Ctrl+S"), self)
+        self.load_shortcut = QShortcut(Qt.Key_Return, self)
+        self.delete_shortcut = QShortcut(Qt.Key_Delete, self)
+        self.tab_shortcut = QShortcut(Qt.Key_Tab, self)
+        self.quit_shortcut = QShortcut(QKeySequence("Ctrl+W"), self)
+        
+        self.count_shortcut.activated.connect(self.countTentacles)
+        self.save_shortcut.activated.connect(self.recordInfo)
+        self.load_shortcut.activated.connect(self.DBConnect)
+        self.delete_shortcut.activated.connect(self.deleteRow)
+        self.tab_shortcut.activated.connect(self.switchTabs)
+        self.quit_shortcut.activated.connect(self.close)
+        
+    def switchTabs(self):
+        if self.tabs.isTabEnabled(0):
+            self.tabs.setTabEnabled(1, True)
+            self.tabs.setTabEnabled(0, False)
+        else:
+            self.tabs.setTabEnabled(0, True)
+            self.tabs.setTabEnabled(1, False)
 
     def generalTabUI(self):
         #"""Create the General page UI."""
@@ -70,14 +95,27 @@ class Window(QWidget):
         self.countLabel = QLabel("Tentacle Count:")
         self.countDisplay = QLineEdit("{0}".format(0))
 
-        self.addFullMarkerButton = QPushButton("Add Marker")
-        self.addFullMarkerButton.clicked.connect(self.addFullMarker)
+        self.setMouseTracking(True)
+
+        self.smallerGridLayout = QGridLayout()
+        self.smallerGridLayout.addWidget(self.countLabel, 0, 0)
+        self.smallerGridLayout.addWidget(self.countDisplay, 0, 1)
+        
+        self.smallGridLayout = QGridLayout()
+        #self.smallGridLayout.addWidget(self.galleryButton, 0, 0)
+        self.smallGridLayout.addWidget(self.savePicButton, 1, 0)
+        self.smallGridLayout.addWidget(self.countButton, 2, 0)
+        self.smallGridLayout.addLayout(self.smallerGridLayout, 3, 0)
+        # self.smallGridLayout.addWidget(self.addFullMarkerButton, 4, 0)
+
+        self.generalLayout.addLayout(self.smallGridLayout, 0, 1)
 
         
+        # Stylesheets
         self.countLabel.setStyleSheet(
             "color: #112d4e;"
         )
-                
+        
         self.savePicButton.setStyleSheet(
             "border: 3px solid;"
             "border-top-color: #00adb5;"
@@ -95,32 +133,10 @@ class Window(QWidget):
             "border-bottom-color: #00adb5;"
             "color: #112d4e;"
         )
-        
-        self.addFullMarkerButton.setStyleSheet(
-            "border: 3px solid;"
-            "border-top-color: #00adb5;"
-            "border-left-color: #00adb5;"
-            "border-right-color: #00adb5;"
-            "border-bottom-color: #00adb5;"
-            "color: #112d4e;"
-        )
 
         self.setStyleSheet(
             "QLabel {color: purple;}"
         )
-        
-        self.smallerGridLayout = QGridLayout()
-        self.smallerGridLayout.addWidget(self.countLabel, 0, 0)
-        self.smallerGridLayout.addWidget(self.countDisplay, 0, 1)
-        
-        self.smallGridLayout = QGridLayout()
-        #self.smallGridLayout.addWidget(self.galleryButton, 0, 0)
-        self.smallGridLayout.addWidget(self.savePicButton, 1, 0)
-        self.smallGridLayout.addWidget(self.countButton, 2, 0)
-        self.smallGridLayout.addLayout(self.smallerGridLayout, 3, 0)
-        self.smallGridLayout.addWidget(self.addFullMarkerButton, 4, 0)
-
-        self.generalLayout.addLayout(self.smallGridLayout, 0, 1)
 
         generalTab.setLayout(self.generalLayout)
         return generalTab
@@ -144,27 +160,42 @@ class Window(QWidget):
         scroll_bar = QScrollBar(self)
  
         # setting style sheet to the scroll bar
-        scroll_bar.setStyleSheet("QScrollBar"
-                             "{"
-                             "background : #e1eedd;"
-                             "}"
-                             "QScrollBar::handle"
-                             "{"
-                             "background : #dbe2ef;"
-                             "}"
-                             "QScrollBar::handle::pressed"
-                             "{"
-                             "background : #00adb5;"
-                             "}"
+        scroll_bar.setStyleSheet(
+            '''QScrollBar
+            {
+                background : #e1eedd;
+            }
+            QScrollBar::handle
+            {
+                background : #dbe2ef;
+            }
+            QScrollBar::handle::pressed
+            {
+                background : #00adb5;
+            }'''
         )
  
         # setting vertical scroll bar to it
         self.tableWidget.setVerticalScrollBar(scroll_bar)
  
- 
         layout.addWidget(self.tableWidget, 0, 0) 
+
+        self.btnLoad = QPushButton("Load")
+        load_dotenv('config.env')
+        self.btnLoad.clicked.connect(self.DBConnect)
+        self.btnDelete = QPushButton("Delete")
+        load_dotenv('config.env')
+        self.btnDelete.clicked.connect(self.deleteRow)
+
+        self.smGridLayout = QGridLayout()
+        #self.smallGridLayout.addWidget(self.galleryButton, 0, 0)
+        self.smGridLayout.addWidget(self.btnLoad, 0, 0)
+        self.smGridLayout.addWidget(self.btnDelete, 0, 1)
+
+        layout.addLayout(self.smGridLayout, 1, 0)
+
         
-        
+        # Stylesheets
         self.tableWidget.setStyleSheet(
             "border: 1px solid;"
             "border-top-color: #00adb5;"
@@ -177,14 +208,7 @@ class Window(QWidget):
         header.setStyleSheet(
             "color: #112d4e;"
         )
-                
-        self.btnLoad = QPushButton("Load")
-        load_dotenv('config.env')
-        self.btnLoad.clicked.connect(self.DBConnect)
-        self.btnDelete = QPushButton("Delete")
-        load_dotenv('config.env')
-        self.btnDelete.clicked.connect(self.deleteRow)
-        
+
         self.btnLoad.setStyleSheet(
             "border: 3px solid;"
             "border-top-color: #00adb5;"
@@ -193,6 +217,7 @@ class Window(QWidget):
             "border-bottom-color: #00adb5;"
             "color: #112d4e;"
         )
+
         self.btnDelete.setStyleSheet(
             "border: 3px solid;"
             "border-top-color: #00adb5;"
@@ -202,55 +227,50 @@ class Window(QWidget):
             "color: #112d4e;"
         )
         
-        self.smGridLayout = QGridLayout()
-        #self.smallGridLayout.addWidget(self.galleryButton, 0, 0)
-        self.smGridLayout.addWidget(self.btnLoad, 0, 0)
-        self.smGridLayout.addWidget(self.btnDelete, 0, 1)
-
-        layout.addLayout(self.smGridLayout, 1, 0)
-        
-        
         
         #layout.addWidget(QCheckBox("Network Option 2"))
         recordTab.setLayout(layout)
         
         return recordTab
     
-        
+
     def deleteRow(self):
-        print("Hi")
+        # print("Hi")
         if self.tableWidget.rowCount() > 0:
             currentRow = self.tableWidget.currentRow()
             item = self.tableWidget.selectedItems()
-            filenameForQuery = item[0].text()
-            print (item[0].text())
-     
-            try:
-                mydb = mc.connect(
-                    host=os.environ.get('HOST'),
-                    user = os.getenv('NAME'),
-                    password=os.getenv('PASSWORD'), 
-                    database=os.getenv('DATABASE')             
-                )
-                mycursor = mydb.cursor()
-                #DELETE FROM image_info WHERE filename=item[0].text()
-                
-                sql_delete = "DELETE FROM image_info WHERE filename = %s"
-                sql_data = (filenameForQuery,)
+            if (len(item) < 1):
+                QMessageBox.about(self, "Warning", "Please select an entry to delete.")
+            else:
+                filenameForQuery = item[0].text()
+                print (item[0].text())
+        
+                try:
+                    mydb = mc.connect(
+                        host=os.environ.get('HOST'),
+                        user = os.getenv('NAME'),
+                        password=os.getenv('PASSWORD'), 
+                        database=os.getenv('DATABASE')             
+                    )
+                    mycursor = mydb.cursor()
+                    #DELETE FROM image_info WHERE filename=item[0].text()
+                    
+                    sql_delete = "DELETE FROM image_info WHERE filename = %s"
+                    sql_data = (filenameForQuery,)
 
-                mycursor.execute(sql_delete, sql_data)
-            
-                #mycursor.execute("DELETE FROM image_info WHERE filename = ?)", (item[0].text(),))
+                    mycursor.execute(sql_delete, sql_data)
                 
-                mydb.commit()
+                    #mycursor.execute("DELETE FROM image_info WHERE filename = ?)", (item[0].text(),))
+                    
+                    mydb.commit()
 
-                #QMessageBox.about(self, "Connection", "Database Connected Successfully")
-                print(mydb)
-                
-                mydb.close()
-            except mydb.Error as e:
-                print("Failed To Connect to Database")
-            self.tableWidget.removeRow(currentRow)
+                    #QMessageBox.about(self, "Connection", "Database Connected Successfully")
+                    print(mydb)
+                    
+                    mydb.close()
+                except mydb.Error as e:
+                    print("Failed To Connect to Database")
+                self.tableWidget.removeRow(currentRow)
     
     def DBConnect(self):
         try:
@@ -281,7 +301,7 @@ class Window(QWidget):
         except mydb.Error as e:
            print("Failed To Connect to Database")
             
-    def recordInfo(self, checked):
+    def recordInfo(self):   # checked parameter? Is it needed?
         if self.photo.get_filename() == "":
             QMessageBox.about(self, "Warning", "You did not upload an image!")
         #if self.g is None:
@@ -318,7 +338,13 @@ class Window(QWidget):
                 mycursor = mydb.cursor()
                 
                 #mycursor.execute(mySql_insert_query)
-                mycursor.execute("INSERT INTO image_info VALUES (%s, %s, %s, %s, %s)", (self.photo.get_filename(), self.photo.marker_count, self.g.get_name(),  date.today(), self.g.get_notes()))
+                mycursor.execute(
+                    "INSERT INTO image_info VALUES (%s, %s, %s, %s, %s)", 
+                    (
+                        self.photo.get_filename(), self.photo.marker_count, 
+                        self.g.get_name(), date.today(), self.g.get_notes()
+                    )
+                )
                 mydb.commit()
 
                 #QMessageBox.about(self, "Connection", "Database Connected Successfully")
@@ -332,36 +358,50 @@ class Window(QWidget):
                 print("Failed To Connect to Database")
 
     def countTentacles(self):
-        # Run the model on the currently displayed photo (in Image2)
-        count_tentacles_actual(self.photo.path)
-        img = ImagePIL.open(self.photo.path)
-        
-        # Add markers based on the labels generated by the model
-        self.placeInitialMarkers(img.width, img.height)
+        if (self.photo.get_filename() == ""):
+            QMessageBox.about(self, "Warning", "Please upload an image.")
+        else:
+            # Run the model on the currently displayed photo (in Image2)
+            count_tentacles_actual(self.photo.path)
+            img = ImagePIL.open(self.photo.path)
+            
+            # Add markers based on the labels generated by the model
+            self.placeInitialMarkers(img.width, img.height)
 
-        # Get tentacle count
-        self.count = get_count()
-        self.countDisplay.setText(str(get_count()))
+            # Get tentacle count
+            self.count = get_count()
+            self.countDisplay.setText(str(get_count()))
 
-        # Delete the new resized.jpg created in the main folder (for some reason)
-        if (os.path.exists('resized.jpg')):
-            os.remove('resized.jpg')
+            # Delete the new resized.jpg created in the main folder (for some reason)
+            if (os.path.exists('resized.jpg')):
+                os.remove('resized.jpg')
 
     def placeInitialMarkers(self, photo_width, photo_height):
         coordinates = get_coordinates()
 
         for pair in coordinates:
-            ellipse = QGraphicsEllipseItem(pair[0]*(photo_width/1.6), pair[1]*(photo_height/1.5), 15, 15)
-            ellipse.setBrush(QBrush(Qt.yellow))
-            ellipse.setFlag(QGraphicsItem.ItemIsMovable)
-            self.photo.scene.addItem(ellipse)
-            self.photo.marker_count += 1
-            self.photo.markers.append(ellipse)
+            self.photo.add_marker(pair[0]*(photo_width/1.6), pair[1]*(photo_height/1.5))
+            # ellipse = QGraphicsEllipseItem(
+            #     pair[0]*(photo_width/1.6), pair[1]*(photo_height/1.5), 15, 15
+            # )
+            # ellipse.setBrush(QBrush(Qt.yellow))
+            # ellipse.setFlag(QGraphicsItem.ItemIsMovable)
+            # self.photo.scene.addItem(ellipse)
+            # self.photo.marker_count += 1
+            # self.photo.markers.append(ellipse)
             # print(self.photo.markers)
+
+    def mousePressEvent(self, QMouseEvent):
+        if QMouseEvent.button() == Qt.LeftButton:
+            x = QMouseEvent.pos().x()
+            y = QMouseEvent.pos().y()
+            self.photo.add_marker(x-45, y-125)
+            self.countDisplay.setText("{0}".format(self.photo.marker_count))
     
-    def addFullMarker(self):
-        self.photo.add_marker()
-        self.countDisplay.setText("{0}".format(self.photo.marker_count))
+    # def addFullMarker(self):
+    #     # self.photo.add_marker()
+    #     self.photo.mousePressEvent()
+    #     self.countDisplay.setText("{0}".format(self.photo.marker_count))
 
 if __name__ == "__main__":
     app = QApplication(sys.argv)

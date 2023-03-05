@@ -1,20 +1,37 @@
-To be able to run this project in VS Code, the following steps must be done.
+To be able to run this project in VS Code, please complete the following steps.
 
 *Initial Setup*
-    In terminal:
+    Python 3.7.9 setup:
+        Go to https://www.python.org/downloads/release/python-379/
+        Install Python 3.7.9 with the 64-bit installer
+        In VS Code, select Python interpreter (Ctrl/Command + Shift + P) and choose 3.7.9
+
+    In VS Code terminal:
         pip install -r requirements.txt
 
         git clone https://github.com/ultralytics/yolov5
         pip install -r yolov5/requirements.txt
-        
+
         git lfs install
 
 *Dataset Download*
-    In terminal:
-        pip install roboflow
-
-    Open a Python shell in terminal and execute the following lines:
+    Open a Python shell in terminal and run the following lines:
         from roboflow import Roboflow
         rf = Roboflow(api_key="buPitnxBypsxxPYEfGzD")
         project = rf.workspace("capstone-capturing-coral-tentacles").project("coral-tentacle-detection")
         dataset = project.version(1).download("yolov5")
+
+    (If it doesn't work, the program should still run fine without it.)
+
+*Keyboard Shortcut Guide*
+    On Main tab:
+        B - Browse photos
+        C - Count
+        Ctrl+S - Save photo to record
+
+    On Record tab:
+        Enter - Load from database
+        Delete - Delete selected database entry
+
+    Tab - Switch between tabs
+    Ctrl+W - Close application

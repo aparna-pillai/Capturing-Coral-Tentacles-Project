@@ -2,13 +2,19 @@ import os.path
 import shutil
 from PIL import Image
 
+import platform
+
 from yolov5.detect import run
 
 
 def count_tentacles_actual(img):
     # Clear out old results (old exp folder)
+    
     parent_folder = os.getcwd()
-    path = parent_folder + '\\runs'
+    if platform.system() == 'Windows':
+        path = parent_folder + '\\runs'
+    else:
+        path = parent_folder + '/runs'
 
     if (os.path.isdir(path)):
         shutil.rmtree(path)
@@ -25,21 +31,32 @@ def count_tentacles_actual(img):
         imgsz=(640, 640),
         conf_thres=0.3,
         save_txt=True,
-        hide_labels=True
+        hide_labels=True,
+        # save_conf=True
     )
 
     # Return filename of new labeled image
-    return (os.getcwd() + '\\runs\detect\exp\\resized.jpg')
+    if platform.system() == 'Windows':
+        text = os.getcwd() + '\\runs\detect\exp\\resized.jpg'
+    else:
+        text = os.getcwd() + '/runs/detect/exp/resized.jpg'
+    return (text)
 
 def get_count():
-    filename = os.getcwd() + '\\runs\detect\exp\labels\\resized.txt'
+    if platform.system() == 'Windows':
+        filename = os.getcwd() + '\\runs\detect\exp\labels\\resized.txt'
+    else:
+        filename = os.getcwd() + '/runs/detect/exp/labels/resized.txt'
     with open(filename, 'r') as textfile:
         lines = len(textfile.readlines()) 
 
     return lines
 
 def get_coordinates():
-    filename = os.getcwd() + '\\runs\detect\exp\labels\\resized.txt'
+    if platform.system() == 'Windows':
+        filename = os.getcwd() + '\\runs\detect\exp\labels\\resized.txt'
+    else:
+        filename = os.getcwd() + '/runs/detect/exp/labels/resized.txt'
     file = open(filename, 'r')
     file_lines = file.readlines()
     large_array = []
