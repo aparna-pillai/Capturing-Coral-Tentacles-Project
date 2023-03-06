@@ -62,6 +62,7 @@ class Image(QWidget):
         
         self.marker_count = 0
         self.markers = []
+        self.list = []
 
         self.setAcceptDrops(True)
 
@@ -114,4 +115,5 @@ class Image(QWidget):
     
     def print_markers(self):
         for marker in self.markers:
-            print("({}, {})".format(marker.x(), marker.y()))  
+            self.list.append("({}, {})".format(marker.x(), marker.y()))
+        print(self.list) 

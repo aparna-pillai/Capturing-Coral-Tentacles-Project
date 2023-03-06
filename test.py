@@ -34,6 +34,7 @@ class Window(QWidget):
         layout = QVBoxLayout()
         self.setLayout(layout)
         self.count = 0
+        self.list = []
         # Create the tab widget with two tabs
         self.tabs = QTabWidget()
         general_tab = self.generalTabUI()
@@ -86,6 +87,9 @@ class Window(QWidget):
 
         self.g = None
         
+        self.instructionsButton = QPushButton("Instructions")
+        self.instructionsButton.clicked.connect(self.instruct)
+        
         self.savePicButton = QPushButton("Save Picture to Record")
         self.savePicButton.clicked.connect(self.recordInfo)
         
@@ -94,6 +98,9 @@ class Window(QWidget):
         
         self.countLabel = QLabel("Tentacle Count:")
         self.countDisplay = QLineEdit("{0}".format(0))
+        
+        self.removeMarkerButton = QPushButton("Remove Marker")
+        self.removeMarkerButton.clicked.connect(self.removeMarker)
 
         self.setMouseTracking(True)
 
@@ -102,11 +109,11 @@ class Window(QWidget):
         self.smallerGridLayout.addWidget(self.countDisplay, 0, 1)
         
         self.smallGridLayout = QGridLayout()
-        #self.smallGridLayout.addWidget(self.galleryButton, 0, 0)
+        self.smallGridLayout.addWidget(self.instructionsButton, 0, 0)
         self.smallGridLayout.addWidget(self.savePicButton, 1, 0)
         self.smallGridLayout.addWidget(self.countButton, 2, 0)
         self.smallGridLayout.addLayout(self.smallerGridLayout, 3, 0)
-        # self.smallGridLayout.addWidget(self.addFullMarkerButton, 4, 0)
+        self.smallGridLayout.addWidget(self.removeMarkerButton, 4, 0)
 
         self.generalLayout.addLayout(self.smallGridLayout, 0, 1)
 
@@ -133,6 +140,25 @@ class Window(QWidget):
             "border-bottom-color: #00adb5;"
             "color: #112d4e;"
         )
+        
+        self.removeMarkerButton.setStyleSheet(
+            "border: 3px solid;"
+            "border-top-color: #00adb5;"
+            "border-left-color: #00adb5;"
+            "border-right-color: #00adb5;"
+            "border-bottom-color: #00adb5;"
+            "color: #112d4e;"
+        )
+        
+        self.instructionsButton.setStyleSheet(
+            "border: 3px solid;"
+            "border-top-color: #00adb5;"
+            "border-left-color: #00adb5;"
+            "border-right-color: #00adb5;"
+            "border-bottom-color: #00adb5;"
+            "color: #112d4e;"
+            "background-color : #00adb5;"
+        )
 
         self.setStyleSheet(
             "QLabel {color: purple;}"
@@ -141,6 +167,9 @@ class Window(QWidget):
         generalTab.setLayout(self.generalLayout)
         return generalTab
     
+    def instruct(self):
+        QMessageBox.about(self, "Information", "Instructions: \nUpload photo and click count button to get the number of tentacles on the coral. \nAfter adding/removing markers, save the picture to the record!")
+        
     def recordTabUI(self):
         """Create the Network page UI."""
         recordTab = QWidget()
@@ -148,13 +177,15 @@ class Window(QWidget):
 
         self.tableWidget = QTableWidget()
         #self.tableWidget.setRowCount(8)
-        self.tableWidget.setColumnCount(5)
-        self.tableWidget.setHorizontalHeaderLabels(["FILENAME", "TENTACLE COUNT", "NAME OF PERSON", "DATE UPLOADED", "NOTES"]) 
+        self.tableWidget.setColumnCount(6)
+        self.tableWidget.setHorizontalHeaderLabels(["FILENAME", "TENTACLE COUNT", "NAME OF PERSON", "DATE UPLOADED", "COORDINATES OF MARKERS", "NOTES"]) 
         header = self.tableWidget.horizontalHeader()       
         header.setSectionResizeMode(0, QHeaderView.ResizeToContents)
         header.setSectionResizeMode(1, QHeaderView.ResizeToContents)
         header.setSectionResizeMode(2, QHeaderView.ResizeToContents)
+        header.setSectionResizeMode(3, QHeaderView.ResizeToContents)
         header.setSectionResizeMode(4, QHeaderView.Stretch)
+        header.setSectionResizeMode(5, QHeaderView.ResizeToContents)
         self.tableWidget.setObjectName("tableWidget")
         # scroll bar
         scroll_bar = QScrollBar(self)
@@ -337,14 +368,18 @@ class Window(QWidget):
         
                 mycursor = mydb.cursor()
                 
+                coordString = ''.join(self.list)
+                
                 #mycursor.execute(mySql_insert_query)
                 mycursor.execute(
-                    "INSERT INTO image_info VALUES (%s, %s, %s, %s, %s)", 
+                    "INSERT INTO image_info VALUES (%s, %s, %s, %s, %s, %s)", 
                     (
                         self.photo.get_filename(), self.photo.marker_count, 
-                        self.g.get_name(), date.today(), self.g.get_notes()
+                        self.g.get_name(), date.today(), coordString, self.g.get_notes()
                     )
                 )
+                
+                self.tableWidget.resizeRowsToContents()
                 mydb.commit()
 
                 #QMessageBox.about(self, "Connection", "Database Connected Successfully")
@@ -381,6 +416,8 @@ class Window(QWidget):
 
         for pair in coordinates:
             self.photo.add_marker(pair[0]*(photo_width/1.6), pair[1]*(photo_height/1.5))
+            self.list.append("({}, {})".format(pair[0]*(photo_width/1.6), pair[1]*(photo_height/1.5)))
+    
             # ellipse = QGraphicsEllipseItem(
             #     pair[0]*(photo_width/1.6), pair[1]*(photo_height/1.5), 15, 15
             # )
@@ -396,12 +433,22 @@ class Window(QWidget):
             x = QMouseEvent.pos().x()
             y = QMouseEvent.pos().y()
             self.photo.add_marker(x-45, y-125)
+            self.list.append("({}, {})".format(x-45, y-125))
             self.countDisplay.setText("{0}".format(self.photo.marker_count))
+            
     
     # def addFullMarker(self):
     #     # self.photo.add_marker()
     #     self.photo.mousePressEvent()
     #     self.countDisplay.setText("{0}".format(self.photo.marker_count))
+    def removeMarker(self):
+        print(self.list)
+        print(len(self.list))
+        #print(list)
+        #print(Image2.print_markers)
+        #self.photo.remove_marker()
+        #self.countDisplay.setText("{0}".format(self.photo.marker_count))
+        
 
 if __name__ == "__main__":
     app = QApplication(sys.argv)

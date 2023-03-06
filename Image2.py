@@ -53,6 +53,7 @@ class Image2(QWidget):
         grid.addWidget(self.view, 1, 0, 1, 4)
         self.marker_count = 0
         self.markers = []
+        self.list = []
         self.setAcceptDrops(True)
 
         # Keyboard shortcut
@@ -85,6 +86,9 @@ class Image2(QWidget):
         
     def get_filename(self):
         return self.file
+    
+    def get_markersList(self):
+        return self.markers
          
     def add_marker(self, x_pos, y_pos):
         ellipse = QGraphicsEllipseItem(x_pos, y_pos, 15, 15)
@@ -94,6 +98,22 @@ class Image2(QWidget):
         self.marker_count += 1
         self.markers.append(ellipse)
 
-    def remove_marker(self, selected_marker):
-        # TODO
-        print("TODO")
+    def set_selected_marker(self, marker):
+        self.selected_marker = marker  
+    
+    def remove_marker(self):
+        for i, marker in enumerate(self.markers):
+            if marker.isSelected():
+                self.scene.removeItem(marker)
+                self.markers.pop(i)
+                self.marker_count -= 1
+                #self.marker_counter.setText("Marker Count: {}".format(self.marker_count))
+                return
+
+ 
+    # def print_markers(self):
+    #     for marker in self.markers:
+    #         self.list.append("({}, {})".format(marker.x(), marker.y()))
+            
+    # def get_listOfCoordinates(self):
+    #     return self.list 

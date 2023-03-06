@@ -29,7 +29,6 @@ To be able to run this project in VS Code, please complete the following steps.
         C - Count
         Ctrl+S (Windows), Command+S (Mac) - Save photo to record
 
-
     On Record tab:
         Enter - Load from database
         Delete - Delete selected database entry
