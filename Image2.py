@@ -99,10 +99,10 @@ class Image2(QWidget):
     def get_markersList(self):
         return self.markers
          
-    def add_marker(self, x_pos, y_pos):
+    def add_marker(self, x_pos, y_pos, color):
         if self.path is not "":
             ellipse = QGraphicsEllipseItem(x_pos, y_pos, 15, 15)
-            ellipse.setBrush(QBrush(Qt.yellow))
+            ellipse.setBrush(QBrush(color))
             ellipse.setFlag(QGraphicsItem.ItemIsMovable)
             ellipse.setFlag(QGraphicsItem.ItemIsSelectable)
             self.scene.addItem(ellipse)
@@ -119,3 +119,9 @@ class Image2(QWidget):
                 self.scene.removeItem(marker)
                 self.markers.pop(i)
                 self.marker_count -= 1
+
+    def undo_last_marker(self):
+        last_marker = self.markers[len(self.markers) - 1]
+        self.scene.removeItem(last_marker)
+        self.markers.pop(len(self.markers) - 1)
+        self.marker_count -= 1

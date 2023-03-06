@@ -3,20 +3,22 @@
 # Source for counting dots
 # https://stackoverflow.com/questions/60603243/detect-small-dots-in-image 
 
-import datetime
 import sys
 from PyQt5.QtWidgets import *
 from PyQt5.QtCore import *
 from PyQt5.QtGui import *
 
-import cv2 as cv
-import numpy as np
+# import cv2 as cv
+# import numpy as np
 import mysql.connector as mc
 import os
 from dotenv import load_dotenv
 from PIL import Image as ImagePIL
 from datetime import date
-import matplotlib.pyplot as plt
+# import matplotlib.pyplot as plt
+
+import threading
+from threading import Thread
 
 from Image2 import *
 from RecordInfoWindow import *
@@ -48,15 +50,19 @@ class Window(QWidget):
         self.count_shortcut = QShortcut(Qt.Key_C, self)
         self.save_shortcut = QShortcut(QKeySequence("Ctrl+S"), self)
         self.remove_shortcut = QShortcut(Qt.Key_R, self)
+        self.undo_shortcut = QShortcut(QKeySequence("Ctrl+Z"), self)
+
         self.load_shortcut = QShortcut(Qt.Key_Return, self)
         self.delete_shortcut = QShortcut(Qt.Key_Delete, self)
         self.tab_shortcut = QShortcut(Qt.Key_Tab, self)
         self.quit_shortcut = QShortcut(QKeySequence("Ctrl+W"), self)
-        
+
         self.count_shortcut.activated.connect(self.countTentacles)
         self.save_shortcut.activated.connect(self.recordInfo)
         self.remove_shortcut.activated.connect(self.photo.remove_marker)
         self.remove_shortcut.activated.connect(self.updateMarkerCount)
+        self.undo_shortcut.activated.connect(self.photo.undo_last_marker)
+        self.undo_shortcut.activated.connect(self.updateMarkerCount)
 
         self.load_shortcut.activated.connect(self.DBConnect)
         self.delete_shortcut.activated.connect(self.deleteRow)
@@ -90,6 +96,10 @@ class Window(QWidget):
         self.generalLayout.addWidget(self.photo, 0, 0)
 
         self.g = None
+
+        self.yoloLabel = QLabel("Model is not currently running.")
+        # Does not work currently; doesn't update
+        # self.generalLayout.addWidget(self.yoloLabel, 1, 0)
         
         self.instructionsButton = QPushButton("Instructions")
         self.instructionsButton.clicked.connect(self.instruct)
@@ -107,6 +117,10 @@ class Window(QWidget):
         self.removeMarkerButton.clicked.connect(self.photo.remove_marker)
         self.removeMarkerButton.clicked.connect(self.updateMarkerCount)
 
+        self.undoMarkerButton = QPushButton('Undo Last Marker')
+        self.undoMarkerButton.clicked.connect(self.photo.undo_last_marker)
+        self.undoMarkerButton.clicked.connect(self.updateMarkerCount)
+
         self.setMouseTracking(True)
 
         self.smallerGridLayout = QGridLayout()
@@ -119,7 +133,7 @@ class Window(QWidget):
         self.smallGridLayout.addWidget(self.countButton, 2, 0)
         self.smallGridLayout.addLayout(self.smallerGridLayout, 3, 0)
         self.smallGridLayout.addWidget(self.removeMarkerButton, 4, 0)
-        self.smallGridLayout.addWidget(self.removeMarkerButton, 4, 0)
+        self.smallGridLayout.addWidget(self.undoMarkerButton, 5, 0)
 
         self.generalLayout.addLayout(self.smallGridLayout, 0, 1)
 
@@ -137,7 +151,6 @@ class Window(QWidget):
             "border-bottom-color: #00adb5;"
             "color: #112d4e;"
         )
-
         self.countButton.setStyleSheet(
             "border: 3px solid;"
             "border-top-color: #00adb5;"
@@ -146,7 +159,6 @@ class Window(QWidget):
             "border-bottom-color: #00adb5;"
             "color: #112d4e;"
         )
-        
         self.removeMarkerButton.setStyleSheet(
             "border: 3px solid;"
             "border-top-color: #00adb5;"
@@ -154,6 +166,14 @@ class Window(QWidget):
             "border-right-color: #00adb5;"
             "border-bottom-color: #00adb5;"
             "color: #112d4e;"
+        )
+        self.undoMarkerButton.setStyleSheet(
+            "border: 3px solid;"
+            "border-top-color: #00adb5;"
+            "border-left-color: #00adb5;"
+            "border-right-color: #00adb5;"
+            "border-bottom-color: #00adb5;"
+            "color: #112d4e;" 
         )
         
         self.instructionsButton.setStyleSheet(
@@ -174,7 +194,12 @@ class Window(QWidget):
         return generalTab
     
     def instruct(self):
-        QMessageBox.about(self, "Information", "Instructions: \nUpload photo and click count button to get the number of tentacles on the coral. \nAfter adding/removing markers, save the picture to the record!")
+        QMessageBox.about(
+            self, "Information", 
+            "Instructions: \nUpload photo and click count button to " + 
+            "get the number of tentacles on the coral.\nAfter adding/removing " + 
+            "markers, save the picture to the record!"
+        )
         
     def recordTabUI(self):
         """Create the Network page UI."""
@@ -401,6 +426,9 @@ class Window(QWidget):
         if (self.photo.get_filename() == ""):
             QMessageBox.about(self, "Warning", "Please upload an image.")
         else:
+            # Set label to indicate model running
+            self.yoloLabel.setText("Loading model results...")
+
             # Run the model on the currently displayed photo (in Image2)
             count_tentacles_actual(self.photo.path)
             img = ImagePIL.open(self.photo.path)
@@ -415,12 +443,18 @@ class Window(QWidget):
             # Delete the new resized.jpg created in the main folder
             if (os.path.exists('resized.jpg')):
                 os.remove('resized.jpg')
+            
+            # Set label to indicate model not running
+            self.yoloLabel.setText("Model is not currently running.")
 
     def placeInitialMarkers(self, photo_width, photo_height):
         coordinates = get_coordinates()
 
         for pair in coordinates:
-            self.photo.add_marker(pair[0]*(photo_width/1.6), pair[1]*(photo_height/1.5))
+            self.photo.add_marker(
+                pair[0]*(photo_width/1.6), pair[1]*(photo_height/1.5), 
+                QColor(245, 96, 42)
+            )
             self.list.append("({}, {})".format(pair[0]*(photo_width/1.6), pair[1]*(photo_height/1.5)))
     
 
@@ -431,7 +465,7 @@ class Window(QWidget):
         if QMouseEvent.button() == Qt.LeftButton:
             x = QMouseEvent.pos().x()
             y = QMouseEvent.pos().y()
-            self.photo.add_marker(x-45, y-125)
+            self.photo.add_marker(x-45, y-125, Qt.yellow)
             self.list.append("({}, {})".format(x-45, y-125))
             self.updateMarkerCount()
 
