@@ -27,7 +27,8 @@ To be able to run this project in VS Code, please complete the following steps.
     On Main tab:
         B - Browse photos
         C - Count
-        Ctrl+S - Save photo to record
+        Ctrl+S (Windows), Command+S (Mac) - Save photo to record
+
 
     On Record tab:
         Enter - Load from database
