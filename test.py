@@ -47,6 +47,7 @@ class Window(QWidget):
         # Keyboard shortcuts
         self.count_shortcut = QShortcut(Qt.Key_C, self)
         self.save_shortcut = QShortcut(QKeySequence("Ctrl+S"), self)
+        self.remove_shortcut = QShortcut(Qt.Key_R, self)
         self.load_shortcut = QShortcut(Qt.Key_Return, self)
         self.delete_shortcut = QShortcut(Qt.Key_Delete, self)
         self.tab_shortcut = QShortcut(Qt.Key_Tab, self)
@@ -54,6 +55,9 @@ class Window(QWidget):
         
         self.count_shortcut.activated.connect(self.countTentacles)
         self.save_shortcut.activated.connect(self.recordInfo)
+        self.remove_shortcut.activated.connect(self.photo.remove_marker)
+        self.remove_shortcut.activated.connect(self.updateMarkerCount)
+
         self.load_shortcut.activated.connect(self.DBConnect)
         self.delete_shortcut.activated.connect(self.deleteRow)
         self.tab_shortcut.activated.connect(self.switchTabs)
@@ -97,10 +101,11 @@ class Window(QWidget):
         self.countButton.clicked.connect(self.countTentacles)
         
         self.countLabel = QLabel("Tentacle Count:")
-        self.countDisplay = QLineEdit("{0}".format(0))
-        
-        self.removeMarkerButton = QPushButton("Remove Marker")
-        self.removeMarkerButton.clicked.connect(self.removeMarker)
+        self.countDisplay = QLineEdit("{0}".format(int(self.photo.get_marker_count())))
+
+        self.removeMarkerButton = QPushButton('Remove Marker')
+        self.removeMarkerButton.clicked.connect(self.photo.remove_marker)
+        self.removeMarkerButton.clicked.connect(self.updateMarkerCount)
 
         self.setMouseTracking(True)
 
@@ -113,6 +118,7 @@ class Window(QWidget):
         self.smallGridLayout.addWidget(self.savePicButton, 1, 0)
         self.smallGridLayout.addWidget(self.countButton, 2, 0)
         self.smallGridLayout.addLayout(self.smallerGridLayout, 3, 0)
+        self.smallGridLayout.addWidget(self.removeMarkerButton, 4, 0)
         self.smallGridLayout.addWidget(self.removeMarkerButton, 4, 0)
 
         self.generalLayout.addLayout(self.smallGridLayout, 0, 1)
@@ -263,7 +269,6 @@ class Window(QWidget):
         recordTab.setLayout(layout)
         
         return recordTab
-    
 
     def deleteRow(self):
         # print("Hi")
@@ -407,7 +412,7 @@ class Window(QWidget):
             self.count = get_count()
             self.countDisplay.setText(str(get_count()))
 
-            # Delete the new resized.jpg created in the main folder (for some reason)
+            # Delete the new resized.jpg created in the main folder
             if (os.path.exists('resized.jpg')):
                 os.remove('resized.jpg')
 
@@ -418,15 +423,9 @@ class Window(QWidget):
             self.photo.add_marker(pair[0]*(photo_width/1.6), pair[1]*(photo_height/1.5))
             self.list.append("({}, {})".format(pair[0]*(photo_width/1.6), pair[1]*(photo_height/1.5)))
     
-            # ellipse = QGraphicsEllipseItem(
-            #     pair[0]*(photo_width/1.6), pair[1]*(photo_height/1.5), 15, 15
-            # )
-            # ellipse.setBrush(QBrush(Qt.yellow))
-            # ellipse.setFlag(QGraphicsItem.ItemIsMovable)
-            # self.photo.scene.addItem(ellipse)
-            # self.photo.marker_count += 1
-            # self.photo.markers.append(ellipse)
-            # print(self.photo.markers)
+
+    def updateMarkerCount(self):
+        self.countDisplay.setText("{0}".format(self.photo.marker_count))
 
     def mousePressEvent(self, QMouseEvent):
         if QMouseEvent.button() == Qt.LeftButton:
@@ -434,21 +433,7 @@ class Window(QWidget):
             y = QMouseEvent.pos().y()
             self.photo.add_marker(x-45, y-125)
             self.list.append("({}, {})".format(x-45, y-125))
-            self.countDisplay.setText("{0}".format(self.photo.marker_count))
-            
-    
-    # def addFullMarker(self):
-    #     # self.photo.add_marker()
-    #     self.photo.mousePressEvent()
-    #     self.countDisplay.setText("{0}".format(self.photo.marker_count))
-    def removeMarker(self):
-        print(self.list)
-        print(len(self.list))
-        #print(list)
-        #print(Image2.print_markers)
-        #self.photo.remove_marker()
-        #self.countDisplay.setText("{0}".format(self.photo.marker_count))
-        
+            self.updateMarkerCount()
 
 if __name__ == "__main__":
     app = QApplication(sys.argv)
