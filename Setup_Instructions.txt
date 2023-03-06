@@ -23,16 +23,17 @@ To be able to run this project in VS Code, please complete the following steps.
 
     (If it doesn't work, the program should still run fine without it.)
 
-*Keyboard Shortcut Guide*
+*Shortcut Guide*
     On Main tab:
         B - Browse photos
         C - Count
+        Click - Add marker
+        R - Remove selected marker
         Ctrl+S (Windows), Command+S (Mac) - Save photo to record
-
 
     On Record tab:
         Enter - Load from database
         Delete - Delete selected database entry
 
     Tab - Switch between tabs
-    Ctrl+W - Close application
+    Ctrl+W (Windows), Command+S (Mac) - Close application

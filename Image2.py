@@ -55,9 +55,14 @@ class Image2(QWidget):
         self.markers = []
         self.setAcceptDrops(True)
 
-        # Keyboard shortcut
+        self.selected_marker = None 
+
+        # Keyboard shortcuts
         self.browse_shortcut = QShortcut(Qt.Key_B, self)
         self.browse_shortcut.activated.connect(self.open_image)
+
+        # self.remove_marker_shortcut = QShortcut(Qt.Key_R, self)
+        # self.remove_marker_shortcut.activated.connect(self.remove_marker)
         
     def open_image(self, filename=None):
         #global photo_path
@@ -85,15 +90,27 @@ class Image2(QWidget):
         
     def get_filename(self):
         return self.file
+    
+    def get_marker_count(self):
+        return self.marker_count
          
     def add_marker(self, x_pos, y_pos):
-        ellipse = QGraphicsEllipseItem(x_pos, y_pos, 15, 15)
-        ellipse.setBrush(QBrush(Qt.yellow))
-        ellipse.setFlag(QGraphicsItem.ItemIsMovable)
-        self.scene.addItem(ellipse)
-        self.marker_count += 1
-        self.markers.append(ellipse)
+        if self.path is not "":
+            ellipse = QGraphicsEllipseItem(x_pos, y_pos, 15, 15)
+            ellipse.setBrush(QBrush(Qt.yellow))
+            ellipse.setFlag(QGraphicsItem.ItemIsMovable)
+            ellipse.setFlag(QGraphicsItem.ItemIsSelectable)
+            self.scene.addItem(ellipse)
+            self.marker_count += 1
+            self.markers.append(ellipse)
 
-    def remove_marker(self, selected_marker):
-        # TODO
-        print("TODO")
+    def set_selected_marker(self, marker):
+        # Set selected marker
+        self.selected_marker = marker
+
+    def remove_marker(self):
+        for i, marker in enumerate(self.markers):
+            if marker.isSelected():
+                self.scene.removeItem(marker)
+                self.markers.pop(i)
+                self.marker_count -= 1
