@@ -31,6 +31,7 @@ To be able to run this project in VS Code, please complete the following steps.
         R - Remove selected marker
         Ctrl+Z (Windows), Command+Z (Mac) - Undo most recent marker
         Ctrl+S (Windows), Command+S (Mac) - Save photo to record
+        I - Instructions
 
     On Record tab:
         Enter (Windows), return (Mac) - Load from database

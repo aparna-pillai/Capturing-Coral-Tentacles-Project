@@ -47,6 +47,7 @@ class Window(QWidget):
         layout.addWidget(self.tabs)
 
         # Keyboard shortcuts
+        self.instructions_shortcut = QShortcut(Qt.Key_I, self)
         self.count_shortcut = QShortcut(Qt.Key_C, self)
         self.save_shortcut = QShortcut(QKeySequence("Ctrl+S"), self)
         self.remove_shortcut = QShortcut(Qt.Key_R, self)
@@ -57,6 +58,7 @@ class Window(QWidget):
         self.tab_shortcut = QShortcut(Qt.Key_Tab, self)
         self.quit_shortcut = QShortcut(QKeySequence("Ctrl+W"), self)
 
+        self.instructions_shortcut.activated.connect(self.instruct)
         self.count_shortcut.activated.connect(self.countTentacles)
         self.save_shortcut.activated.connect(self.recordInfo)
         self.remove_shortcut.activated.connect(self.photo.remove_marker)
@@ -96,10 +98,6 @@ class Window(QWidget):
         self.generalLayout.addWidget(self.photo, 0, 0)
 
         self.g = None
-
-        self.yoloLabel = QLabel("Model is not currently running.")
-        # Does not work currently; doesn't update
-        # self.generalLayout.addWidget(self.yoloLabel, 1, 0)
         
         self.instructionsButton = QPushButton("Instructions")
         self.instructionsButton.clicked.connect(self.instruct)
@@ -187,33 +185,50 @@ class Window(QWidget):
         )
 
         self.setStyleSheet(
-            "QLabel {color: purple;}"
+            "QLabel {color: blue;}"
         )
 
         generalTab.setLayout(self.generalLayout)
         return generalTab
     
     def instruct(self):
-        QMessageBox.about(
-            self, "Information", 
-            "Instructions:" +
-            "\nUpload photo and click count button to get the number of tentacles on the coral."+
-            "\nAfter adding/removing markers, save the picture to the record!" +
-            "\n\n*Shortcut Guide*" +
-                "\n\nOn Main tab:" +
-                    "\n\tB - Browse photos" +
-                    "\n\tC - Count" + 
-                    "\n\tClick - Add marker" +
-                    "\n\tR - Remove selected marker" +
-                    "\n\tCtrl+Z (Windows), Command+Z (Mac) - Undo most recent marker" + 
-                    "\n\tCtrl+S (Windows), Command+S (Mac) - Save photo to record"+
-                "\n\nOn Record tab:" + 
-                    "\n\tEnter (Windows), return (Mac) - Load from database" +
-                    "\n\tDelete (Windows), fn delete (Mac) - Delete selected database entry" + 
-                "\n\nExtra:" +
-                    "\n\tTab - Switch between tabs" +
-                    "\n\tCtrl+W (Windows), Command+W (Mac) - Close application" 
+        msg = QMessageBox.about(
+            self, "Instructions", 
+            '''
+            Instructions :
+            1. Click on Browse to select your image for coral counting.
+            2. Click Count for the program to generate the markers
+               and count.
+            3. To edit the markers, click on any of the markers and click
+               Remove or Add Marker. The numerical Count will update 
+               automatically.
+            4. To save your count, click Save Count. Your Count will now 
+               be saved in the Record/Log.
+            5. You can delete the saved count from the Record by 
+               clicking Delete Count.
+            6. Here are some useful keyboard shortcuts:
+
+            On Main tab:
+                B - Browse photos
+                C - Count
+                Click - Add marker
+                R - Remove selected marker
+                Ctrl+Z (Windows), Command+Z (Mac) - Undo most 
+                    recent marker
+                Ctrl+S (Windows), Command+S (Mac) - Save photo 
+                    to record
+                I - Instructions
+
+            On Record tab:
+                Enter (Windows), return (Mac) - Load from database
+                Delete (Windows), fn delete (Mac) - Delete selected 
+                    database entry
+
+            Tab - Switch between tabs
+            Ctrl+W (Windows), Command+W (Mac) - Close application
+            ''' 
         )
+        return msg
         
     def recordTabUI(self):
         """Create the Network page UI."""
@@ -441,9 +456,6 @@ class Window(QWidget):
         if (self.photo.get_filename() == ""):
             QMessageBox.about(self, "Warning", "Please upload an image.")
         else:
-            # Set label to indicate model running
-            self.yoloLabel.setText("Loading model results...")
-
             # Run the model on the currently displayed photo (in Image2)
             count_tentacles_actual(self.photo.path)
             img = ImagePIL.open(self.photo.path)
@@ -458,9 +470,6 @@ class Window(QWidget):
             # Delete the new resized.jpg created in the main folder
             if (os.path.exists('resized.jpg')):
                 os.remove('resized.jpg')
-            
-            # Set label to indicate model not running
-            self.yoloLabel.setText("Model is not currently running.")
 
     def placeInitialMarkers(self, photo_width, photo_height):
         coordinates = get_coordinates()
