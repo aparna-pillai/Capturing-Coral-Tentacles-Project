@@ -416,6 +416,7 @@ class Window(QWidget):
         
                 
                 print(mydb)
+                print(self.list)
                 self.g.close()
                 mydb.close()
                 
