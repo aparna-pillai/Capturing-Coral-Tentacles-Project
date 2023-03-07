@@ -196,9 +196,23 @@ class Window(QWidget):
     def instruct(self):
         QMessageBox.about(
             self, "Information", 
-            "Instructions: \nUpload photo and click count button to " + 
-            "get the number of tentacles on the coral.\nAfter adding/removing " + 
-            "markers, save the picture to the record!"
+            "Instructions:" +
+            "\nUpload photo and click count button to get the number of tentacles on the coral."+
+            "\nAfter adding/removing markers, save the picture to the record!" +
+            "\n\n*Shortcut Guide*" +
+                "\n\nOn Main tab:" +
+                    "\n\tB - Browse photos" +
+                    "\n\tC - Count" + 
+                    "\n\tClick - Add marker" +
+                    "\n\tR - Remove selected marker" +
+                    "\n\tCtrl+Z (Windows), Command+Z (Mac) - Undo most recent marker" + 
+                    "\n\tCtrl+S (Windows), Command+S (Mac) - Save photo to record"+
+                "\n\nOn Record tab:" + 
+                    "\n\tEnter (Windows), return (Mac) - Load from database" +
+                    "\n\tDelete (Windows), fn delete (Mac) - Delete selected database entry" + 
+                "\n\nExtra:" +
+                    "\n\tTab - Switch between tabs" +
+                    "\n\tCtrl+W (Windows), Command+W (Mac) - Close application" 
         )
         
     def recordTabUI(self):
@@ -304,7 +318,7 @@ class Window(QWidget):
                 QMessageBox.about(self, "Warning", "Please select an entry to delete.")
             else:
                 filenameForQuery = item[0].text()
-                print (item[0].text())
+                #print (item[0].text())
         
                 try:
                     mydb = mc.connect(
@@ -326,7 +340,7 @@ class Window(QWidget):
                     mydb.commit()
 
                     #QMessageBox.about(self, "Connection", "Database Connected Successfully")
-                    print(mydb)
+                    #print(mydb)
                     
                     mydb.close()
                 except mydb.Error as e:
@@ -349,7 +363,7 @@ class Window(QWidget):
             result = mycursor.fetchall()
             self.tableWidget.setRowCount(0)
             for row_number, row_data in enumerate(result):
-                print(row_number)
+                #print(row_number)
                 self.tableWidget.insertRow(row_number)
                 for column_number, data in enumerate(row_data):
                     #print(column_number)
@@ -357,7 +371,7 @@ class Window(QWidget):
 
 
             #QMessageBox.about(self, "Connection", "Database Connected Successfully")
-            print(mydb)
+            #print(mydb)
             mydb.close()
         except mydb.Error as e:
            print("Failed To Connect to Database")
@@ -415,7 +429,7 @@ class Window(QWidget):
                 #QMessageBox.about(self, "Connection", "Database Connected Successfully")
         
                 
-                print(mydb)
+                #print(mydb)
                 print(self.list)
                 self.g.close()
                 mydb.close()
