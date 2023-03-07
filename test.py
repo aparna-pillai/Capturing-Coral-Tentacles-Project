@@ -474,6 +474,11 @@ class Window(QWidget):
     def placeInitialMarkers(self, photo_width, photo_height):
         coordinates = get_coordinates()
 
+        # Clear out all old results
+        self.photo.marker_count = 0
+        self.photo.markers.clear()
+        self.list.clear()
+
         for pair in coordinates:
             self.photo.add_marker(
                 pair[0]*(photo_width/1.6), pair[1]*(photo_height/1.5), 
