@@ -209,7 +209,7 @@ class Window(QWidget):
             6. Here are some useful keyboard shortcuts:
 
             On Main tab:
-                B - Browse photos
+                Ctrl+O - Browse photos
                 C - Count
                 Click - Add marker
                 R - Remove selected marker
@@ -445,7 +445,9 @@ class Window(QWidget):
         
                 
                 #print(mydb)
-                print(self.list)
+
+                # There's a discrepancy with how many markers are recorded in self.list
+                print("Coordinate list length:", len(self.photo.markers))
                 self.g.close()
                 mydb.close()
                 

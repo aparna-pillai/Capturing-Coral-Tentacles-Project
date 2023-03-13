@@ -59,7 +59,7 @@ class Image2(QWidget):
         self.selected_marker = None 
 
         # Keyboard shortcuts
-        self.browse_shortcut = QShortcut(Qt.Key_B, self)
+        self.browse_shortcut = QShortcut(QKeySequence("Ctrl+O"), self)
         self.browse_shortcut.activated.connect(self.open_image)
 
         # self.remove_marker_shortcut = QShortcut(Qt.Key_R, self)
