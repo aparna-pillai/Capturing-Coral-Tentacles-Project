@@ -4,6 +4,8 @@ from PyQt5.QtGui import *
 
 from RecordInfoWindow import *
 from dotenv import load_dotenv
+import mysql.connector as mc
+import os
 
 from generalTab import GeneralTab
 

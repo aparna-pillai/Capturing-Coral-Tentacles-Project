@@ -8,20 +8,14 @@ from PyQt5.QtWidgets import *
 from PyQt5.QtCore import *
 from PyQt5.QtGui import *
 
-# import cv2 as cv
-# import numpy as np
 import mysql.connector as mc
 import os
 from dotenv import load_dotenv
 from PIL import Image as ImagePIL
 from datetime import date
-# import matplotlib.pyplot as plt
-
-import threading
-from threading import Thread
 
 from Image2 import *
-from RecordInfoWindow import *
+from RecordInfoWindow import RecordInfoWindow
 
 from coral_count import count_tentacles_actual, get_count, get_coordinates
 
@@ -80,19 +74,10 @@ class Window(QWidget):
             self.tabs.setTabEnabled(1, False)
 
     def generalTabUI(self):
-        #"""Create the General page UI."""
+        # """Create the General page UI."""
         generalTab = QWidget()
-        #layout = QVBoxLayout()
-        #layout.addWidget(QCheckBox("General Option 1"))
-        #layout.addWidget(QCheckBox("General Option 2"))
-        #generalTab.setLayout(layout)
-    
         self.generalLayout = QGridLayout()
 
-        #centralWidget = QWidget(self)
-        #centralWidget.setLayout(self.generalLayout)
-        #self.setCentralWidget(centralWidget)
-        
         self.photo = Image2()
 
         self.generalLayout.addWidget(self.photo, 0, 0)
@@ -236,7 +221,6 @@ class Window(QWidget):
         layout = QGridLayout()
 
         self.tableWidget = QTableWidget()
-        #self.tableWidget.setRowCount(8)
         self.tableWidget.setColumnCount(6)
         self.tableWidget.setHorizontalHeaderLabels(["FILENAME", "TENTACLE COUNT", "NAME OF PERSON", "DATE UPLOADED", "COORDINATES OF MARKERS", "NOTES"]) 
         header = self.tableWidget.horizontalHeader()       
@@ -279,7 +263,6 @@ class Window(QWidget):
         self.btnDelete.clicked.connect(self.deleteRow)
 
         self.smGridLayout = QGridLayout()
-        #self.smallGridLayout.addWidget(self.galleryButton, 0, 0)
         self.smGridLayout.addWidget(self.btnLoad, 0, 0)
         self.smGridLayout.addWidget(self.btnDelete, 0, 1)
 
@@ -318,14 +301,11 @@ class Window(QWidget):
             "color: #112d4e;"
         )
         
-        
-        #layout.addWidget(QCheckBox("Network Option 2"))
         recordTab.setLayout(layout)
         
         return recordTab
 
     def deleteRow(self):
-        # print("Hi")
         if self.tableWidget.rowCount() > 0:
             currentRow = self.tableWidget.currentRow()
             item = self.tableWidget.selectedItems()
@@ -333,8 +313,7 @@ class Window(QWidget):
                 QMessageBox.about(self, "Warning", "Please select an entry to delete.")
             else:
                 filenameForQuery = item[0].text()
-                #print (item[0].text())
-        
+                
                 try:
                     mydb = mc.connect(
                         host=os.environ.get('HOST'),
@@ -343,20 +322,13 @@ class Window(QWidget):
                         database=os.getenv('DATABASE')             
                     )
                     mycursor = mydb.cursor()
-                    #DELETE FROM image_info WHERE filename=item[0].text()
                     
                     sql_delete = "DELETE FROM image_info WHERE filename = %s"
                     sql_data = (filenameForQuery,)
 
                     mycursor.execute(sql_delete, sql_data)
                 
-                    #mycursor.execute("DELETE FROM image_info WHERE filename = ?)", (item[0].text(),))
-                    
                     mydb.commit()
-
-                    #QMessageBox.about(self, "Connection", "Database Connected Successfully")
-                    #print(mydb)
-                    
                     mydb.close()
                 except mydb.Error as e:
                     print("Failed To Connect to Database")
@@ -378,15 +350,10 @@ class Window(QWidget):
             result = mycursor.fetchall()
             self.tableWidget.setRowCount(0)
             for row_number, row_data in enumerate(result):
-                #print(row_number)
                 self.tableWidget.insertRow(row_number)
                 for column_number, data in enumerate(row_data):
-                    #print(column_number)
                     self.tableWidget.setItem(row_number, column_number, QTableWidgetItem(str(data)))
 
-
-            #QMessageBox.about(self, "Connection", "Database Connected Successfully")
-            #print(mydb)
             mydb.close()
         except mydb.Error as e:
            print("Failed To Connect to Database")
@@ -394,16 +361,11 @@ class Window(QWidget):
     def recordInfo(self):   # checked parameter? Is it needed?
         if self.photo.get_filename() == "":
             QMessageBox.about(self, "Warning", "You did not upload an image!")
-        #if self.g is None:
         else:
             self.g = RecordInfoWindow()
             self.g.submitButton.clicked.connect(self.gatheringInfo)
             self.g.setGeometry(int(self.frameGeometry().width()/2) - 150, int(self.frameGeometry().height()/2) - 150, 300, 300)
             self.g.show()
-        #else:
-            
-          #  self.g.close()
-          #  self.g = None
             
     def gatheringInfo(self):  
             try:
@@ -413,23 +375,10 @@ class Window(QWidget):
                     password=os.getenv('PASSWORD'), 
                     database=os.getenv('DATABASE')             
                 )
-                            
-
-                #mySql_insert_query = """INSERT INTO image_info(image_id, filename, tentacle_count, name_of_person, date_uploaded) 
-                #      VALUES (?, ?, ?, ?, ?)""", (self.g.get_id(), self.photo.get_filename(), self.count, self.g.get_name(),  date.today())
                 
-                
-
-                                                    
-                #"""INSERT INTO image_info
-                #                       VALUES (2, "Hi", 2, "Aditi", DATE '2015-12-17') """
-                
-        
                 mycursor = mydb.cursor()
-                
                 coordString = ''.join(self.list)
                 
-                #mycursor.execute(mySql_insert_query)
                 mycursor.execute(
                     "INSERT INTO image_info VALUES (%s, %s, %s, %s, %s, %s)", 
                     (
@@ -440,11 +389,6 @@ class Window(QWidget):
                 
                 self.tableWidget.resizeRowsToContents()
                 mydb.commit()
-
-                #QMessageBox.about(self, "Connection", "Database Connected Successfully")
-        
-                
-                #print(mydb)
 
                 # There's a discrepancy with how many markers are recorded in self.list
                 print("Coordinate list length:", len(self.photo.markers))
