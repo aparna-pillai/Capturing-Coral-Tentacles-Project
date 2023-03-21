@@ -16,7 +16,7 @@ import numpy as np
 
 #photo_path = ""
 
-class Image(QWidget):
+class ImageTrial(QWidget):
     
     def __init__(self):
         super().__init__()

@@ -1,5 +1,5 @@
 from tkinter import *
-from Image import Image
+from ImageTrial import ImageTrial
 
 window = Tk()
 

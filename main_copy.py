@@ -19,7 +19,7 @@ import tkinter as tk
 COUNT = 0
 PATH = ""
 
-from Image import Image
+from ImageTrial import ImageTrial
 from Marker import GraphicView, MovingObject
 
 class Capturing_Coral_Manager(QMainWindow):
@@ -39,7 +39,7 @@ class Capturing_Coral_Manager(QMainWindow):
         self._createButtonsAndLabels(COUNT)
 
     def _createPhoto(self):
-        self.photo = Image()
+        self.photo = ImageTrial()
         self.generalLayout.addWidget(self.photo, 0, 0)
     
         

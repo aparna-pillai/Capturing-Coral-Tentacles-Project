@@ -9,7 +9,7 @@ from PyQt5.QtWidgets import *
 from PyQt5.QtCore import *
 from PyQt5.QtGui import *
 from tkinter import *
-from Image import Image
+from ImageTrial import ImageTrial
 
 import cv2 as cv
 import os
@@ -37,7 +37,7 @@ class Capturing_Coral_Manager(QMainWindow):
         self._createButtonsAndLabels(COUNT)
 
     def _createPhoto(self):
-        self.photo = Image()
+        self.photo = ImageTrial()
         self.generalLayout.addWidget(self.photo, 0, 0)
         
 

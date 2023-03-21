@@ -17,7 +17,7 @@ from dotenv import load_dotenv
 COUNT = 0
 PATH = ""
 
-from Image import Image
+from ImageTrial import ImageTrial
 
 class Window(QWidget):
     def __init__(self):
@@ -46,7 +46,7 @@ class Window(QWidget):
         #centralWidget.setLayout(self.generalLayout)
         #self.setCentralWidget(centralWidget)
         
-        self.photo = Image()
+        self.photo = ImageTrial()
         self.generalLayout.addWidget(self.photo, 0, 0)
 
         self.galleryButton = QPushButton("Gallery: Saved Pictures && Counts")
