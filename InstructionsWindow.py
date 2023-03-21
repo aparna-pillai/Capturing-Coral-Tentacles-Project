@@ -3,40 +3,43 @@ from PyQt5.QtCore import *
 from PyQt5.QtGui import *
 
 class InstructionsWindow(QWidget):
-    submitButton = None
-    
     def __init__(self):
         super().__init__()
-        layout = QGridLayout()
-        
-        self.name_of_person_Label = QLabel("Name:")
-        self.name_of_person_Display = QLineEdit()
-        self.name_of_person_Display.setPlaceholderText("Enter your name here")
-        
-        self.notes_Label = QLabel("Notes:")
-        self.notes_Display = QLineEdit()
-        self.notes_Display.setPlaceholderText("Enter any notes you have")
-        
-        self.date_Label = QLabel("Date Added:")
-        self.date_Display = QLabel("{0}".format(date.today()))
-        
-        self.submitButton = None
-        self.submitButton = QPushButton("SUBMIT!")
-        
-        layout.addWidget(self.date_Label, 0, 0)
-        layout.addWidget(self.date_Display, 0, 1)
-        layout.addWidget(self.name_of_person_Label, 1, 0)
-        layout.addWidget(self.name_of_person_Display, 1, 1)
-        layout.addWidget(self.notes_Label, 2, 0)
-        layout.addWidget(self.notes_Display, 2, 1)
-        layout.addWidget(self.submitButton, 3, 0)
-        
-        print(self.name_of_person_Display.text())
-        
-        self.setLayout(layout)
-     
-    def get_name(self):
-        return self.name_of_person_Display.text()
-    
-    def get_notes(self):
-        return self.notes_Display.text()
+
+        msg = QMessageBox.about(
+            self, "Instructions", 
+            '''
+            1. Click on Browse to select your image for coral counting.
+            2. Click Count for the program to generate the markers
+                and count.
+            3. To edit the markers, click on any of the markers and click
+                Remove or Add Marker. The numerical Count will update 
+                automatically.
+            4. To save your count, click Save Count. Your Count will now 
+                be saved in the Record/Log.
+            5. You can delete the saved count from the Record by 
+                clicking Delete Count.
+            6. Here are some useful keyboard shortcuts:
+
+            On Main tab:
+                Ctrl+O (Windows), Command+O (Mac) - Browse photos
+                C - Count
+                Click - Add marker
+                R - Remove selected marker
+                Ctrl+Z (Windows), Command+Z (Mac) - Undo most 
+                    recent marker
+                Ctrl+S (Windows), Command+S (Mac) - Save photo 
+                    to record
+                I - Instructions
+
+            On Record tab:
+                Enter (Windows), return (Mac) - Load from database
+                Delete (Windows), fn delete (Mac) - Delete selected 
+                    database entry
+
+            Tab - Switch between tabs
+            Ctrl+W (Windows), Command+W (Mac) - Close application
+            ''' 
+        )
+
+        return msg

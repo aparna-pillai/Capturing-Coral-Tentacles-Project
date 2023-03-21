@@ -3,6 +3,7 @@ from PyQt5.QtCore import *
 from PyQt5.QtGui import *
 
 from Image import *
+from InstructionsWindow import InstructionsWindow
 
 def generalTabUI(self):
         generalTab = QWidget()
@@ -13,6 +14,7 @@ def generalTabUI(self):
         self.generalLayout.addWidget(self.photo, 0, 0)
 
         self.g = None
+        self.w = None
         
         self.instructionsButton = QPushButton("Instructions")
         self.instructionsButton.clicked.connect(self.instruct)

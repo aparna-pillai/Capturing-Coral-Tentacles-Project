@@ -11,6 +11,7 @@ from datetime import date
 
 from Image import *
 from RecordInfoWindow import RecordInfoWindow
+from InstructionsWindow import InstructionsWindow
 from generalTab import generalTabUI
 from recordTab import recordTabUI
 
@@ -21,8 +22,8 @@ class Window(QWidget):
     def __init__(self):
         super().__init__()
         self.setWindowTitle("Capturing Coral Tentacles")
-        #self.setGeometry(0, 0, 1000, 800)
-        #self.showMaximized()
+        # self.setWindowFlags(Qt.WindowStaysOnTopHint)
+        
         self.move(0,0)
         layout = QVBoxLayout()
         self.setLayout(layout)
@@ -50,6 +51,7 @@ class Window(QWidget):
         self.tab_shortcut = QShortcut(Qt.Key_Tab, self)
         self.quit_shortcut = QShortcut(QKeySequence("Ctrl+W"), self)
 
+        # Connect shortcuts
         self.instructions_shortcut.activated.connect(self.instruct)
         self.count_shortcut.activated.connect(self.countTentacles)
         self.save_shortcut.activated.connect(self.recordInfo)
@@ -72,44 +74,8 @@ class Window(QWidget):
             self.tabs.setTabEnabled(1, False)
     
     def instruct(self):
-        msg = QMessageBox.about(
-            self, "Instructions", 
-            '''
-            Instructions :
-            1. Click on Browse to select your image for coral counting.
-            2. Click Count for the program to generate the markers
-               and count.
-            3. To edit the markers, click on any of the markers and click
-               Remove or Add Marker. The numerical Count will update 
-               automatically.
-            4. To save your count, click Save Count. Your Count will now 
-               be saved in the Record/Log.
-            5. You can delete the saved count from the Record by 
-               clicking Delete Count.
-            6. Here are some useful keyboard shortcuts:
-
-            On Main tab:
-                Ctrl+O - Browse photos
-                C - Count
-                Click - Add marker
-                R - Remove selected marker
-                Ctrl+Z (Windows), Command+Z (Mac) - Undo most 
-                    recent marker
-                Ctrl+S (Windows), Command+S (Mac) - Save photo 
-                    to record
-                I - Instructions
-
-            On Record tab:
-                Enter (Windows), return (Mac) - Load from database
-                Delete (Windows), fn delete (Mac) - Delete selected 
-                    database entry
-
-            Tab - Switch between tabs
-            Ctrl+W (Windows), Command+W (Mac) - Close application
-            ''' 
-        )
-        return msg
- 
+        self.w = InstructionsWindow()
+         
     def deleteRow(self):
         if self.tableWidget.rowCount() > 0:
             currentRow = self.tableWidget.currentRow()
@@ -251,5 +217,11 @@ class Window(QWidget):
 if __name__ == "__main__":
     app = QApplication(sys.argv)
     window = Window()
-    window.show()
+    window.show()    
+
+    instructions = InstructionsWindow()
+    window.activateWindow()
+
+    print("Instructions active: ", instructions.isActiveWindow())
+
     sys.exit(app.exec_())
