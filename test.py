@@ -1,8 +1,3 @@
-# Source for image upload PyQt code:
-# https://stackoverflow.com/questions/60614561/how-to-ask-user-to-input-an-image-in-pyqt5
-# Source for counting dots
-# https://stackoverflow.com/questions/60603243/detect-small-dots-in-image 
-
 import sys
 from PyQt5.QtWidgets import *
 from PyQt5.QtCore import *
@@ -27,12 +22,13 @@ class Window(QWidget):
         super().__init__()
         self.setWindowTitle("Capturing Coral Tentacles")
         #self.setGeometry(0, 0, 1000, 800)
-        self.showMaximized()
-        # Create a top-level layout
+        #self.showMaximized()
+        self.move(0,0)
         layout = QVBoxLayout()
         self.setLayout(layout)
         self.count = 0
         self.list = []
+        
         # Create the tab widget with two tabs
         self.tabs = QTabWidget()
         general_tab = generalTabUI(self)
@@ -167,7 +163,7 @@ class Window(QWidget):
         except mydb.Error as e:
            print("Failed To Connect to Database")
             
-    def recordInfo(self):   # checked parameter? Is it needed?
+    def recordInfo(self):   
         if self.photo.get_filename() == "":
             QMessageBox.about(self, "Warning", "You did not upload an image!")
         else:
@@ -198,8 +194,7 @@ class Window(QWidget):
                 
                 self.tableWidget.resizeRowsToContents()
                 mydb.commit()
-
-                # There's a discrepancy with how many markers are recorded in self.list
+                
                 print("Coordinate list length:", len(self.photo.markers))
                 self.g.close()
                 mydb.close()
@@ -211,7 +206,7 @@ class Window(QWidget):
         if (self.photo.get_filename() == ""):
             QMessageBox.about(self, "Warning", "Please upload an image.")
         else:
-            # Run the model on the currently displayed photo (in Image2)
+            # Run the model on the currently displayed photo (in Image)
             count_tentacles_actual(self.photo.path)
             img = ImagePIL.open(self.photo.path)
             

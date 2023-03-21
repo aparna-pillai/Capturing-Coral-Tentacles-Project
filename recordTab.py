@@ -5,7 +5,6 @@ from PyQt5.QtGui import *
 from dotenv import load_dotenv
 
 def recordTabUI(self):
-        """Create the Network page UI."""
         recordTab = QWidget()
         layout = QGridLayout()
 
@@ -20,10 +19,9 @@ def recordTabUI(self):
         header.setSectionResizeMode(4, QHeaderView.Stretch)
         header.setSectionResizeMode(5, QHeaderView.ResizeToContents)
         self.tableWidget.setObjectName("tableWidget")
-        # scroll bar
+
         scroll_bar = QScrollBar(self)
- 
-        # setting style sheet to the scroll bar
+
         scroll_bar.setStyleSheet(
             '''QScrollBar
             {
@@ -38,8 +36,7 @@ def recordTabUI(self):
                 background : #00adb5;
             }'''
         )
- 
-        # setting vertical scroll bar to it
+
         self.tableWidget.setVerticalScrollBar(scroll_bar)
  
         layout.addWidget(self.tableWidget, 0, 0) 
@@ -57,8 +54,6 @@ def recordTabUI(self):
 
         layout.addLayout(self.smGridLayout, 1, 0)
 
-        
-        # Stylesheets
         self.tableWidget.setStyleSheet(
             "border: 1px solid;"
             "border-top-color: #00adb5;"

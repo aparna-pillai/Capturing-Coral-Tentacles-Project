@@ -2,9 +2,7 @@ from PyQt5.QtWidgets import *
 from PyQt5.QtCore import *
 from PyQt5.QtGui import *
 
-from datetime import date
-
-class RecordInfoWindow(QWidget):
+class InstructionsWindow(QWidget):
     submitButton = None
     
     def __init__(self):

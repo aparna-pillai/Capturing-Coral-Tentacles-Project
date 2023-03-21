@@ -1,17 +1,9 @@
-import sys
-
 from PhotoLabel import PhotoLabel
 
 from PyQt5.QtWidgets import *
 from PyQt5.QtCore import *
 from PyQt5.QtGui import *
-from PyQt5 import QtCore
-from tkinter import *
-
-from PIL import Image, ImageTk
-
-import cv2 as cv
-import numpy as np
+#from tkinter import *
 
 class Image(QWidget):
     
@@ -41,8 +33,7 @@ class Image(QWidget):
         self.file = ""
         
         grid = QGridLayout(self)
-        #basewidth = 100
-        #img = Image.open(self.photo)
+ 
         grid.addWidget(btn, 0, 0, Qt.AlignTop)
         grid.addWidget(self.photo, 1, 0)
         self.scene = QGraphicsScene()
@@ -61,12 +52,8 @@ class Image(QWidget):
         # Keyboard shortcuts
         self.browse_shortcut = QShortcut(QKeySequence("Ctrl+O"), self)
         self.browse_shortcut.activated.connect(self.open_image)
-
-        # self.remove_marker_shortcut = QShortcut(Qt.Key_R, self)
-        # self.remove_marker_shortcut.activated.connect(self.remove_marker)
         
     def open_image(self, filename=None):
-        #global photo_path
         if not filename:
             filename, _ = QFileDialog.getOpenFileName(self, 'Select Photo', QDir.currentPath(), 'Images (*.png *.jpg)')
             if not filename:
@@ -74,8 +61,7 @@ class Image(QWidget):
             self.path = str(filename)
             url = QUrl.fromLocalFile(filename)
             self.file = QFileInfo(filename).fileName()
-            #path = str(filename)
-            #print("Hello: " + self.path)
+            
         self.photo.setStyleSheet(
             "background: transparent;"
         )
@@ -83,11 +69,6 @@ class Image(QWidget):
         self.smaller_pixmap = self.pix.scaled(self.view.width(), self.view.height())
         self.scene.clear()
         self.scene.addPixmap(self.smaller_pixmap)
-    
-        
-        #self.photo.setPixmap(self.pix.scaledToHeight(400, Qt.FastTransformation))
-       
-        #self.path = str(photo_path)
         
     def get_filename(self):
         return self.file
@@ -110,7 +91,6 @@ class Image(QWidget):
             self.markers.append(ellipse)
 
     def set_selected_marker(self, marker):
-        # Set selected marker
         self.selected_marker = marker
 
     def remove_marker(self):

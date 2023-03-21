@@ -5,7 +5,6 @@ from PyQt5.QtGui import *
 from Image import *
 
 def generalTabUI(self):
-        # """Create the General page UI."""
         generalTab = QWidget()
         self.generalLayout = QGridLayout()
 
@@ -106,5 +105,3 @@ def generalTabUI(self):
 
         generalTab.setLayout(self.generalLayout)
         return generalTab
-    
-    

@@ -6,7 +6,6 @@ import platform
 
 from yolov5.detect import run
 
-
 def count_tentacles_actual(img):
     # Clear out old results (old exp folder)
     
