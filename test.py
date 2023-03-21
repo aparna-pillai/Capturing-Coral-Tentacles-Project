@@ -14,7 +14,7 @@ from dotenv import load_dotenv
 from PIL import Image as ImagePIL
 from datetime import date
 
-from Image2 import *
+from Image import *
 from RecordInfoWindow import RecordInfoWindow
 from generalTab import generalTabUI
 from recordTab import recordTabUI

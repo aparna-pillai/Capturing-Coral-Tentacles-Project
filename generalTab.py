@@ -2,14 +2,14 @@ from PyQt5.QtWidgets import *
 from PyQt5.QtCore import *
 from PyQt5.QtGui import *
 
-from Image2 import *
+from Image import *
 
 def generalTabUI(self):
         # """Create the General page UI."""
         generalTab = QWidget()
         self.generalLayout = QGridLayout()
 
-        self.photo = Image2()
+        self.photo = Image()
 
         self.generalLayout.addWidget(self.photo, 0, 0)
 

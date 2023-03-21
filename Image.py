@@ -13,7 +13,7 @@ from PIL import Image, ImageTk
 import cv2 as cv
 import numpy as np
 
-class Image2(QWidget):
+class Image(QWidget):
     
     def __init__(self):
         super().__init__()
