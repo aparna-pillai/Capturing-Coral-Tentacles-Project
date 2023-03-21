@@ -16,6 +16,8 @@ from datetime import date
 
 from Image2 import *
 from RecordInfoWindow import RecordInfoWindow
+from generalTab import generalTabUI
+from recordTab import recordTabUI
 
 from coral_count import count_tentacles_actual, get_count, get_coordinates
 
@@ -33,8 +35,8 @@ class Window(QWidget):
         self.list = []
         # Create the tab widget with two tabs
         self.tabs = QTabWidget()
-        general_tab = self.generalTabUI()
-        record_tab = self.recordTabUI()
+        general_tab = generalTabUI(self)
+        record_tab = recordTabUI(self)
 
         self.tabs.addTab(general_tab, "Main")
         self.tabs.addTab(record_tab, "Record")
@@ -72,109 +74,6 @@ class Window(QWidget):
         else:
             self.tabs.setTabEnabled(0, True)
             self.tabs.setTabEnabled(1, False)
-
-    def generalTabUI(self):
-        # """Create the General page UI."""
-        generalTab = QWidget()
-        self.generalLayout = QGridLayout()
-
-        self.photo = Image2()
-
-        self.generalLayout.addWidget(self.photo, 0, 0)
-
-        self.g = None
-        
-        self.instructionsButton = QPushButton("Instructions")
-        self.instructionsButton.clicked.connect(self.instruct)
-        
-        self.savePicButton = QPushButton("Save Picture to Record")
-        self.savePicButton.clicked.connect(self.recordInfo)
-        
-        self.countButton = QPushButton("Count")
-        self.countButton.clicked.connect(self.countTentacles)
-        
-        self.countLabel = QLabel("Tentacle Count:")
-        self.countDisplay = QLineEdit("{0}".format(int(self.photo.get_marker_count())))
-
-        self.removeMarkerButton = QPushButton('Remove Marker')
-        self.removeMarkerButton.clicked.connect(self.photo.remove_marker)
-        self.removeMarkerButton.clicked.connect(self.updateMarkerCount)
-
-        self.undoMarkerButton = QPushButton('Undo Last Marker')
-        self.undoMarkerButton.clicked.connect(self.photo.undo_last_marker)
-        self.undoMarkerButton.clicked.connect(self.updateMarkerCount)
-
-        self.setMouseTracking(True)
-
-        self.smallerGridLayout = QGridLayout()
-        self.smallerGridLayout.addWidget(self.countLabel, 0, 0)
-        self.smallerGridLayout.addWidget(self.countDisplay, 0, 1)
-        
-        self.smallGridLayout = QGridLayout()
-        self.smallGridLayout.addWidget(self.instructionsButton, 0, 0)
-        self.smallGridLayout.addWidget(self.savePicButton, 1, 0)
-        self.smallGridLayout.addWidget(self.countButton, 2, 0)
-        self.smallGridLayout.addLayout(self.smallerGridLayout, 3, 0)
-        self.smallGridLayout.addWidget(self.removeMarkerButton, 4, 0)
-        self.smallGridLayout.addWidget(self.undoMarkerButton, 5, 0)
-
-        self.generalLayout.addLayout(self.smallGridLayout, 0, 1)
-
-        
-        # Stylesheets
-        self.countLabel.setStyleSheet(
-            "color: #112d4e;"
-        )
-        
-        self.savePicButton.setStyleSheet(
-            "border: 3px solid;"
-            "border-top-color: #00adb5;"
-            "border-left-color: #00adb5;"
-            "border-right-color: #00adb5;"
-            "border-bottom-color: #00adb5;"
-            "color: #112d4e;"
-        )
-        self.countButton.setStyleSheet(
-            "border: 3px solid;"
-            "border-top-color: #00adb5;"
-            "border-left-color: #00adb5;"
-            "border-right-color: #00adb5;"
-            "border-bottom-color: #00adb5;"
-            "color: #112d4e;"
-        )
-        self.removeMarkerButton.setStyleSheet(
-            "border: 3px solid;"
-            "border-top-color: #00adb5;"
-            "border-left-color: #00adb5;"
-            "border-right-color: #00adb5;"
-            "border-bottom-color: #00adb5;"
-            "color: #112d4e;"
-        )
-        self.undoMarkerButton.setStyleSheet(
-            "border: 3px solid;"
-            "border-top-color: #00adb5;"
-            "border-left-color: #00adb5;"
-            "border-right-color: #00adb5;"
-            "border-bottom-color: #00adb5;"
-            "color: #112d4e;" 
-        )
-        
-        self.instructionsButton.setStyleSheet(
-            "border: 3px solid;"
-            "border-top-color: #00adb5;"
-            "border-left-color: #00adb5;"
-            "border-right-color: #00adb5;"
-            "border-bottom-color: #00adb5;"
-            "color: #112d4e;"
-            "background-color : #00adb5;"
-        )
-
-        self.setStyleSheet(
-            "QLabel {color: blue;}"
-        )
-
-        generalTab.setLayout(self.generalLayout)
-        return generalTab
     
     def instruct(self):
         msg = QMessageBox.about(
@@ -214,97 +113,7 @@ class Window(QWidget):
             ''' 
         )
         return msg
-        
-    def recordTabUI(self):
-        """Create the Network page UI."""
-        recordTab = QWidget()
-        layout = QGridLayout()
-
-        self.tableWidget = QTableWidget()
-        self.tableWidget.setColumnCount(6)
-        self.tableWidget.setHorizontalHeaderLabels(["FILENAME", "TENTACLE COUNT", "NAME OF PERSON", "DATE UPLOADED", "COORDINATES OF MARKERS", "NOTES"]) 
-        header = self.tableWidget.horizontalHeader()       
-        header.setSectionResizeMode(0, QHeaderView.ResizeToContents)
-        header.setSectionResizeMode(1, QHeaderView.ResizeToContents)
-        header.setSectionResizeMode(2, QHeaderView.ResizeToContents)
-        header.setSectionResizeMode(3, QHeaderView.ResizeToContents)
-        header.setSectionResizeMode(4, QHeaderView.Stretch)
-        header.setSectionResizeMode(5, QHeaderView.ResizeToContents)
-        self.tableWidget.setObjectName("tableWidget")
-        # scroll bar
-        scroll_bar = QScrollBar(self)
  
-        # setting style sheet to the scroll bar
-        scroll_bar.setStyleSheet(
-            '''QScrollBar
-            {
-                background : #e1eedd;
-            }
-            QScrollBar::handle
-            {
-                background : #dbe2ef;
-            }
-            QScrollBar::handle::pressed
-            {
-                background : #00adb5;
-            }'''
-        )
- 
-        # setting vertical scroll bar to it
-        self.tableWidget.setVerticalScrollBar(scroll_bar)
- 
-        layout.addWidget(self.tableWidget, 0, 0) 
-
-        self.btnLoad = QPushButton("Load")
-        load_dotenv('config.env')
-        self.btnLoad.clicked.connect(self.DBConnect)
-        self.btnDelete = QPushButton("Delete")
-        load_dotenv('config.env')
-        self.btnDelete.clicked.connect(self.deleteRow)
-
-        self.smGridLayout = QGridLayout()
-        self.smGridLayout.addWidget(self.btnLoad, 0, 0)
-        self.smGridLayout.addWidget(self.btnDelete, 0, 1)
-
-        layout.addLayout(self.smGridLayout, 1, 0)
-
-        
-        # Stylesheets
-        self.tableWidget.setStyleSheet(
-            "border: 1px solid;"
-            "border-top-color: #00adb5;"
-            "border-left-color: #00adb5;"
-            "border-right-color: #00adb5;"
-            "border-bottom-color: #00adb5;"
-            "color: #112d4e;"
-        )
-
-        header.setStyleSheet(
-            "color: #112d4e;"
-        )
-
-        self.btnLoad.setStyleSheet(
-            "border: 3px solid;"
-            "border-top-color: #00adb5;"
-            "border-left-color: #00adb5;"
-            "border-right-color: #00adb5;"
-            "border-bottom-color: #00adb5;"
-            "color: #112d4e;"
-        )
-
-        self.btnDelete.setStyleSheet(
-            "border: 3px solid;"
-            "border-top-color: #00adb5;"
-            "border-left-color: #00adb5;"
-            "border-right-color: #00adb5;"
-            "border-bottom-color: #00adb5;"
-            "color: #112d4e;"
-        )
-        
-        recordTab.setLayout(layout)
-        
-        return recordTab
-
     def deleteRow(self):
         if self.tableWidget.rowCount() > 0:
             currentRow = self.tableWidget.currentRow()
