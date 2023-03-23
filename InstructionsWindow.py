@@ -5,9 +5,10 @@ from PyQt5.QtGui import *
 class InstructionsWindow(QWidget):
     def __init__(self):
         super().__init__()
-
-        msg = QMessageBox.about(
-            self, "Instructions", 
+        
+        layout = QGridLayout()
+        
+        self.instructions_Label = QLabel(
             '''
             1. Click on Browse to select your image for coral counting.
             2. Click Count for the program to generate the markers
@@ -41,5 +42,9 @@ class InstructionsWindow(QWidget):
             Ctrl+W (Windows), Command+W (Mac) - Close application
             ''' 
         )
+        
+        self.closeButton = QPushButton("CLOSE!")
 
-        return msg
+        layout.addWidget(self.instructions_Label, 0, 0)
+        layout.addWidget(self.closeButton, 1, 0)
+        self.setLayout(layout)

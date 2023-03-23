@@ -41,16 +41,29 @@ def recordTabUI(self):
  
         layout.addWidget(self.tableWidget, 0, 0) 
 
-        self.btnLoad = QPushButton("Load")
+        # self.btnLoad = QPushButton("Load")
+        # load_dotenv('config.env')
+        # self.btnLoad.clicked.connect(self.DBConnect)
+        
         load_dotenv('config.env')
-        self.btnLoad.clicked.connect(self.DBConnect)
+        self.DBConnect()
+        
         self.btnDelete = QPushButton("Delete")
         load_dotenv('config.env')
         self.btnDelete.clicked.connect(self.deleteRow)
+        self.btnDeleteAll = QPushButton("Delete All")
+        load_dotenv('config.env')
+        self.btnDeleteAll.clicked.connect(self.deleteAllRows)
+        
+        self.exportButton = QPushButton("Export")
+        load_dotenv('config.env')
+        self.exportButton.clicked.connect(self.export)
 
         self.smGridLayout = QGridLayout()
-        self.smGridLayout.addWidget(self.btnLoad, 0, 0)
-        self.smGridLayout.addWidget(self.btnDelete, 0, 1)
+        #self.smGridLayout.addWidget(self.btnLoad, 0, 0)
+        self.smGridLayout.addWidget(self.btnDelete, 0, 0)
+        self.smGridLayout.addWidget(self.btnDeleteAll, 0, 1)
+        self.smGridLayout.addWidget(self.exportButton, 1, 0)
 
         layout.addLayout(self.smGridLayout, 1, 0)
 
@@ -67,7 +80,16 @@ def recordTabUI(self):
             "color: #112d4e;"
         )
 
-        self.btnLoad.setStyleSheet(
+        # self.btnLoad.setStyleSheet(
+        #     "border: 3px solid;"
+        #     "border-top-color: #00adb5;"
+        #     "border-left-color: #00adb5;"
+        #     "border-right-color: #00adb5;"
+        #     "border-bottom-color: #00adb5;"
+        #     "color: #112d4e;"
+        # )
+
+        self.btnDelete.setStyleSheet(
             "border: 3px solid;"
             "border-top-color: #00adb5;"
             "border-left-color: #00adb5;"
@@ -75,8 +97,17 @@ def recordTabUI(self):
             "border-bottom-color: #00adb5;"
             "color: #112d4e;"
         )
-
-        self.btnDelete.setStyleSheet(
+        
+        self.btnDeleteAll.setStyleSheet(
+            "border: 3px solid;"
+            "border-top-color: #00adb5;"
+            "border-left-color: #00adb5;"
+            "border-right-color: #00adb5;"
+            "border-bottom-color: #00adb5;"
+            "color: #112d4e;"
+        )
+        
+        self.exportButton.setStyleSheet(
             "border: 3px solid;"
             "border-top-color: #00adb5;"
             "border-left-color: #00adb5;"

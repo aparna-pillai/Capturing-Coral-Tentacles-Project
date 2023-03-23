@@ -3,11 +3,15 @@ from PyQt5.QtWidgets import *
 from PyQt5.QtCore import *
 from PyQt5.QtGui import *
 
+import platform
+
 import mysql.connector as mc
 import os
 from dotenv import load_dotenv
 from PIL import Image as ImagePIL
 from datetime import date
+
+import pandas as pd
 
 from Image import *
 from RecordInfoWindow import RecordInfoWindow
@@ -75,35 +79,75 @@ class Window(QWidget):
     
     def instruct(self):
         self.w = InstructionsWindow()
+        self.w.closeButton.clicked.connect(self.close)
+        self.w.setGeometry(self.frameGeometry().width(), 0, int(self.frameGeometry().width()/2) - 150, int(self.frameGeometry().height()/2) - 150)
+        #self.w.move(0, self.frameGeometry().width())
+        self.w.show()
+        
+    def close(self):
+        self.w.close()
          
     def deleteRow(self):
+        
         if self.tableWidget.rowCount() > 0:
             currentRow = self.tableWidget.currentRow()
             item = self.tableWidget.selectedItems()
             if (len(item) < 1):
                 QMessageBox.about(self, "Warning", "Please select an entry to delete.")
-            else:
-                filenameForQuery = item[0].text()
+            else:             
+                question = QMessageBox()
+                response = question.question(self,'', "Are you sure you want to delete the row?", question.Yes | question.No)
                 
-                try:
-                    mydb = mc.connect(
-                        host=os.environ.get('HOST'),
-                        user = os.getenv('NAME'),
-                        password=os.getenv('PASSWORD'), 
-                        database=os.getenv('DATABASE')             
-                    )
-                    mycursor = mydb.cursor()
+                if response == question.Yes:
+                    filenameForQuery = item[0].text()
                     
-                    sql_delete = "DELETE FROM image_info WHERE filename = %s"
-                    sql_data = (filenameForQuery,)
+                    try:
+                        mydb = mc.connect(
+                            host=os.environ.get('HOST'),
+                            user = os.getenv('NAME'),
+                            password=os.getenv('PASSWORD'), 
+                            database=os.getenv('DATABASE')             
+                        )
+                        mycursor = mydb.cursor()
+                        
+                        sql_delete = "DELETE FROM image_info WHERE filename = %s"
+                        sql_data = (filenameForQuery,)
 
-                    mycursor.execute(sql_delete, sql_data)
+                        mycursor.execute(sql_delete, sql_data)
+                    
+                        mydb.commit()
+                        mydb.close()
+                    except mydb.Error as e:
+                        print("Failed To Connect to Database")
+                    self.tableWidget.removeRow(currentRow)
+                else:
+                    question.close()
                 
-                    mydb.commit()
-                    mydb.close()
-                except mydb.Error as e:
-                    print("Failed To Connect to Database")
-                self.tableWidget.removeRow(currentRow)
+    def deleteAllRows(self):
+        question = QMessageBox()
+        response = question.question(self,'', "Are you sure you want to delete ALL the rows?", question.Yes | question.No)
+                
+        if response == question.Yes:
+            try:
+                mydb = mc.connect(
+                    host=os.environ.get('HOST'),
+                    user = os.getenv('NAME'),
+                    password=os.getenv('PASSWORD'), 
+                    database=os.getenv('DATABASE')             
+                )
+                mycursor = mydb.cursor()
+                
+                mycursor.execute("DELETE FROM image_info")
+            
+                mydb.commit()
+                while (self.tableWidget.rowCount() > 0):
+                    self.tableWidget.removeRow(0)
+                mydb.close()
+            except mydb.Error as e:
+                print("Failed To Connect to Database")
+            #self.tableWidget.removeRow(currentRow)
+        else:
+            question.close()
     
     def DBConnect(self):
         try:
@@ -125,6 +169,47 @@ class Window(QWidget):
                 for column_number, data in enumerate(row_data):
                     self.tableWidget.setItem(row_number, column_number, QTableWidgetItem(str(data)))
 
+            mydb.close()
+        except mydb.Error as e:
+           print("Failed To Connect to Database")
+    
+    def export(self):
+        try:
+            mydb = mc.connect(
+                host=os.environ.get('HOST'),
+                user=os.getenv('NAME'),
+                password=os.getenv('PASSWORD'), 
+                database=os.getenv('DATABASE')             
+            )
+            
+            mycursor = mydb.cursor()
+
+            mycursor.execute("Select filename, tentacle_count, name_of_person, date_uploaded, coordinates_of_markers, notes from image_info")
+
+            result = mycursor.fetchall()
+            
+            all_filenames = []
+            all_tentacle_count = []
+            all_name_of_person = []
+            all_date_uploaded = []
+            all_coordinates_of_markers = []
+            all_notes = []
+            
+            for filename, tentacle_count, name_of_person, date_uploaded, coordinates_of_markers, notes in result:
+                all_filenames.append(filename)
+                all_tentacle_count.append(tentacle_count)
+                all_name_of_person.append(name_of_person)
+                all_date_uploaded.append(date_uploaded)
+                all_coordinates_of_markers.append(coordinates_of_markers)
+                all_notes.append(notes)
+            
+            dictionary = {"FILENAME": all_filenames, "TENTACLE COUNT": all_tentacle_count, "NAME OF PERSON": all_name_of_person, "DATE UPLOADED": all_date_uploaded, "COORDINATES OF MARKERS": all_coordinates_of_markers, "NOTES": all_notes}
+            df = pd.DataFrame(dictionary)
+            if platform.system() == 'Windows':
+                df_csv = df.to_csv('E:/CountEntries.csv')
+            else:
+                df_csv = df.to_csv(os.path.expanduser("~/Desktop/CountEntries.csv"))
+            
             mydb.close()
         except mydb.Error as e:
            print("Failed To Connect to Database")
@@ -162,6 +247,7 @@ class Window(QWidget):
                 mydb.commit()
                 
                 print("Coordinate list length:", len(self.photo.markers))
+                self.DBConnect()
                 self.g.close()
                 mydb.close()
                 
