@@ -308,6 +308,4 @@ if __name__ == "__main__":
     instructions = InstructionsWindow()
     window.activateWindow()
 
-    print("Instructions active: ", instructions.isActiveWindow())
-
     sys.exit(app.exec_())
