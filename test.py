@@ -203,12 +203,17 @@ class Window(QWidget):
                 all_coordinates_of_markers.append(coordinates_of_markers)
                 all_notes.append(notes)
             
-            dictionary = {"FILENAME": all_filenames, "TENTACLE COUNT": all_tentacle_count, "NAME OF PERSON": all_name_of_person, "DATE UPLOADED": all_date_uploaded, "COORDINATES OF MARKERS": all_coordinates_of_markers, "NOTES": all_notes}
+            dictionary = {
+                "FILENAME": all_filenames, "TENTACLE COUNT": all_tentacle_count, 
+                "NAME OF PERSON": all_name_of_person, "DATE UPLOADED": all_date_uploaded, 
+                "COORDINATES OF MARKERS": all_coordinates_of_markers, "NOTES": all_notes
+            }
+
             df = pd.DataFrame(dictionary)
             if platform.system() == 'Windows':
-                df_csv = df.to_csv('C:\CountEntries.csv') 
+                df.to_csv("C:\\temp\CountEntries.csv", na_rep="None")
             else:
-                df_csv = df.to_csv(os.path.expanduser("~/Desktop/CountEntries.csv"))
+                df.to_csv(os.path.expanduser("~/Desktop/CountEntries.csv"))
             
             mydb.close()
         except mydb.Error as e:
