@@ -50,7 +50,7 @@ class Window(QWidget):
         self.remove_shortcut = QShortcut(Qt.Key_R, self)
         self.undo_shortcut = QShortcut(QKeySequence("Ctrl+Z"), self)
 
-        self.load_shortcut = QShortcut(Qt.Key_Return, self)
+        #self.load_shortcut = QShortcut(Qt.Key_Return, self)
         self.delete_shortcut = QShortcut(Qt.Key_Delete, self)
         self.tab_shortcut = QShortcut(Qt.Key_Tab, self)
         self.quit_shortcut = QShortcut(QKeySequence("Ctrl+W"), self)
@@ -64,7 +64,7 @@ class Window(QWidget):
         self.undo_shortcut.activated.connect(self.photo.undo_last_marker)
         self.undo_shortcut.activated.connect(self.updateMarkerCount)
 
-        self.load_shortcut.activated.connect(self.DBConnect)
+        #self.load_shortcut.activated.connect(self.DBConnect)
         self.delete_shortcut.activated.connect(self.deleteRow)
         self.tab_shortcut.activated.connect(self.switchTabs)
         self.quit_shortcut.activated.connect(self.close)
@@ -206,7 +206,7 @@ class Window(QWidget):
             dictionary = {"FILENAME": all_filenames, "TENTACLE COUNT": all_tentacle_count, "NAME OF PERSON": all_name_of_person, "DATE UPLOADED": all_date_uploaded, "COORDINATES OF MARKERS": all_coordinates_of_markers, "NOTES": all_notes}
             df = pd.DataFrame(dictionary)
             if platform.system() == 'Windows':
-                df_csv = df.to_csv('E:/CountEntries.csv')
+                df_csv = df.to_csv('D:\gfg\\CountEntries.csv') 
             else:
                 df_csv = df.to_csv(os.path.expanduser("~/Desktop/CountEntries.csv"))
             
