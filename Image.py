@@ -11,11 +11,11 @@ class Image(QWidget):
     def __init__(self):
         super().__init__()
         self.photo = PhotoLabel()
-        self.photo.setFixedWidth(800)
-        self.photo.setFixedHeight(500)
+        self.photo.setFixedWidth(1000)
+        self.photo.setFixedHeight(600)
         
         btn = QPushButton('Browse')
-        btn.setFixedWidth(800)
+        btn.setFixedWidth(1000)
         btn.setFixedHeight(50)
         
         btn.setStyleSheet(
@@ -89,6 +89,8 @@ class Image(QWidget):
             ellipse.setFlag(QGraphicsItem.ItemIsSelectable)
             
             ellipse.setPos(x_pos, y_pos)
+            print(ellipse.scenePos())
+
             self.scene.addItem(ellipse)
             self.marker_count += 1
             self.markers.append(ellipse)

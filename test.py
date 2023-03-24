@@ -50,7 +50,9 @@ class Window(QWidget):
         self.remove_shortcut = QShortcut(Qt.Key_R, self)
         self.undo_shortcut = QShortcut(QKeySequence("Ctrl+Z"), self)
 
-        #self.load_shortcut = QShortcut(Qt.Key_Return, self)
+        self.zoomin_shortcut = QShortcut(QKeySequence("Ctrl++"), self)
+        self.zoomout_shortcut = QShortcut(QKeySequence("Ctrl+-"), self)
+
         self.delete_shortcut = QShortcut(Qt.Key_Delete, self)
         self.tab_shortcut = QShortcut(Qt.Key_Tab, self)
         self.quit_shortcut = QShortcut(QKeySequence("Ctrl+W"), self)
@@ -239,25 +241,30 @@ class Window(QWidget):
                 )
                 
                 mycursor = mydb.cursor()
-                # coordString = ''.join(self.list)
 
                 for i, marker in enumerate(self.photo.markers):
                     self.coordinate_list.append(marker.scenePos())
 
-                print(self.coordinate_list)
+                file_actual_name = self.photo.get_filename()[:-4]
+                coord_storage_file = file_actual_name + "_coordinates.txt"
+                coordinates_file = open("saved_coordinates/" + coord_storage_file, "w")
+                
+                for point in self.coordinate_list:
+                    coordinates_file.write(str(point)+"\n")
+                coordinates_file.close()
                 
                 mycursor.execute(
                     "INSERT INTO image_info VALUES (%s, %s, %s, %s, %s, %s)", 
                     (
                         self.photo.get_filename(), self.photo.marker_count, 
-                        self.g.get_name(), date.today(), "coordString placeholder", self.g.get_notes()
+                        self.g.get_name(), date.today(), 
+                        str(coord_storage_file), self.g.get_notes()
                     )
                 )
                 
                 self.tableWidget.resizeRowsToContents()
                 mydb.commit()
                 
-                # print("Coordinate list length:", len(self.list))
                 self.DBConnect()
                 self.g.close()
                 mydb.close()
@@ -290,16 +297,13 @@ class Window(QWidget):
         # Clear out all old results
         self.photo.marker_count = 0
         self.photo.markers.clear()
-        # self.list.clear()
+        self.coordinate_list.clear()
 
         for pair in coordinates:
             self.photo.add_marker(
                 pair[0]*(photo_width/1.6), pair[1]*(photo_height/1.5), 
                 QColor(245, 96, 42)
             )
-            # self.list.append("({}, {})".format(
-            #     pair[0]*(photo_width/1.6), pair[1]*(photo_height/1.5)
-            # ))
 
     def updateMarkerCount(self):
         self.countDisplay.setText("{0}".format(self.photo.marker_count))
@@ -309,7 +313,6 @@ class Window(QWidget):
             x = QMouseEvent.pos().x()
             y = QMouseEvent.pos().y()
             self.photo.add_marker(x-45, y-125, Qt.yellow)
-            # self.list.append("({}, {})".format(x-45, y-125))
             self.updateMarkerCount()
 
 if __name__ == "__main__":
