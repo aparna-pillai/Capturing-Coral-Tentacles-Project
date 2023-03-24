@@ -7,9 +7,13 @@ class InstructionsWindow(QWidget):
         super().__init__()
         
         layout = QGridLayout()
+
+        self.close_shortcut = QShortcut(QKeySequence("Ctrl+W"), self)
+        self.close_shortcut.activated.connect(self.close)
         
         self.instructions_Label = QLabel(
             '''
+            Instructions:
             1. Click on Browse to select your image for coral counting.
             2. Click Count for the program to generate the markers
                 and count.

@@ -32,7 +32,7 @@ class Window(QWidget):
         layout = QVBoxLayout()
         self.setLayout(layout)
         self.count = 0
-        self.list = []
+        self.coordinate_list = []
         
         # Create the tab widget with two tabs
         self.tabs = QTabWidget()
@@ -64,7 +64,6 @@ class Window(QWidget):
         self.undo_shortcut.activated.connect(self.photo.undo_last_marker)
         self.undo_shortcut.activated.connect(self.updateMarkerCount)
 
-        #self.load_shortcut.activated.connect(self.DBConnect)
         self.delete_shortcut.activated.connect(self.deleteRow)
         self.tab_shortcut.activated.connect(self.switchTabs)
         self.quit_shortcut.activated.connect(self.close)
@@ -79,12 +78,12 @@ class Window(QWidget):
     
     def instruct(self):
         self.w = InstructionsWindow()
-        self.w.closeButton.clicked.connect(self.close)
+        self.w.closeButton.clicked.connect(self.instructions_close)
         self.w.setGeometry(self.frameGeometry().width(), 0, int(self.frameGeometry().width()/2) - 150, int(self.frameGeometry().height()/2) - 150)
         #self.w.move(0, self.frameGeometry().width())
         self.w.show()
         
-    def close(self):
+    def instructions_close(self):
         self.w.close()
          
     def deleteRow(self):
@@ -225,6 +224,8 @@ class Window(QWidget):
         else:
             self.g = RecordInfoWindow()
             self.g.submitButton.clicked.connect(self.gatheringInfo)
+            self.g.submit_shortcut.activated.connect(self.gatheringInfo)
+
             self.g.setGeometry(int(self.frameGeometry().width()/2) - 150, int(self.frameGeometry().height()/2) - 150, 300, 300)
             self.g.show()
             
@@ -238,20 +239,20 @@ class Window(QWidget):
                 )
                 
                 mycursor = mydb.cursor()
-                coordString = ''.join(self.list)
+                # coordString = ''.join(self.list)
                 
                 mycursor.execute(
                     "INSERT INTO image_info VALUES (%s, %s, %s, %s, %s, %s)", 
                     (
-                        self.photo.get_filename(), self.photo.marker_count, 
-                        self.g.get_name(), date.today(), coordString, self.g.get_notes()
+                        self.photo.path, self.photo.marker_count, 
+                        self.g.get_name(), date.today(), "coordString placeholder", self.g.get_notes()
                     )
                 )
                 
                 self.tableWidget.resizeRowsToContents()
                 mydb.commit()
                 
-                print("Coordinate list length:", len(self.photo.markers))
+                # print("Coordinate list length:", len(self.list))
                 self.DBConnect()
                 self.g.close()
                 mydb.close()
@@ -263,6 +264,8 @@ class Window(QWidget):
         if (self.photo.get_filename() == ""):
             QMessageBox.about(self, "Warning", "Please upload an image.")
         else:
+            print(self.photo.get_filename())
+
             # Run the model on the currently displayed photo (in Image)
             count_tentacles_actual(self.photo.path)
             img = ImagePIL.open(self.photo.path)
@@ -284,15 +287,16 @@ class Window(QWidget):
         # Clear out all old results
         self.photo.marker_count = 0
         self.photo.markers.clear()
-        self.list.clear()
+        # self.list.clear()
 
         for pair in coordinates:
             self.photo.add_marker(
                 pair[0]*(photo_width/1.6), pair[1]*(photo_height/1.5), 
                 QColor(245, 96, 42)
             )
-            self.list.append("({}, {})".format(pair[0]*(photo_width/1.6), pair[1]*(photo_height/1.5)))
-    
+            # self.list.append("({}, {})".format(
+            #     pair[0]*(photo_width/1.6), pair[1]*(photo_height/1.5)
+            # ))
 
     def updateMarkerCount(self):
         self.countDisplay.setText("{0}".format(self.photo.marker_count))
@@ -302,7 +306,7 @@ class Window(QWidget):
             x = QMouseEvent.pos().x()
             y = QMouseEvent.pos().y()
             self.photo.add_marker(x-45, y-125, Qt.yellow)
-            self.list.append("({}, {})".format(x-45, y-125))
+            # self.list.append("({}, {})".format(x-45, y-125))
             self.updateMarkerCount()
 
 if __name__ == "__main__":
