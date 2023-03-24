@@ -4,6 +4,7 @@ from PyQt5.QtWidgets import *
 from PyQt5.QtCore import *
 from PyQt5.QtGui import *
 #from tkinter import *
+import string
 
 class Image(QWidget):
     
@@ -105,3 +106,40 @@ class Image(QWidget):
         self.scene.removeItem(last_marker)
         self.markers.pop(len(self.markers) - 1)
         self.marker_count -= 1
+
+    def change_color(self, color):
+        brush_color = None
+        if color == "Red":
+            brush_color = Qt.red
+        elif color == "Orange":
+            brush_color = QColor(255, 137, 0)
+        elif color == "Yellow":
+            brush_color = Qt.yellow
+        elif color == "Green":
+            brush_color = Qt.green
+        elif color == "Blue":
+            brush_color = Qt.blue
+        elif color == "Purple":
+            brush_color = QColor(219, 0, 255)
+        elif color == "Pink":
+            brush_color = QColor(245, 66, 164)
+        elif color == "Black":
+            brush_color = Qt.black
+        elif color == "White":
+            brush_color = Qt.white
+
+        if brush_color:
+            for marker in self.markers:
+                if marker.isSelected():
+                    marker.setBrush(QBrush(brush_color))
+
+        # Clear the drop-down menu and add the color options agai
+
+    def zoom_in(self):
+        self.view.scale(1.2, 1.2)
+
+    def zoom_out(self):
+        self.view.scale(1/1.2, 1/1.2)
+
+
+    
