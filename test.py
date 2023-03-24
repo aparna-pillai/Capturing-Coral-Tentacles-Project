@@ -240,11 +240,16 @@ class Window(QWidget):
                 
                 mycursor = mydb.cursor()
                 # coordString = ''.join(self.list)
+
+                for i, marker in enumerate(self.photo.markers):
+                    self.coordinate_list.append(marker.scenePos())
+
+                print(self.coordinate_list)
                 
                 mycursor.execute(
                     "INSERT INTO image_info VALUES (%s, %s, %s, %s, %s, %s)", 
                     (
-                        self.photo.path, self.photo.marker_count, 
+                        self.photo.get_filename(), self.photo.marker_count, 
                         self.g.get_name(), date.today(), "coordString placeholder", self.g.get_notes()
                     )
                 )
@@ -264,8 +269,6 @@ class Window(QWidget):
         if (self.photo.get_filename() == ""):
             QMessageBox.about(self, "Warning", "Please upload an image.")
         else:
-            print(self.photo.get_filename())
-
             # Run the model on the currently displayed photo (in Image)
             count_tentacles_actual(self.photo.path)
             img = ImagePIL.open(self.photo.path)

@@ -24,7 +24,7 @@ class RecordInfoWindow(QWidget):
         
         self.submitButton = None
         self.submitButton = QPushButton("SUBMIT!")
-        self.submit_shortcut = QShortcut(Qt.Key_S, self)
+        self.submit_shortcut = QShortcut(Qt.Key_Return, self)
         
         self.close_shortcut = QShortcut(QKeySequence("Ctrl+W"), self)
         self.close_shortcut.activated.connect(self.close)
