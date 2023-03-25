@@ -11,11 +11,11 @@ class Image(QWidget):
     def __init__(self):
         super().__init__()
         self.photo = PhotoLabel()
-        self.photo.setFixedWidth(1000)
-        self.photo.setFixedHeight(600)
+        self.photo.setFixedWidth(800)
+        self.photo.setFixedHeight(500)
         
         btn = QPushButton('Browse')
-        btn.setFixedWidth(1000)
+        btn.setFixedWidth(800)
         btn.setFixedHeight(50)
         
         btn.setStyleSheet(

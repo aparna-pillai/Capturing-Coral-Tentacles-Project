@@ -9,7 +9,7 @@ import mysql.connector as mc
 import os
 from dotenv import load_dotenv
 from PIL import Image as ImagePIL
-from datetime import date
+from datetime import date, datetime
 
 import pandas as pd
 
@@ -50,8 +50,8 @@ class Window(QWidget):
         self.remove_shortcut = QShortcut(Qt.Key_R, self)
         self.undo_shortcut = QShortcut(QKeySequence("Ctrl+Z"), self)
 
-        self.zoomin_shortcut = QShortcut(QKeySequence("Ctrl++"), self)
-        self.zoomout_shortcut = QShortcut(QKeySequence("Ctrl+-"), self)
+        self.zoomin_shortcut = QShortcut(Qt.Key_Plus, self)
+        self.zoomout_shortcut = QShortcut(Qt.Key_Minus, self)
 
         self.delete_shortcut = QShortcut(Qt.Key_Delete, self)
         self.tab_shortcut = QShortcut(Qt.Key_Tab, self)
@@ -65,6 +65,9 @@ class Window(QWidget):
         self.remove_shortcut.activated.connect(self.updateMarkerCount)
         self.undo_shortcut.activated.connect(self.photo.undo_last_marker)
         self.undo_shortcut.activated.connect(self.updateMarkerCount)
+
+        self.zoomin_shortcut.activated.connect(self.photo.zoom_in)
+        self.zoomout_shortcut.activated.connect(self.photo.zoom_out)
 
         self.delete_shortcut.activated.connect(self.deleteRow)
         self.tab_shortcut.activated.connect(self.switchTabs)
@@ -82,14 +85,12 @@ class Window(QWidget):
         self.w = InstructionsWindow()
         self.w.closeButton.clicked.connect(self.instructions_close)
         self.w.setGeometry(self.frameGeometry().width(), 0, int(self.frameGeometry().width()/2) - 150, int(self.frameGeometry().height()/2) - 150)
-        #self.w.move(0, self.frameGeometry().width())
         self.w.show()
         
     def instructions_close(self):
         self.w.close()
          
     def deleteRow(self):
-        
         if self.tableWidget.rowCount() > 0:
             currentRow = self.tableWidget.currentRow()
             item = self.tableWidget.selectedItems()
@@ -245,8 +246,9 @@ class Window(QWidget):
                 for i, marker in enumerate(self.photo.markers):
                     self.coordinate_list.append(marker.scenePos())
 
-                file_actual_name = self.photo.get_filename()[:-4]
-                coord_storage_file = file_actual_name + "_coordinates.txt"
+                file_actual_name = self.photo.get_filename()[:-4] # cut off the .jpg
+                saving_time = datetime.now().strftime("%Y%m%d")
+                coord_storage_file = file_actual_name + "_" + saving_time + "_coordinates.txt"
                 coordinates_file = open("saved_coordinates/" + coord_storage_file, "w")
                 
                 for point in self.coordinate_list:
