@@ -10,7 +10,6 @@ import os
 from dotenv import load_dotenv
 from PIL import Image as ImagePIL
 from datetime import date, datetime
-
 import pandas as pd
 
 from Image import *
@@ -272,6 +271,8 @@ class Window(QWidget):
         if (self.photo.get_filename() == ""):
             QMessageBox.about(self, "Warning", "Please upload an image.")
         else:
+            # self.photo.modelDisplay.setText("Running...")
+
             # Run the model on the currently displayed photo (in Image)
             count_tentacles_actual(self.photo.path)
             img = ImagePIL.open(self.photo.path)
@@ -286,6 +287,8 @@ class Window(QWidget):
             # Delete the new resized.jpg created in the main folder
             if (os.path.exists('resized.jpg')):
                 os.remove('resized.jpg')
+
+            # self.photo.modelDisplay.setText("{0}".format("Not running anymore"))
 
     def placeInitialMarkers(self, photo_width, photo_height):
         coordinates = get_coordinates()

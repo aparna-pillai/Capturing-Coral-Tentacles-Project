@@ -55,6 +55,13 @@ class Image(QWidget):
         self.fileGridLayout.addWidget(self.filenameDisplay, 0, 1)
         grid.addLayout(self.fileGridLayout, 2, 0)
 
+        # self.modelGridLayout = QGridLayout()
+        # self.modelLabel = QLabel("Model status:")
+        # self.modelDisplay = QLineEdit("{0}".format("Not running"))
+        # self.modelGridLayout.addWidget(self.modelLabel, 0, 0)
+        # self.modelGridLayout.addWidget(self.modelDisplay, 0, 1)
+        # grid.addLayout(self.modelGridLayout, 3, 0)
+
         self.selected_marker = None 
 
         self.color_dict = {
@@ -70,6 +77,10 @@ class Image(QWidget):
         self.filenameDisplay.setStyleSheet(
             "border: none;"
         )
+
+        # self.modelDisplay.setStyleSheet(
+        #     "border: none;"
+        # )
         
     def open_image(self, filename=None):
         if not filename:
