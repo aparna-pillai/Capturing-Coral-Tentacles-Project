@@ -14,9 +14,6 @@ To be able to run this project in VS Code, please complete the following steps.
 
         git lfs install
 
-    Some final steps:
-        mkdir saved_coordinates
-
 *Dataset Download*
     Open a Python shell in terminal and run the following lines:
         from roboflow import Roboflow

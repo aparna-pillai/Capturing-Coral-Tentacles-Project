@@ -3,8 +3,6 @@ from PhotoLabel import PhotoLabel
 from PyQt5.QtWidgets import *
 from PyQt5.QtCore import *
 from PyQt5.QtGui import *
-#from tkinter import *
-import string
 
 class Image(QWidget):
     
@@ -34,25 +32,44 @@ class Image(QWidget):
         self.file = ""
         
         grid = QGridLayout(self)
- 
+
         grid.addWidget(btn, 0, 0, Qt.AlignTop)
+
         grid.addWidget(self.photo, 1, 0)
         self.scene = QGraphicsScene()
         self.view = QGraphicsView(self.scene)
         self.view.setStyleSheet(
             "background: transparent;"
         )
-        grid.addWidget(self.view, 1, 0, 1, 4)
+        grid.addWidget(self.view, 1, 0, 1, 0)
+
         self.marker_count = 0
         self.markers = []
-        self.list = []
+        self.marker_colors = []
         self.setAcceptDrops(True)
 
+        self.fileGridLayout = QGridLayout()
+        self.filenameLabel = QLabel("Current image being displayed:")
+        self.filenameDisplay = QLineEdit("{0}".format(self.get_filename()))
+        self.fileGridLayout.addWidget(self.filenameLabel, 0, 0)
+        self.fileGridLayout.addWidget(self.filenameDisplay, 0, 1)
+        grid.addLayout(self.fileGridLayout, 2, 0)
+
         self.selected_marker = None 
+
+        self.color_dict = {
+            "Red": Qt.red, "Orange": QColor(255, 137, 0), "Yellow": Qt.yellow,
+            "Green": Qt.green, "Blue": Qt.blue, "Purple": QColor(219, 0, 255),
+            "Pink": QColor(245, 66, 164), "Black": Qt.black, "White": Qt.white
+        }
 
         # Keyboard shortcuts
         self.browse_shortcut = QShortcut(QKeySequence("Ctrl+O"), self)
         self.browse_shortcut.activated.connect(self.open_image)
+
+        self.filenameDisplay.setStyleSheet(
+            "border: none;"
+        )
         
     def open_image(self, filename=None):
         if not filename:
@@ -70,6 +87,7 @@ class Image(QWidget):
         self.smaller_pixmap = self.pix.scaled(self.view.width(), self.view.height())
         self.scene.clear()
         self.scene.addPixmap(self.smaller_pixmap)
+        self.filenameDisplay.setText("{0}".format(self.get_filename()))
         
     def get_filename(self):
         return self.file
@@ -77,7 +95,6 @@ class Image(QWidget):
     def get_marker_count(self):
         return self.marker_count
          
-    
     def get_markersList(self):
         return self.markers
          
@@ -94,6 +111,7 @@ class Image(QWidget):
             self.scene.addItem(ellipse)
             self.marker_count += 1
             self.markers.append(ellipse)
+            self.marker_colors.append(QBrush(color))
 
     def set_selected_marker(self, marker):
         self.selected_marker = marker
@@ -103,41 +121,24 @@ class Image(QWidget):
             if marker.isSelected():
                 self.scene.removeItem(marker)
                 self.markers.pop(i)
+                self.marker_colors.pop(i)
                 self.marker_count -= 1
 
     def undo_last_marker(self):
         last_marker = self.markers[len(self.markers) - 1]
         self.scene.removeItem(last_marker)
         self.markers.pop(len(self.markers) - 1)
+        self.marker_colors.pop(len(self.markers - 1))
         self.marker_count -= 1
 
     def change_color(self, color):
-        brush_color = None
-        if color == "Red":
-            brush_color = Qt.red
-        elif color == "Orange":
-            brush_color = QColor(255, 137, 0)
-        elif color == "Yellow":
-            brush_color = Qt.yellow
-        elif color == "Green":
-            brush_color = Qt.green
-        elif color == "Blue":
-            brush_color = Qt.blue
-        elif color == "Purple":
-            brush_color = QColor(219, 0, 255)
-        elif color == "Pink":
-            brush_color = QColor(245, 66, 164)
-        elif color == "Black":
-            brush_color = Qt.black
-        elif color == "White":
-            brush_color = Qt.white
+        brush_color = self.color_dict[color]
+        for i, marker in enumerate(self.markers):
+            if marker.isSelected():
+                marker.setBrush(QBrush(brush_color))
+                self.marker_colors[i] = brush_color
 
-        if brush_color:
-            for marker in self.markers:
-                if marker.isSelected():
-                    marker.setBrush(QBrush(brush_color))
-
-        # Clear the drop-down menu and add the color options agai
+        # Clear the drop-down menu and add the color options agai(n)
 
     def zoom_in(self):
         self.view.scale(1.2, 1.2)

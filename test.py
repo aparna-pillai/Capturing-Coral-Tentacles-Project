@@ -26,7 +26,6 @@ class Window(QWidget):
     def __init__(self):
         super().__init__()
         self.setWindowTitle("Capturing Coral Tentacles")
-        # self.setWindowFlags(Qt.WindowStaysOnTopHint)
         
         self.move(0,0)
         layout = QVBoxLayout()
@@ -244,23 +243,18 @@ class Window(QWidget):
                 mycursor = mydb.cursor()
 
                 for i, marker in enumerate(self.photo.markers):
-                    self.coordinate_list.append(marker.scenePos())
+                    self.coordinate_list.append(
+                        (str(marker.scenePos()) + ' ; ' + str(self.photo.marker_colors[i]))
+                    )
 
-                file_actual_name = self.photo.get_filename()[:-4] # cut off the .jpg
-                saving_time = datetime.now().strftime("%Y%m%d")
-                coord_storage_file = file_actual_name + "_" + saving_time + "_coordinates.txt"
-                coordinates_file = open("saved_coordinates/" + coord_storage_file, "w")
-                
-                for point in self.coordinate_list:
-                    coordinates_file.write(str(point)+"\n")
-                coordinates_file.close()
+                coordstring = ' | '.join(self.coordinate_list)
                 
                 mycursor.execute(
                     "INSERT INTO image_info VALUES (%s, %s, %s, %s, %s, %s)", 
                     (
                         self.photo.get_filename(), self.photo.marker_count, 
                         self.g.get_name(), date.today(), 
-                        str(coord_storage_file), self.g.get_notes()
+                        coordstring, self.g.get_notes()
                     )
                 )
                 
