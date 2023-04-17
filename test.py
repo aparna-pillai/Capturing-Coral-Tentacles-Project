@@ -239,25 +239,40 @@ class Window(QWidget):
                     database=os.getenv('DATABASE')             
                 )
                 
+                    
                 mycursor = mydb.cursor()
-
-                for i, marker in enumerate(self.photo.markers):
-                    self.coordinate_list.append(
-                        (str(marker.scenePos()) + ' ; ' + str(self.photo.marker_colors[i]))
-                    )
-
-                coordstring = ' | '.join(self.coordinate_list)
+                sql =  "SELECT users_name FROM users WHERE users_name = '%s'" % self.g.get_name()
+                mycursor.execute(sql)
                 
-                mycursor.execute(
-                    "INSERT INTO image_info VALUES (%s, %s, %s, %s, %s, %s)", 
-                    (
-                        self.photo.get_filename(), self.photo.marker_count, 
-                        self.g.get_name(), date.today(), 
-                        coordstring, self.g.get_notes()
-                    )
-                )
-                
-                self.tableWidget.resizeRowsToContents()
+                if mycursor.fetchone():
+                    print("yeah")
+                    sql2 =  "SELECT users_password FROM users WHERE users_password = '%s'" % self.g.get_code()
+                    mycursor.execute(sql2)
+                    if mycursor.fetchone():
+                        print("oh yeah")
+                        for i, marker in enumerate(self.photo.markers):
+                            self.coordinate_list.append(
+                            (str(marker.scenePos()) + ' ; ' + str(self.photo.marker_colors[i]))
+                        )
+
+                        coordstring = ' | '.join(self.coordinate_list)
+                        
+                        mycursor.execute(
+                            "INSERT INTO image_info VALUES (%s, %s, %s, %s, %s, %s)", 
+                            (
+                                self.photo.get_filename(), self.photo.marker_count, 
+                                self.g.get_name(), date.today(), 
+                                coordstring, self.g.get_notes()
+                            )
+                        )
+                        
+                        self.tableWidget.resizeRowsToContents()
+                    #print(mycursor.execute(sql))
+                    else:
+                        print("oh boo")
+                else:
+                    print("boo")
+            
                 mydb.commit()
                 
                 self.DBConnect()
