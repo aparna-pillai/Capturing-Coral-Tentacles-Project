@@ -20,6 +20,10 @@ def recordTabUI(self):
         header.setSectionResizeMode(5, QHeaderView.ResizeToContents)
         self.tableWidget.setObjectName("tableWidget")
 
+        self.user_names = []
+        self.file_names = []
+        self.upload_dates = []
+
         scroll_bar = QScrollBar(self)
 
         scroll_bar.setStyleSheet(
@@ -38,8 +42,15 @@ def recordTabUI(self):
         )
 
         self.tableWidget.setVerticalScrollBar(scroll_bar)
+
+        self.searchGridLayout = QGridLayout()
+        self.searchLabel = QLabel("Search:")
+        self.searchBar = QLineEdit()
+        self.searchGridLayout.addWidget(self.searchLabel, 0, 0)
+        self.searchGridLayout.addWidget(self.searchBar, 0, 1)
  
-        layout.addWidget(self.tableWidget, 0, 0) 
+        layout.addLayout(self.searchGridLayout, 0, 0)
+        layout.addWidget(self.tableWidget, 1, 0)
 
         # self.btnLoad = QPushButton("Load")
         # load_dotenv('config.env')
@@ -65,7 +76,7 @@ def recordTabUI(self):
         self.smGridLayout.addWidget(self.btnDeleteAll, 0, 1)
         self.smGridLayout.addWidget(self.exportButton, 1, 0)
 
-        layout.addLayout(self.smGridLayout, 1, 0)
+        layout.addLayout(self.smGridLayout, 2, 0)
 
         self.tableWidget.setStyleSheet(
             "border: 1px solid;"
