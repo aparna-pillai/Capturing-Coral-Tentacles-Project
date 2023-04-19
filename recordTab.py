@@ -8,8 +8,6 @@ def recordTabUI(self):
         recordTab = QWidget()
         layout = QGridLayout()
 
-        self.directions = QLabel(f"To delete a row, please click on the filename.")
-        
         self.tableWidget = QTableWidget()
         self.tableWidget.setColumnCount(6)
         self.tableWidget.setHorizontalHeaderLabels(["FILENAME", "TENTACLE COUNT", "NAME OF PERSON", "DATE UPLOADED", "COORDINATES OF MARKERS", "NOTES"]) 
@@ -21,6 +19,10 @@ def recordTabUI(self):
         header.setSectionResizeMode(4, QHeaderView.Stretch)
         header.setSectionResizeMode(5, QHeaderView.ResizeToContents)
         self.tableWidget.setObjectName("tableWidget")
+
+        self.user_names = []
+        self.file_names = []
+        self.upload_dates = []
 
         scroll_bar = QScrollBar(self)
 
@@ -41,8 +43,14 @@ def recordTabUI(self):
 
         self.tableWidget.setVerticalScrollBar(scroll_bar)
 
-        layout.addWidget(self.directions, 0, 0)
-        layout.addWidget(self.tableWidget, 1, 0) 
+        self.searchGridLayout = QGridLayout()
+        self.searchLabel = QLabel("Search:")
+        self.searchBar = QLineEdit()
+        self.searchGridLayout.addWidget(self.searchLabel, 0, 0)
+        self.searchGridLayout.addWidget(self.searchBar, 0, 1)
+ 
+        layout.addLayout(self.searchGridLayout, 0, 0)
+        layout.addWidget(self.tableWidget, 1, 0)
 
         # self.btnLoad = QPushButton("Load")
         # load_dotenv('config.env')
@@ -53,10 +61,10 @@ def recordTabUI(self):
         
         self.btnDelete = QPushButton("Delete")
         load_dotenv('config.env')
-        self.btnDelete.clicked.connect(self.codeBeforeDeleteRow)
+        self.btnDelete.clicked.connect(self.deleteRow)
         self.btnDeleteAll = QPushButton("Delete All")
         load_dotenv('config.env')
-        self.btnDeleteAll.clicked.connect(self.codeBeforeDeleteAllRows)
+        self.btnDeleteAll.clicked.connect(self.deleteAllRows)
         
         self.exportButton = QPushButton("Export")
         load_dotenv('config.env')
@@ -66,12 +74,9 @@ def recordTabUI(self):
         #self.smGridLayout.addWidget(self.btnLoad, 0, 0)
         self.smGridLayout.addWidget(self.btnDelete, 0, 0)
         self.smGridLayout.addWidget(self.btnDeleteAll, 0, 1)
-        
-        self.smallestGridLayout = QGridLayout()
-        self.smallestGridLayout.addWidget(self.exportButton, 0, 0)
+        self.smGridLayout.addWidget(self.exportButton, 1, 0)
 
         layout.addLayout(self.smGridLayout, 2, 0)
-        layout.addLayout(self.smallestGridLayout, 3, 0)
 
         self.tableWidget.setStyleSheet(
             "border: 1px solid;"

@@ -35,11 +35,11 @@ class Window(QWidget):
         
         # Create the tab widget with two tabs
         self.tabs = QTabWidget()
-        general_tab = generalTabUI(self)
-        record_tab = recordTabUI(self)
+        self.general_tab = generalTabUI(self)
+        self.record_tab = recordTabUI(self)
 
-        self.tabs.addTab(general_tab, "Main")
-        self.tabs.addTab(record_tab, "Record")
+        self.tabs.addTab(self.general_tab, "Main")
+        self.tabs.addTab(self.record_tab, "Record")
         layout.addWidget(self.tabs)
 
         # Keyboard shortcuts
@@ -233,8 +233,12 @@ class Window(QWidget):
             self.tableWidget.setRowCount(0)
             for row_number, row_data in enumerate(result):
                 self.tableWidget.insertRow(row_number)
+
                 for column_number, data in enumerate(row_data):
-                    self.tableWidget.setItem(row_number, column_number, QTableWidgetItem(str(data)))
+                    item = QTableWidgetItem(str(data))
+                    self.tableWidget.setItem(row_number, column_number, item)
+                    if column_number == 1:
+                        self.user_names.append(item)
 
             mydb.close()
         except mydb.Error as e:
