@@ -11,9 +11,9 @@ class RecordInfoWindow(QWidget):
         super().__init__()
         layout = QGridLayout()
         
-        self.name_of_person_Label = QLabel("Name:")
+        self.name_of_person_Label = QLabel("Username:")
         self.name_of_person_Display = QLineEdit()
-        self.name_of_person_Display.setPlaceholderText("Enter your name here")
+        self.name_of_person_Display.setPlaceholderText("Enter your username here")
         
         self.code_Label = QLabel("Code:")
         self.code_Display = QLineEdit()

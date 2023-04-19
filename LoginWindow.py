@@ -18,9 +18,8 @@ class LoginWindow(QWidget):
         self.smallerGridLayout.addWidget(self.codeTextBox, 0, 1)
         self.generalLayout.addLayout(self.smallerGridLayout, 0, 0)
 
-        self.submitButton = QPushButton("Submit")
-        self.submitButton.clicked.connect(self.checkCode)
-        self.generalLayout.addWidget(self.submitButton, 1, 0)
+        self.submitButtonLogin = QPushButton("Submit")
+        self.generalLayout.addWidget(self.submitButtonLogin, 1, 0)
 
         self.setLayout(self.generalLayout)
 

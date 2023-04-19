@@ -17,6 +17,7 @@ from RecordInfoWindow import RecordInfoWindow
 from InstructionsWindow import InstructionsWindow
 from generalTab import generalTabUI
 from recordTab import recordTabUI
+from LoginWindow import LoginWindow
 
 from coral_count import count_tentacles_actual, get_count, get_coordinates
 
@@ -88,10 +89,12 @@ class Window(QWidget):
     def instructions_close(self):
         self.w.close()
          
-    def deleteRow(self):
+    def codeBeforeDeleteRow(self):
+        print("Hmmmmmm!")
         if self.tableWidget.rowCount() > 0:
             currentRow = self.tableWidget.currentRow()
             item = self.tableWidget.selectedItems()
+            print(item)
             if (len(item) < 1):
                 QMessageBox.about(self, "Warning", "Please select an entry to delete.")
             else:             
@@ -99,35 +102,86 @@ class Window(QWidget):
                 response = question.question(self,'', "Are you sure you want to delete the row?", question.Yes | question.No)
                 
                 if response == question.Yes:
+                    headercount = self.tableWidget.columnCount()
+                    for x in range(headercount):
+                        headertext = self.tableWidget.horizontalHeaderItem(x).text()
+                        if headertext == "NAME OF PERSON":
+                            cell = self.tableWidget.item(currentRow, x).text()  # get cell at row, col
+                            print(cell)
+                            
+            
                     filenameForQuery = item[0].text()
                     
-                    try:
-                        mydb = mc.connect(
-                            host=os.environ.get('HOST'),
-                            user = os.getenv('NAME'),
-                            password=os.getenv('PASSWORD'), 
-                            database=os.getenv('DATABASE')             
-                        )
-                        mycursor = mydb.cursor()
-                        
-                        sql_delete = "DELETE FROM image_info WHERE filename = %s"
-                        sql_data = (filenameForQuery,)
-
-                        mycursor.execute(sql_delete, sql_data)
+                    self.login = LoginWindow()
+                    self.login.setGeometry(int(self.frameGeometry().width()/2) - 150, int(self.frameGeometry().height()/2) - 150, 300, 300)
+                    self.login.show()
+                    self.login.submitButtonLogin.clicked.connect(lambda: self.deleteRow(currentRow, filenameForQuery, cell))
+                    #self.login.submit_shortcut.activated.connect(self.gatheringInfo)
                     
-                        mydb.commit()
-                        mydb.close()
-                    except mydb.Error as e:
-                        print("Failed To Connect to Database")
-                    self.tableWidget.removeRow(currentRow)
                 else:
                     question.close()
+            
+                    
+    def deleteRow(self, currentRow, filenameForQuery, cell):
+        
+        print("seven malicious hats")
+        print(currentRow)
+        print(filenameForQuery)
+        print(cell)
+        
+        try:
+            mydb = mc.connect(
+                host=os.environ.get('HOST'),
+                user = os.getenv('NAME'),
+                password=os.getenv('PASSWORD'), 
+                database=os.getenv('DATABASE')             
+            )
+            mycursor = mydb.cursor()
+            
+            mycursor.execute("SELECT users_password FROM users WHERE users_name = '%s'" % cell)
+            myresult = mycursor.fetchall()
+            print(myresult)
+            print(myresult[0])
+            str = ''.join(myresult[0])
+            print(str)
+            if (self.login.codeTextBox.text() == str):
+                print("YAAAAAAAAAAAASSSSSS")
+            #print(stringOfCode[2:11])
+                sql_delete = "DELETE FROM image_info WHERE filename = %s"
+                sql_data = (filenameForQuery,)
+
+                mycursor.execute(sql_delete, sql_data)
+                self.tableWidget.removeRow(currentRow)
+                self.login.close()
+            else: 
+                QMessageBox.about(self, "Warning", "Wrong Code!")
+                self.login.close()
+        
+            mydb.commit()
+            mydb.close()
+        except mydb.Error as e:
+            print("Failed To Connect to Database")
+        
                 
-    def deleteAllRows(self):
+    def codeBeforeDeleteAllRows(self):
         question = QMessageBox()
         response = question.question(self,'', "Are you sure you want to delete ALL the rows?", question.Yes | question.No)
                 
         if response == question.Yes:
+                self.login = LoginWindow()
+                self.login.setGeometry(int(self.frameGeometry().width()/2) - 150, int(self.frameGeometry().height()/2) - 150, 300, 300)
+                self.login.show()
+                self.login.submitButtonLogin.clicked.connect(self.deleteAllRows)
+                    #self.login.submit_shortcut.activated.connect(self.gatheringInfo)
+                    
+        else:
+            question.close()
+                
+    def deleteAllRows(self):
+        # question = QMessageBox()
+        # response = question.question(self,'', "Are you sure you want to delete ALL the rows?", question.Yes | question.No)
+                
+        # if response == question.Yes:
             try:
                 mydb = mc.connect(
                     host=os.environ.get('HOST'),
@@ -137,17 +191,30 @@ class Window(QWidget):
                 )
                 mycursor = mydb.cursor()
                 
-                mycursor.execute("DELETE FROM image_info")
-            
-                mydb.commit()
-                while (self.tableWidget.rowCount() > 0):
-                    self.tableWidget.removeRow(0)
+                mycursor.execute("SELECT users_password FROM users WHERE users_name = '%s'" % os.getenv('ADMIN'))
+                myresult = mycursor.fetchall()
+                print(myresult)
+                print(myresult[0])
+                str = ''.join(myresult[0])
+                print(str)
+                if (self.login.codeTextBox.text() == str):
+                    print("YAAAAAAAAAAAASSSSSS")
+                
+                    mycursor.execute("DELETE FROM image_info")
+                
+                    mydb.commit()
+                    while (self.tableWidget.rowCount() > 0):
+                        self.tableWidget.removeRow(0)
+                    self.login.close()
+                else:
+                    QMessageBox.about(self, "Warning", "ONLY THE ADMIN CAN DELETE ALL THE ROWS!")
+                    self.login.close()
                 mydb.close()
+                    
             except mydb.Error as e:
                 print("Failed To Connect to Database")
             #self.tableWidget.removeRow(currentRow)
-        else:
-            question.close()
+        
     
     def DBConnect(self):
         try:
@@ -214,7 +281,7 @@ class Window(QWidget):
                 df.to_csv("C:\\temp\CountEntries.csv", na_rep="None")
             else:
                 df.to_csv(os.path.expanduser("~/Desktop/CountEntries.csv"))
-            
+            QMessageBox.about(self, "Warning", "Check your desktop for the csv file!")
             mydb.close()
         except mydb.Error as e:
            print("Failed To Connect to Database")
@@ -241,18 +308,23 @@ class Window(QWidget):
                 
                     
                 mycursor = mydb.cursor()
-                sql =  "SELECT users_name FROM users WHERE users_name = '%s'" % self.g.get_name()
+                sql =  "SELECT users_name, users_password FROM users WHERE users_name = '%s'" % self.g.get_name()
                 mycursor.execute(sql)
+                myresult1 = mycursor.fetchall()
                 
-                if mycursor.fetchone():
-                    print("yeah")
-                    sql2 =  "SELECT users_password FROM users WHERE users_password = '%s'" % self.g.get_code()
-                    mycursor.execute(sql2)
-                    if mycursor.fetchone():
-                        print("oh yeah")
+                if len(myresult1) > 0:
+                    print(myresult1)
+                    print(myresult1[0])
+                    str = ''.join(myresult1[0])
+                    print(str)
+                    print(str[-10:])
+                    print(self.g.get_code())
+                    if self.g.get_code() == str[-10:]:
+                        print("Hip hip hurray")
+                        
                         for i, marker in enumerate(self.photo.markers):
-                            self.coordinate_list.append(
-                            (str(marker.scenePos()) + ' ; ' + str(self.photo.marker_colors[i]))
+                                self.coordinate_list.append(
+                                (str(marker.scenePos()) + ' ; ' + str(self.photo.marker_colors[i]))
                         )
 
                         coordstring = ' | '.join(self.coordinate_list)
@@ -267,11 +339,45 @@ class Window(QWidget):
                         )
                         
                         self.tableWidget.resizeRowsToContents()
+                    else: 
+                        print("nice try")
+                        QMessageBox.about(self, "Warning", "Incorrect name or password!")
+                else: 
+                    print("nice try")
+                    QMessageBox.about(self, "Warning", "Incorrect name or password!")
+                #str2 = ''.join(myresult1[1])
+                #print(str2)
+                
+                # if mycursor.fetchone():
+                #     print("yeah")
+                #     sql2 = "SELECT users_name, users_password FROM users WHERE users_password = '%s'" % self.g
+                #     sql2 =  "SELECT users_password FROM users WHERE users_password = '%s'" % self.g.get_code()
+                #     mycursor.execute(sql2)
+                #     if mycursor.fetchone():
+                #         print("oh yeah")
+                #         for i, marker in enumerate(self.photo.markers):
+                #             self.coordinate_list.append(
+                #             (str(marker.scenePos()) + ' ; ' + str(self.photo.marker_colors[i]))
+                #         )
+
+                #         coordstring = ' | '.join(self.coordinate_list)
+                        
+                #         mycursor.execute(
+                #             "INSERT INTO image_info VALUES (%s, %s, %s, %s, %s, %s)", 
+                #             (
+                #                 self.photo.get_filename(), self.photo.marker_count, 
+                #                 self.g.get_name(), date.today(), 
+                #                 coordstring, self.g.get_notes()
+                #             )
+                #         )
+                        
+                #         self.tableWidget.resizeRowsToContents()
                     #print(mycursor.execute(sql))
-                    else:
-                        print("oh boo")
-                else:
-                    print("boo")
+                #     else:
+                #         QMessageBox.about(self, "Warning", "Incorrect name or password!")
+                # else:
+                #     QMessageBox.about(self, "Warning", "Incorrect name or password!")
+                #     print("boo")
             
                 mydb.commit()
                 
