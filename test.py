@@ -232,9 +232,6 @@ class Window(QWidget):
             result = mycursor.fetchall()
         
             self.tableWidget.setRowCount(0)
-            self.user_names.clear()
-            self.file_names.clear()
-            self.upload_dates.clear()
 
             for row_number, row_data in enumerate(result):
                 self.tableWidget.insertRow(row_number)
@@ -243,26 +240,16 @@ class Window(QWidget):
                     item = QTableWidgetItem(str(data))
                     self.tableWidget.setItem(row_number, column_number, item)
 
-                    if column_number == 2:
-                        self.user_names.append(str(data))
-                    elif column_number == 0:
-                        self.file_names.append(str(data))
-                    elif column_number == 3:
-                        self.upload_dates.append(str(data))
-
-                    print("\nThe lists:")
-                    print(self.user_names)
-                    print(self.file_names)
-                    print(self.upload_dates)
-
             mydb.close()
         except mydb.Error as e:
            print("Failed To Connect to Database")
 
-    def update_searchBar_display(self, text):
+    def searchRecord(self, text):
         if text == "":
             self.DBConnect()
         else:
+            # self.DBConnect()
+            # ^ This will ensure it works all the time, but it's very laggy
             rowsToDelete = []
 
             for row in range(self.tableWidget.rowCount()):
@@ -270,11 +257,14 @@ class Window(QWidget):
                 item_file = self.tableWidget.item(row, 0).text()
                 item_date = self.tableWidget.item(row, 3).text()
 
-                if (text != item_name and text != item_file and text != item_date):
+                if (text not in item_name and text not in item_file and text not in item_date):
                     rowsToDelete.append(row)
 
+            # Counter: adjust for the fact that we're removing a row each time
+            counter = 0
             for row in rowsToDelete:
-                self.tableWidget.removeRow(row)
+                self.tableWidget.removeRow(row-counter)
+                counter += 1
     
     def export(self):
         try:

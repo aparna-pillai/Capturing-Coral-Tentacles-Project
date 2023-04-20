@@ -22,10 +22,6 @@ def recordTabUI(self):
     header.setSectionResizeMode(5, QHeaderView.ResizeToContents)
     self.tableWidget.setObjectName("tableWidget")
 
-    self.user_names = []
-    self.file_names = []
-    self.upload_dates = []
-
     scroll_bar = QScrollBar(self)
 
     scroll_bar.setStyleSheet(
@@ -48,7 +44,7 @@ def recordTabUI(self):
     self.searchGridLayout = QGridLayout()
     self.searchLabel = QLabel("Search:")
     self.searchBar = QLineEdit()
-    self.searchBar.textChanged.connect(self.update_searchBar_display)
+    self.searchBar.textChanged.connect(self.searchRecord)
 
     self.searchGridLayout.addWidget(self.searchLabel, 0, 0)
     self.searchGridLayout.addWidget(self.searchBar, 0, 1)
