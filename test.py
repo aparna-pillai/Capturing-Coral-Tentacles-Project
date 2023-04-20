@@ -270,10 +270,8 @@ class Window(QWidget):
                 item_file = self.tableWidget.item(row, 0).text()
                 item_date = self.tableWidget.item(row, 3).text()
 
-                if ((text.lower() != item.lower() and text.lower() not in self.user_names) 
-                    and (text.lower() != item.lower() and text.lower() not in self.file_names) 
-                    and (text.lower() != item.lower() and text.lower() not in self.upload_dates)):
-                        rowsToDelete.append(row)
+                if (text != item_name and text != item_file and text != item_date):
+                    rowsToDelete.append(row)
 
             for row in rowsToDelete:
                 self.tableWidget.removeRow(row)
