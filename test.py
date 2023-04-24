@@ -230,19 +230,41 @@ class Window(QWidget):
             mycursor.execute("SELECT * FROM image_info")
 
             result = mycursor.fetchall()
+        
             self.tableWidget.setRowCount(0)
+
             for row_number, row_data in enumerate(result):
                 self.tableWidget.insertRow(row_number)
 
                 for column_number, data in enumerate(row_data):
                     item = QTableWidgetItem(str(data))
                     self.tableWidget.setItem(row_number, column_number, item)
-                    if column_number == 1:
-                        self.user_names.append(item)
 
             mydb.close()
         except mydb.Error as e:
            print("Failed To Connect to Database")
+
+    def searchRecord(self, text):
+        if text == "":
+            self.DBConnect()
+        else:
+            # self.DBConnect()
+            # ^ This will ensure it works all the time, but it's very laggy
+            rowsToDelete = []
+
+            for row in range(self.tableWidget.rowCount()):
+                item_name = self.tableWidget.item(row, 2).text()
+                item_file = self.tableWidget.item(row, 0).text()
+                item_date = self.tableWidget.item(row, 3).text()
+
+                if (text not in item_name and text not in item_file and text not in item_date):
+                    rowsToDelete.append(row)
+
+            # Counter: adjust for the fact that we're removing a row each time
+            counter = 0
+            for row in rowsToDelete:
+                self.tableWidget.removeRow(row-counter)
+                counter += 1
     
     def export(self):
         try:
