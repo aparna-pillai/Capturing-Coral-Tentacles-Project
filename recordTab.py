@@ -64,10 +64,10 @@ def recordTabUI(self):
         
         self.btnDelete = QPushButton("Delete")
         load_dotenv('config.env')
-        self.btnDelete.clicked.connect(self.deleteRow)
+        self.btnDelete.clicked.connect(self.codeBeforeDeleteRow)
         self.btnDeleteAll = QPushButton("Delete All")
         load_dotenv('config.env')
-        self.btnDeleteAll.clicked.connect(self.deleteAllRows)
+        self.btnDeleteAll.clicked.connect(self.codeBeforeDeleteAllRows)
         
         self.exportButton = QPushButton("Export")
         load_dotenv('config.env')
