@@ -349,9 +349,10 @@ class Window(QWidget):
                         print("Hip hip hurray")
                         
                         for i, marker in enumerate(self.photo.markers):
-                                self.coordinate_list.append(
-                                (str(marker.scenePos()) + ' ; ' + str(self.photo.marker_colors[i]))
-                        )
+                            print(marker.scenePos())
+                            self.coordinate_list.append(
+                                marker.scenePos() + ' ; ' + self.photo.marker_colors[i]
+                            )
 
                         coordstring = ' | '.join(self.coordinate_list)
                         
