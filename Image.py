@@ -136,11 +136,12 @@ class Image(QWidget):
                 self.marker_count -= 1
 
     def undo_last_marker(self):
-        last_marker = self.markers[len(self.markers) - 1]
-        self.scene.removeItem(last_marker)
-        self.markers.pop(len(self.markers) - 1)
-        self.marker_colors.pop(len(self.markers - 1))
-        self.marker_count -= 1
+        if len(self.markers) > 0:
+            last_marker = self.markers[len(self.markers) - 1]
+            self.scene.removeItem(last_marker)
+            self.markers.pop(len(self.markers) - 1)
+            self.marker_colors.pop(len(self.markers) - 1)
+            self.marker_count -= 1
 
     def change_color(self, color):
         brush_color = self.color_dict[color]

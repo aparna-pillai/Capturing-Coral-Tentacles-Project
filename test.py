@@ -138,7 +138,7 @@ class Window(QWidget):
             )
             mycursor = mydb.cursor()
             
-            mycursor.execute("SELECT users_password FROM users WHERE users_name = '%s'" % cell)
+            mycursor.execute("SELECT users_code FROM users WHERE users_name = '%s'" % cell)
             myresult = mycursor.fetchall()
             print(myresult)
             print(myresult[0])
@@ -191,7 +191,7 @@ class Window(QWidget):
                 )
                 mycursor = mydb.cursor()
                 
-                mycursor.execute("SELECT users_password FROM users WHERE users_name = '%s'" % os.getenv('ADMIN'))
+                mycursor.execute("SELECT users_code FROM users WHERE users_name = '%s'" % os.getenv('ADMIN'))
                 myresult = mycursor.fetchall()
                 print(myresult)
                 print(myresult[0])
@@ -334,7 +334,7 @@ class Window(QWidget):
                 
                     
                 mycursor = mydb.cursor()
-                sql =  "SELECT users_name, users_password FROM users WHERE users_name = '%s'" % self.g.get_name()
+                sql =  "SELECT users_name, users_code FROM users WHERE users_name = '%s'" % self.g.get_name()
                 mycursor.execute(sql)
                 myresult1 = mycursor.fetchall()
                 
@@ -348,20 +348,21 @@ class Window(QWidget):
                     if self.g.get_code() == str[-10:]:
                         print("Hip hip hurray")
                         
-                        for i, marker in enumerate(self.photo.markers):
-                            print(marker.scenePos())
-                            self.coordinate_list.append(
-                                marker.scenePos() + ' ; ' + self.photo.marker_colors[i]
-                            )
-
-                        coordstring = ' | '.join(self.coordinate_list)
                         
+                        # for i, marker in enumerate(self.photo.markers):
+                        #     print(marker.scenePos())
+                        #     self.coordinate_list.append(
+                        #         marker.scenePos() + ' ; ' + self.photo.marker_colors[i]
+                        #     )
+
+                        # coordstring = ' | '.join(self.coordinate_list)
+                                                
                         mycursor.execute(
                             "INSERT INTO image_info VALUES (%s, %s, %s, %s, %s, %s)", 
                             (
                                 self.photo.get_filename(), self.photo.marker_count, 
                                 self.g.get_name(), date.today(), 
-                                coordstring, self.g.get_notes()
+                                "Coordinates", self.g.get_notes()
                             )
                         )
                         
@@ -377,8 +378,8 @@ class Window(QWidget):
                 
                 # if mycursor.fetchone():
                 #     print("yeah")
-                #     sql2 = "SELECT users_name, users_password FROM users WHERE users_password = '%s'" % self.g
-                #     sql2 =  "SELECT users_password FROM users WHERE users_password = '%s'" % self.g.get_code()
+                #     sql2 = "SELECT users_name, users_code FROM users WHERE users_code = '%s'" % self.g
+                #     sql2 =  "SELECT users_code FROM users WHERE users_code = '%s'" % self.g.get_code()
                 #     mycursor.execute(sql2)
                 #     if mycursor.fetchone():
                 #         print("oh yeah")

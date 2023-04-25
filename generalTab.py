@@ -7,9 +7,9 @@ from Image import *
 from InstructionsWindow import InstructionsWindow
 
 def generalTabUI(self):
-        id = QFontDatabase.addApplicationFont("fonts/Montserrat/Montserrat-Regular.ttf")
-        families = QFontDatabase.applicationFontFamilies(id)
-        montserrat_font = families[0]
+        # id = QFontDatabase.addApplicationFont("fonts/Montserrat/Montserrat-Regular.ttf")
+        # families = QFontDatabase.applicationFontFamilies(id)
+        # montserrat_font = families[0]
 
         generalTab = QWidget()
         self.generalLayout = QGridLayout()
@@ -22,39 +22,39 @@ def generalTabUI(self):
         self.w = None
         
         self.instructionsButton = QPushButton("Instructions")
-        self.instructionsButton.setFont(QFont(montserrat_font))
+        # self.instructionsButton.setFont(QFont(montserrat_font))
         self.instructionsButton.clicked.connect(self.instruct)
         
         self.savePicButton = QPushButton("Save Picture to Record")
-        self.savePicButton.setFont(QFont(montserrat_font))
+        # self.savePicButton.setFont(QFont(montserrat_font))
         self.savePicButton.clicked.connect(self.recordInfo)
         
         self.countButton = QPushButton("Count")
-        self.countButton.setFont(QFont(montserrat_font))
+        # self.countButton.setFont(QFont(montserrat_font))
         self.countButton.clicked.connect(self.countTentacles)
         
         self.countLabel = QLabel("Tentacle Count:")
-        self.countLabel.setFont(QFont(montserrat_font))
+        # self.countLabel.setFont(QFont(montserrat_font))
         
         self.countDisplay = QLineEdit("{0}".format(int(self.photo.get_marker_count())))
-        self.countDisplay.setFont(QFont(montserrat_font))
+        # self.countDisplay.setFont(QFont(montserrat_font))
 
         self.removeMarkerButton = QPushButton('Remove Marker')
-        self.removeMarkerButton.setFont(QFont(montserrat_font))
+        # self.removeMarkerButton.setFont(QFont(montserrat_font))
         self.removeMarkerButton.clicked.connect(self.photo.remove_marker)
         self.removeMarkerButton.clicked.connect(self.updateMarkerCount)
 
         self.undoMarkerButton = QPushButton('Undo Last Marker')
-        self.undoMarkerButton.setFont(QFont(montserrat_font))
+        # self.undoMarkerButton.setFont(QFont(montserrat_font))
         self.undoMarkerButton.clicked.connect(self.photo.undo_last_marker)
         self.undoMarkerButton.clicked.connect(self.updateMarkerCount)
 
         self.changeColorButton = QToolButton()
         self.changeColorButton.setText("Change Color\t")
-        self.changeColorButton.setFont(QFont(montserrat_font))
+        # self.changeColorButton.setFont(QFont(montserrat_font))
         
         self.color_menu = QMenu()
-        self.color_menu.setFont(QFont(montserrat_font))
+        # self.color_menu.setFont(QFont(montserrat_font))
         self.changeColorButton.setMenu(self.color_menu)
 
         # Add different color options to the drop-down menu
@@ -82,8 +82,8 @@ def generalTabUI(self):
 
         self.zoomInButton = QPushButton('Zoom In')
         self.zoomOutButton = QPushButton('Zoom Out')
-        self.zoomInButton.setFont(QFont(montserrat_font))
-        self.zoomOutButton.setFont(QFont(montserrat_font))
+        # self.zoomInButton.setFont(QFont(montserrat_font))
+        # self.zoomOutButton.setFont(QFont(montserrat_font))
         self.zoomInButton.clicked.connect(self.photo.zoom_in)
         self.zoomOutButton.clicked.connect(self.photo.zoom_out)
 

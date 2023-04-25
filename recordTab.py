@@ -8,7 +8,10 @@ def recordTabUI(self):
     recordTab = QWidget()
     layout = QGridLayout()
 
-    self.directions = QLabel(f"To delete a row, please click on the filename.")
+    self.directions = QLabel("""
+                            You can search by filename, name of person, and date_uploaded. 
+                            To delete a row, please click directly on the specific filename. 
+                             """)
 
     self.tableWidget = QTableWidget()
     self.tableWidget.setColumnCount(6)
