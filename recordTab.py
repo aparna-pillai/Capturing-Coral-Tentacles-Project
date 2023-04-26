@@ -69,6 +69,8 @@ def recordTabUI(self):
     self.btnDeleteAll = QPushButton("Delete All")
     load_dotenv('config.env')
     self.btnDeleteAll.clicked.connect(self.codeBeforeDeleteAllRows)
+    self.btnReopen = QPushButton("Reopen Image with Markers")
+    self.btnReopen.clicked.connect(self.reopen)
     
     self.exportButton = QPushButton("Export")
     load_dotenv('config.env')
@@ -78,6 +80,7 @@ def recordTabUI(self):
     #self.smGridLayout.addWidget(self.btnLoad, 0, 0)
     self.smGridLayout.addWidget(self.btnDelete, 0, 0)
     self.smGridLayout.addWidget(self.btnDeleteAll, 0, 1)
+    self.smGridLayout.addWidget(self.btnReopen, 0, 2)
     self.smGridLayout.addWidget(self.exportButton, 1, 0)
 
     layout.addLayout(self.smGridLayout, 3, 0)
@@ -114,6 +117,15 @@ def recordTabUI(self):
     )
     
     self.btnDeleteAll.setStyleSheet(
+        "border: 3px solid;"
+        "border-top-color: #00adb5;"
+        "border-left-color: #00adb5;"
+        "border-right-color: #00adb5;"
+        "border-bottom-color: #00adb5;"
+        "color: #112d4e;"
+    )
+    
+    self.btnReopen.setStyleSheet(
         "border: 3px solid;"
         "border-top-color: #00adb5;"
         "border-left-color: #00adb5;"

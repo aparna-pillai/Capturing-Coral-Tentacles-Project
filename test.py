@@ -266,6 +266,21 @@ class Window(QWidget):
                 self.tableWidget.removeRow(row-counter)
                 counter += 1
     
+    def reopen(self):
+        item = self.tableWidget.selectedItems()
+        print(item)
+        print(os.path.abspath(item[0].text()))
+        #self.photo.reopen_image(os.path.abspath(item[0].text()))
+        #self.general_tab.pix = QPixmap(item[0].text())
+        # self.smaller_pixmap = self.pix.scaled(self.view.width(), self.view.height())
+        # self.scene.clear()
+        # self.scene.addPixmap(self.smaller_pixmap)
+        # self.filenameDisplay.setText("{0}".format(self.get_filename()))
+        # self.reopenedImage = Image()
+        # self.gempix = QPixmap(filename)
+        # self.reopenedImage.open_image(item[0].text())
+        
+            
     def export(self):
         try:
             mydb = mc.connect(

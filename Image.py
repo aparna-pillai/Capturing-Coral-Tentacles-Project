@@ -82,6 +82,23 @@ class Image(QWidget):
         #     "border: none;"
         # )
         
+    def reopen_image(self, filename):
+        # filename, _ = QFileDialog.getOpenFileName(self, 'Select Photo', QDir.currentPath(), 'Images (*.png *.jpg)')
+        # if not filename:
+        #     return
+        # self.path = str(filename)
+        # url = QUrl.fromLocalFile(filename)
+        # self.file = QFileInfo(filename).fileName()
+            
+        self.photo.setStyleSheet(
+            "background: transparent;"
+        )
+        self.pix = QPixmap(filename)
+        self.smaller_pixmap = self.pix.scaled(self.view.width(), self.view.height())
+        self.scene.clear()
+        self.scene.addPixmap(self.smaller_pixmap)
+        self.filenameDisplay.setText("{0}".format(self.get_filename()))
+        
     def open_image(self, filename=None):
         if not filename:
             filename, _ = QFileDialog.getOpenFileName(self, 'Select Photo', QDir.currentPath(), 'Images (*.png *.jpg)')
