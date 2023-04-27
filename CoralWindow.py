@@ -21,7 +21,7 @@ from LoginWindow import LoginWindow
 
 from coral_count import count_tentacles_actual, get_count, get_coordinates
 
-class Window(QWidget):
+class Coral_Window(QWidget):
     
     def __init__(self):
         super().__init__()
@@ -478,12 +478,12 @@ class Window(QWidget):
             self.photo.add_marker(x-45, y-125, Qt.yellow)
             self.updateMarkerCount()
 
-if __name__ == "__main__":
-    app = QApplication(sys.argv)
-    window = Window()
-    window.show()    
+# if __name__ == "__main__":
+#     app = QApplication(sys.argv)
+#     window = Coral_Window()
+#     window.show()    
 
-    instructions = InstructionsWindow()
-    window.activateWindow()
+#     instructions = InstructionsWindow()
+#     window.activateWindow()
 
-    sys.exit(app.exec_())
+#     sys.exit(app.exec_())

@@ -3,7 +3,7 @@ from PyQt5.QtWidgets import *
 from PyQt5.QtCore import *
 from PyQt5.QtGui import *
 
-class LoginWindow(QWidget):
+class Login_Window(QWidget):
     
     def __init__(self):
         super().__init__()
@@ -47,9 +47,9 @@ class LoginWindow(QWidget):
         
 
 # Only for testing
-if __name__ == "__main__":
-    app = QApplication(sys.argv)
-    window = LoginWindow()
-    window.show()
+# if __name__ == "__main__":
+#     app = QApplication(sys.argv)
+#     window = LoginWindow()
+#     window.show()
 
-    sys.exit(app.exec_())
+#     sys.exit(app.exec_())
