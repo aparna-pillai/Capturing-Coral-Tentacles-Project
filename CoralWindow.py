@@ -17,16 +17,22 @@ from RecordInfoWindow import RecordInfoWindow
 from InstructionsWindow import InstructionsWindow
 from generalTab import generalTabUI
 from recordTab import recordTabUI
-from LoginWindow import Login_Window
+from CodeDeleteWindow import CodeDeleteWindow
 
 from coral_count import count_tentacles_actual, get_count, get_coordinates
 
 class Coral_Window(QWidget):
     
-    def __init__(self):
+    def __init__(self, username):
         super().__init__()
         self.setWindowTitle("Capturing Coral Tentacles")
         
+        self.username = username
+        
+        print(self.username)
+        
+        self.username_Label = QLabel("Welcome " + self.username.upper() + "!")
+                
         self.move(0,0)
         layout = QVBoxLayout()
         self.setLayout(layout)
@@ -40,6 +46,7 @@ class Coral_Window(QWidget):
 
         self.tabs.addTab(self.general_tab, "Main")
         self.tabs.addTab(self.record_tab, "Record")
+        layout.addWidget(self.username_Label)
         layout.addWidget(self.tabs)
 
         # Keyboard shortcuts
@@ -110,10 +117,10 @@ class Coral_Window(QWidget):
             
                     filenameForQuery = item[0].text()
                     
-                    self.login = Login_Window()
-                    self.login.setGeometry(int(self.frameGeometry().width()/2) - 150, int(self.frameGeometry().height()/2) - 150, 300, 300)
-                    self.login.show()
-                    self.login.submitButtonLogin.clicked.connect(lambda: self.deleteRow(currentRow, filenameForQuery, cell))
+                    self.codeDelete = CodeDeleteWindow()
+                    self.codeDelete.setGeometry(int(self.frameGeometry().width()/2) - 150, int(self.frameGeometry().height()/2) - 150, 300, 300)
+                    self.codeDelete.show()
+                    self.codeDelete.submitButtonLogin.clicked.connect(lambda: self.deleteRow(currentRow, filenameForQuery, cell))
                     #self.login.submit_shortcut.activated.connect(self.gatheringInfo)
                     
                 else:
@@ -142,7 +149,7 @@ class Coral_Window(QWidget):
             print(myresult[0])
             str = ''.join(myresult[0])
             print(str)
-            if (self.login.codeTextBox.text() == str):
+            if (self.codeDelete.codeTextBox.text() == str):
                 print("YAAAAAAAAAAAASSSSSS")
             #print(stringOfCode[2:11])
                 sql_delete = "DELETE FROM image_info WHERE filename = %s"
@@ -150,10 +157,10 @@ class Coral_Window(QWidget):
 
                 mycursor.execute(sql_delete, sql_data)
                 self.tableWidget.removeRow(currentRow)
-                self.login.close()
+                self.codeDelete.close()
             else: 
                 QMessageBox.about(self, "Warning", "Wrong Code!")
-                self.login.close()
+                self.codeDelete.close()
         
             mydb.commit()
             mydb.close()
@@ -166,10 +173,10 @@ class Coral_Window(QWidget):
         response = question.question(self,'', "Are you sure you want to delete ALL the rows?", question.Yes | question.No)
                 
         if response == question.Yes:
-            self.login = Login_Window()
-            self.login.setGeometry(int(self.frameGeometry().width()/2) - 150, int(self.frameGeometry().height()/2) - 150, 300, 300)
-            self.login.show()
-            self.login.submitButtonLogin.clicked.connect(self.deleteAllRows)
+            self.codeDeleteAllWindow = CodeDeleteWindow()
+            self.codeDeleteAllWindow.setGeometry(int(self.frameGeometry().width()/2) - 150, int(self.frameGeometry().height()/2) - 150, 300, 300)
+            self.codeDeleteAllWindow.show()
+            self.codeDeleteAllWindow.submitButtonLogin.clicked.connect(self.deleteAllRows)
                 #self.login.submit_shortcut.activated.connect(self.gatheringInfo)
                     
         else:
@@ -195,7 +202,7 @@ class Coral_Window(QWidget):
             print(myresult[0])
             str = ''.join(myresult[0])
             print(str)
-            if (self.login.codeTextBox.text() == str):
+            if (self.codeDeleteAllWindow.codeTextBox.text() == str):
                 print("YAAAAAAAAAAAASSSSSS")
             
                 mycursor.execute("DELETE FROM image_info")
@@ -203,10 +210,10 @@ class Coral_Window(QWidget):
                 mydb.commit()
                 while (self.tableWidget.rowCount() > 0):
                     self.tableWidget.removeRow(0)
-                self.login.close()
+                self.codeDeleteAllWindow.close()
             else:
                 QMessageBox.about(self, "Warning", "ONLY THE ADMIN CAN DELETE ALL THE ROWS!")
-                self.login.close()
+                self.codeDeleteAllWindow.close()
             mydb.close()
                 
         except mydb.Error as e:
@@ -347,9 +354,9 @@ class Coral_Window(QWidget):
                 
                     
                 mycursor = mydb.cursor()
-                sql =  "SELECT users_name, users_code FROM users WHERE users_name = '%s'" % self.g.get_name()
-                mycursor.execute(sql)
-                myresult1 = mycursor.fetchall()
+                # sql =  "SELECT users_name, users_code FROM users WHERE users_name = '%s'" % self.g.get_name()
+                # mycursor.execute(sql)
+                # myresult1 = mycursor.fetchall()
                 
                 # if len(myresult1) > 0:
                 #     print(myresult1)
@@ -374,7 +381,7 @@ class Coral_Window(QWidget):
                     "INSERT INTO image_info VALUES (%s, %s, %s, %s, %s, %s)", 
                     (
                         self.photo.get_filename(), self.photo.marker_count, 
-                        self.g.get_name(), date.today(), 
+                        self.username, date.today(), 
                         "Coordinates", self.g.get_notes()
                     )
                 )

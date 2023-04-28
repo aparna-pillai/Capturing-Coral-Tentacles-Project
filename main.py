@@ -29,12 +29,13 @@ class Capturing_Coral_Manager(QMainWindow):
         super().__init__()
         self.setWindowTitle("Capturing Coral Tentacles")
         self.showMaximized()
+
         self.generalLayout = QGridLayout()
 
         self.login = Login_Window()
         self.login.submitButtonLogin.clicked.connect(self.moveToNextScreen)
-
-        self.main = Coral_Window()
+        self.username = ""
+        self.main = Coral_Window(self.username)
 
         self.generalLayout.addWidget(self.login, 0, 0)
 
@@ -50,9 +51,13 @@ class Capturing_Coral_Manager(QMainWindow):
         self.quit_shortcut.activated.connect(self.close)
 
     def moveToNextScreen(self):
-        if self.login.check_code_on_initial_login():
+        if (self.login.check_code_on_initial_login() != None):
+            self.username = self.login.check_code_on_initial_login()
+            print("ok")
+            print(self.username)
             self.generalLayout.removeWidget(self.login)
             self.login.hide()
+            self.main = Coral_Window(self.username)
             self.generalLayout.addWidget(self.main, 0, 0)
 
 if __name__ == '__main__':
