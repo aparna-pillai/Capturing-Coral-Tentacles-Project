@@ -12,18 +12,24 @@ class Login_Window(QWidget):
 
         self.label = QLabel("Enter your code")
         self.codeTextBox = QLineEdit()
+        self.deniedLabel = QLabel("Access Denied.")
+        self.deniedLabel.hide() # Only show if the code is incorrect
+
+        self.enteredCode = ""
 
         self.smallerGridLayout = QGridLayout()
         self.smallerGridLayout.addWidget(self.label, 0, 0)
         self.smallerGridLayout.addWidget(self.codeTextBox, 0, 1)
         self.generalLayout.addLayout(self.smallerGridLayout, 0, 0)
 
+        self.generalLayout.addWidget(self.deniedLabel)
+
         self.submitButtonLogin = QPushButton("Submit")
-        self.generalLayout.addWidget(self.submitButtonLogin, 1, 0)
+        self.generalLayout.addWidget(self.submitButtonLogin, 2, 0)
 
         self.setLayout(self.generalLayout)
 
-    def checkCode(self):
+    def check_code(self):
         """
         For the real function:
         1. Check if the code is in the database.
@@ -32,18 +38,14 @@ class Login_Window(QWidget):
             a. The person's name should be displayed at the top right.
         """
 
-        enteredCode = self.codeTextBox.text()
-        print(enteredCode)
-        msg = QMessageBox()
+        self.enteredCode = self.codeTextBox.text()
+        print(self.enteredCode)
 
-        if enteredCode == "abc":
-            msg.setWindowTitle("Access Granted :)")
-            msg.setText("Yes, the correct code is abc! Only for testing, though.")
+        if self.enteredCode == "abc":
+            return True
         else:
-            msg.setWindowTitle("Access Denied :(")
-            msg.setText("Sorry, that is not the correct code.")
-
-        msg.exec_()
+            self.deniedLabel.show()
+            return False
         
 
 # Only for testing

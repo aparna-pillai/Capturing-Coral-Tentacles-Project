@@ -33,19 +33,27 @@ class Capturing_Coral_Manager(QMainWindow):
 
         self.login = Login_Window()
         self.login.submitButtonLogin.clicked.connect(self.moveToNextScreen)
+
         self.main = Coral_Window()
 
         self.generalLayout.addWidget(self.login, 0, 0)
 
-        centralWidget = QWidget(self)
-        centralWidget.setLayout(self.generalLayout)
-        self.setCentralWidget(centralWidget)
+        self.centralWidget = QWidget(self)
+        self.centralWidget.setLayout(self.generalLayout)
+        self.setCentralWidget(self.centralWidget)
+
+        # Shortcuts
+        self.login_shortcut = QShortcut(Qt.Key_Return, self)
+        self.login_shortcut.activated.connect(self.moveToNextScreen)
+
+        self.quit_shortcut = QShortcut(QKeySequence("Ctrl+W"), self)
+        self.quit_shortcut.activated.connect(self.close)
 
     def moveToNextScreen(self):
-        print("Clicked submit")
-        self.generalLayout.removeWidget(self.login)
-        self.login.hide()
-        self.generalLayout.addWidget(self.main, 0, 0)
+        if self.login.check_code():
+            self.generalLayout.removeWidget(self.login)
+            self.login.hide()
+            self.generalLayout.addWidget(self.main, 0, 0)
 
 if __name__ == '__main__':
     app = QApplication(sys.argv)

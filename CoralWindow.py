@@ -54,7 +54,6 @@ class Coral_Window(QWidget):
 
         self.delete_shortcut = QShortcut(Qt.Key_Delete, self)
         self.tab_shortcut = QShortcut(Qt.Key_Tab, self)
-        self.quit_shortcut = QShortcut(QKeySequence("Ctrl+W"), self)
 
         # Connect shortcuts
         self.instructions_shortcut.activated.connect(self.instruct)
@@ -70,7 +69,6 @@ class Coral_Window(QWidget):
 
         self.delete_shortcut.activated.connect(self.deleteRow)
         self.tab_shortcut.activated.connect(self.switchTabs)
-        self.quit_shortcut.activated.connect(self.close)
         
     def switchTabs(self):
         if self.tabs.isTabEnabled(0):
