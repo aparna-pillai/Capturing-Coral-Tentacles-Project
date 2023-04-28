@@ -31,12 +31,21 @@ class Capturing_Coral_Manager(QMainWindow):
         self.showMaximized()
         self.generalLayout = QGridLayout()
 
+        self.login = Login_Window()
+        self.login.submitButtonLogin.clicked.connect(self.moveToNextScreen)
+        self.main = Coral_Window()
+
+        self.generalLayout.addWidget(self.login, 0, 0)
+
         centralWidget = QWidget(self)
         centralWidget.setLayout(self.generalLayout)
         self.setCentralWidget(centralWidget)
 
-        self._createPhoto()
-        self._createButtonsAndLabels(COUNT)
+    def moveToNextScreen(self):
+        print("Clicked submit")
+        self.generalLayout.removeWidget(self.login)
+        self.login.hide()
+        self.generalLayout.addWidget(self.main, 0, 0)
 
 if __name__ == '__main__':
     app = QApplication(sys.argv)

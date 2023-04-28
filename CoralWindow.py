@@ -17,7 +17,7 @@ from RecordInfoWindow import RecordInfoWindow
 from InstructionsWindow import InstructionsWindow
 from generalTab import generalTabUI
 from recordTab import recordTabUI
-from LoginWindow import LoginWindow
+from LoginWindow import Login_Window
 
 from coral_count import count_tentacles_actual, get_count, get_coordinates
 
@@ -112,7 +112,7 @@ class Coral_Window(QWidget):
             
                     filenameForQuery = item[0].text()
                     
-                    self.login = LoginWindow()
+                    self.login = Login_Window()
                     self.login.setGeometry(int(self.frameGeometry().width()/2) - 150, int(self.frameGeometry().height()/2) - 150, 300, 300)
                     self.login.show()
                     self.login.submitButtonLogin.clicked.connect(lambda: self.deleteRow(currentRow, filenameForQuery, cell))
@@ -168,11 +168,11 @@ class Coral_Window(QWidget):
         response = question.question(self,'', "Are you sure you want to delete ALL the rows?", question.Yes | question.No)
                 
         if response == question.Yes:
-                self.login = LoginWindow()
-                self.login.setGeometry(int(self.frameGeometry().width()/2) - 150, int(self.frameGeometry().height()/2) - 150, 300, 300)
-                self.login.show()
-                self.login.submitButtonLogin.clicked.connect(self.deleteAllRows)
-                    #self.login.submit_shortcut.activated.connect(self.gatheringInfo)
+            self.login = Login_Window()
+            self.login.setGeometry(int(self.frameGeometry().width()/2) - 150, int(self.frameGeometry().height()/2) - 150, 300, 300)
+            self.login.show()
+            self.login.submitButtonLogin.clicked.connect(self.deleteAllRows)
+                #self.login.submit_shortcut.activated.connect(self.gatheringInfo)
                     
         else:
             question.close()
@@ -182,38 +182,38 @@ class Coral_Window(QWidget):
         # response = question.question(self,'', "Are you sure you want to delete ALL the rows?", question.Yes | question.No)
                 
         # if response == question.Yes:
-            try:
-                mydb = mc.connect(
-                    host=os.environ.get('HOST'),
-                    user = os.getenv('NAME'),
-                    password=os.getenv('PASSWORD'), 
-                    database=os.getenv('DATABASE')             
-                )
-                mycursor = mydb.cursor()
+        try:
+            mydb = mc.connect(
+                host=os.environ.get('HOST'),
+                user = os.getenv('NAME'),
+                password=os.getenv('PASSWORD'), 
+                database=os.getenv('DATABASE')             
+            )
+            mycursor = mydb.cursor()
+            
+            mycursor.execute("SELECT users_code FROM users WHERE users_name = '%s'" % os.getenv('ADMIN'))
+            myresult = mycursor.fetchall()
+            print(myresult)
+            print(myresult[0])
+            str = ''.join(myresult[0])
+            print(str)
+            if (self.login.codeTextBox.text() == str):
+                print("YAAAAAAAAAAAASSSSSS")
+            
+                mycursor.execute("DELETE FROM image_info")
+            
+                mydb.commit()
+                while (self.tableWidget.rowCount() > 0):
+                    self.tableWidget.removeRow(0)
+                self.login.close()
+            else:
+                QMessageBox.about(self, "Warning", "ONLY THE ADMIN CAN DELETE ALL THE ROWS!")
+                self.login.close()
+            mydb.close()
                 
-                mycursor.execute("SELECT users_code FROM users WHERE users_name = '%s'" % os.getenv('ADMIN'))
-                myresult = mycursor.fetchall()
-                print(myresult)
-                print(myresult[0])
-                str = ''.join(myresult[0])
-                print(str)
-                if (self.login.codeTextBox.text() == str):
-                    print("YAAAAAAAAAAAASSSSSS")
-                
-                    mycursor.execute("DELETE FROM image_info")
-                
-                    mydb.commit()
-                    while (self.tableWidget.rowCount() > 0):
-                        self.tableWidget.removeRow(0)
-                    self.login.close()
-                else:
-                    QMessageBox.about(self, "Warning", "ONLY THE ADMIN CAN DELETE ALL THE ROWS!")
-                    self.login.close()
-                mydb.close()
-                    
-            except mydb.Error as e:
-                print("Failed To Connect to Database")
-            #self.tableWidget.removeRow(currentRow)
+        except mydb.Error as e:
+            print("Failed To Connect to Database")
+        #self.tableWidget.removeRow(currentRow)
         
     
     def DBConnect(self):
