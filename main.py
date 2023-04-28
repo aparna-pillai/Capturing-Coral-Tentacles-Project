@@ -50,7 +50,7 @@ class Capturing_Coral_Manager(QMainWindow):
         self.quit_shortcut.activated.connect(self.close)
 
     def moveToNextScreen(self):
-        if self.login.check_code():
+        if self.login.check_code_on_initial_login():
             self.generalLayout.removeWidget(self.login)
             self.login.hide()
             self.generalLayout.addWidget(self.main, 0, 0)
