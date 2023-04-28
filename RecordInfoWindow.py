@@ -11,13 +11,13 @@ class RecordInfoWindow(QWidget):
         super().__init__()
         layout = QGridLayout()
         
-        self.name_of_person_Label = QLabel("Username:")
-        self.name_of_person_Display = QLineEdit()
-        self.name_of_person_Display.setPlaceholderText("Enter your username here")
+        # self.name_of_person_Label = QLabel("Username:")
+        # self.name_of_person_Display = QLineEdit()
+        # self.name_of_person_Display.setPlaceholderText("Enter your username here")
         
-        self.code_Label = QLabel("Code:")
-        self.code_Display = QLineEdit()
-        self.code_Display.setPlaceholderText("Enter your code here")
+        # self.code_Label = QLabel("Code:")
+        # self.code_Display = QLineEdit()
+        # self.code_Display.setPlaceholderText("Enter your code here")
         
         self.notes_Label = QLabel("Notes:")
         self.notes_Display = QLineEdit()
@@ -35,20 +35,21 @@ class RecordInfoWindow(QWidget):
         
         layout.addWidget(self.date_Label, 0, 0)
         layout.addWidget(self.date_Display, 0, 1)
-        layout.addWidget(self.name_of_person_Label, 1, 0)
-        layout.addWidget(self.name_of_person_Display, 1, 1)
-        layout.addWidget(self.code_Label, 2, 0)
-        layout.addWidget(self.code_Display, 2, 1)
-        layout.addWidget(self.notes_Label, 3, 0)
-        layout.addWidget(self.notes_Display, 3, 1)
-        layout.addWidget(self.submitButton, 4, 0)
+        # layout.addWidget(self.name_of_person_Label, 1, 0)
+        # layout.addWidget(self.name_of_person_Display, 1, 1)
+        # layout.addWidget(self.code_Label, 2, 0)
+        # layout.addWidget(self.code_Display, 2, 1)
+        layout.addWidget(self.notes_Label, 1, 0)
+        layout.addWidget(self.notes_Display, 1, 1)
+        layout.addWidget(self.submitButton, 2, 0)
         
-        print(self.name_of_person_Display.text())
+        # print(self.name_of_person_Display.text())
         
         self.setLayout(layout)
      
     def get_name(self):
-        return self.name_of_person_Display.text()
+        return "Mr. Placeholder"
+        # return self.name_of_person_Display.text()
     
     def get_code(self):
         return self.code_Display.text()

@@ -351,15 +351,15 @@ class Coral_Window(QWidget):
                 mycursor.execute(sql)
                 myresult1 = mycursor.fetchall()
                 
-                if len(myresult1) > 0:
-                    print(myresult1)
-                    print(myresult1[0])
-                    str = ''.join(myresult1[0])
-                    print(str)
-                    print(str[-10:])
-                    print(self.g.get_code())
-                    if self.g.get_code() == str[-10:]:
-                        print("Hip hip hurray")
+                # if len(myresult1) > 0:
+                #     print(myresult1)
+                #     print(myresult1[0])
+                #     str = ''.join(myresult1[0])
+                #     print(str)
+                #     print(str[-10:])
+                #     print(self.g.get_code())
+                #     if self.g.get_code() == str[-10:]:
+                #         print("Hip hip hurray")
                         
                         
                         # for i, marker in enumerate(self.photo.markers):
@@ -370,22 +370,22 @@ class Coral_Window(QWidget):
 
                         # coordstring = ' | '.join(self.coordinate_list)
                                                 
-                        mycursor.execute(
-                            "INSERT INTO image_info VALUES (%s, %s, %s, %s, %s, %s)", 
-                            (
-                                self.photo.get_filename(), self.photo.marker_count, 
-                                self.g.get_name(), date.today(), 
-                                "Coordinates", self.g.get_notes()
-                            )
-                        )
-                        
-                        self.tableWidget.resizeRowsToContents()
-                    else: 
-                        print("nice try")
-                        QMessageBox.about(self, "Warning", "Incorrect name or password!")
-                else: 
-                    print("nice try")
-                    QMessageBox.about(self, "Warning", "Incorrect name or password!")
+                mycursor.execute(
+                    "INSERT INTO image_info VALUES (%s, %s, %s, %s, %s, %s)", 
+                    (
+                        self.photo.get_filename(), self.photo.marker_count, 
+                        self.g.get_name(), date.today(), 
+                        "Coordinates", self.g.get_notes()
+                    )
+                )
+                
+                self.tableWidget.resizeRowsToContents()
+                #     else: 
+                #         print("nice try")
+                #         QMessageBox.about(self, "Warning", "Incorrect name or password!")
+                # else: 
+                #     print("nice try")
+                #     QMessageBox.about(self, "Warning", "Incorrect name or password!")
                 #str2 = ''.join(myresult1[1])
                 #print(str2)
                 
