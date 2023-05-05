@@ -39,12 +39,16 @@ class Coral_Window(QWidget):
         self.setLayout(layout)
         self.count = 0
         self.coordinate_list = []
+
+        # Sample photo & coordinates for view-only tab testing
+        test_image = "IMG-6268.JPG"
+        test_coordinates = "PyQt5.QtCore.QPointF(317.0, 276.0) ; Green | PyQt5.QtCore.QPointF(401.0, 214.0) ; Purple | PyQt5.QtCore.QPointF(452.0, 277.0) ; Yellow"
         
         # Create the tab widget with two tabs
         self.tabs = QTabWidget()
         self.general_tab = generalTabUI(self)
         self.record_tab = recordTabUI(self)
-        self.view_tab = viewOnlyTabUI(self)
+        self.view_tab = viewOnlyTabUI(self, test_image, test_coordinates)
 
         self.tabs.addTab(self.general_tab, "Main")
         self.tabs.addTab(self.record_tab, "Record")
@@ -412,6 +416,7 @@ class Coral_Window(QWidget):
 
         # Clear out all old results
         self.photo.marker_count = 0
+        self.updateMarkerCount()
         self.photo.markers.clear()
         self.coordinate_list.clear()
 

@@ -83,7 +83,7 @@ class Image(QWidget):
         #     "border: none;"
         # )
         
-    def reopen_image(self, filename):
+    # def reopen_image(self, filename):
         # filename, _ = QFileDialog.getOpenFileName(self, 'Select Photo', QDir.currentPath(), 'Images (*.png *.jpg)')
         # if not filename:
         #     return
@@ -91,14 +91,14 @@ class Image(QWidget):
         # url = QUrl.fromLocalFile(filename)
         # self.file = QFileInfo(filename).fileName()
             
-        self.photo.setStyleSheet(
-            "background: transparent;"
-        )
-        self.pix = QPixmap(filename)
-        self.smaller_pixmap = self.pix.scaled(self.view.width(), self.view.height())
-        self.scene.clear()
-        self.scene.addPixmap(self.smaller_pixmap)
-        self.filenameDisplay.setText("{0}".format(self.get_filename()))
+        # self.photo.setStyleSheet(
+        #     "background: transparent;"
+        # )
+        # self.pix = QPixmap(filename)
+        # self.smaller_pixmap = self.pix.scaled(self.view.width(), self.view.height())
+        # self.scene.clear()
+        # self.scene.addPixmap(self.smaller_pixmap)
+        # self.filenameDisplay.setText("{0}".format(self.get_filename()))
         
     def open_image(self, filename=None):
         if not filename:
@@ -167,7 +167,7 @@ class Image(QWidget):
         for i, marker in enumerate(self.markers):
             if marker.isSelected():
                 marker.setBrush(QBrush(brush_color))
-                self.marker_colors[i] = brush_color
+                self.marker_colors[i] = color
 
         # Clear the drop-down menu and add the color options agai(n)
 
