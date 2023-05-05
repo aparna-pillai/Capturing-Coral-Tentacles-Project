@@ -17,6 +17,7 @@ from RecordInfoWindow import RecordInfoWindow
 from InstructionsWindow import InstructionsWindow
 from generalTab import generalTabUI
 from recordTab import recordTabUI
+from viewOnlyTab import viewOnlyTabUI
 from CodeDeleteWindow import CodeDeleteWindow
 
 from coral_count import count_tentacles_actual, get_count, get_coordinates
@@ -43,9 +44,11 @@ class Coral_Window(QWidget):
         self.tabs = QTabWidget()
         self.general_tab = generalTabUI(self)
         self.record_tab = recordTabUI(self)
+        self.view_tab = viewOnlyTabUI(self)
 
         self.tabs.addTab(self.general_tab, "Main")
         self.tabs.addTab(self.record_tab, "Record")
+        self.tabs.addTab(self.view_tab, "View")
         layout.addWidget(self.username_Label)
         layout.addWidget(self.tabs)
 
@@ -203,8 +206,6 @@ class Coral_Window(QWidget):
             str = ''.join(myresult[0])
             print(str)
             if (self.codeDeleteAllWindow.codeTextBox.text() == str):
-                print("YAAAAAAAAAAAASSSSSS")
-            
                 mycursor.execute("DELETE FROM image_info")
             
                 mydb.commit()
@@ -249,8 +250,8 @@ class Coral_Window(QWidget):
         except mydb.Error as e:
            print("Failed To Connect to Database")
 
-    def searchRecord(self, text):
-        if text == "":
+    def searchRecord(self, search_text):
+        if search_text == "":
             self.DBConnect()
         else:
             # self.DBConnect()
@@ -258,12 +259,14 @@ class Coral_Window(QWidget):
             rowsToDelete = []
 
             for row in range(self.tableWidget.rowCount()):
-                item_name = self.tableWidget.item(row, 2).text()
-                item_file = self.tableWidget.item(row, 0).text()
-                item_date = self.tableWidget.item(row, 3).text()
+                item_name = self.tableWidget.item(row, 2).text().lower()
+                item_file = self.tableWidget.item(row, 0).text().lower()
+                item_date = self.tableWidget.item(row, 3).text().lower()
+                item_notes = self.tableWidget.item(row, 5).text().lower()
 
-                if (text not in item_name and text not in item_file and text not in item_date):
-                    rowsToDelete.append(row)
+                if (search_text.lower() not in item_name and search_text.lower() not in item_file 
+                    and search_text.lower() not in item_date and search_text.lower() not in item_notes):
+                        rowsToDelete.append(row)
 
             # Counter: adjust for the fact that we're removing a row each time
             counter = 0
@@ -374,45 +377,6 @@ class Coral_Window(QWidget):
                 )
                 
                 self.tableWidget.resizeRowsToContents()
-                #     else: 
-                #         print("nice try")
-                #         QMessageBox.about(self, "Warning", "Incorrect name or password!")
-                # else: 
-                #     print("nice try")
-                #     QMessageBox.about(self, "Warning", "Incorrect name or password!")
-                #str2 = ''.join(myresult1[1])
-                #print(str2)
-                
-                # if mycursor.fetchone():
-                #     print("yeah")
-                #     sql2 = "SELECT users_name, users_code FROM users WHERE users_code = '%s'" % self.g
-                #     sql2 =  "SELECT users_code FROM users WHERE users_code = '%s'" % self.g.get_code()
-                #     mycursor.execute(sql2)
-                #     if mycursor.fetchone():
-                #         print("oh yeah")
-                #         for i, marker in enumerate(self.photo.markers):
-                #             self.coordinate_list.append(
-                #             (str(marker.scenePos()) + ' ; ' + str(self.photo.marker_colors[i]))
-                #         )
-
-                #         coordstring = ' | '.join(self.coordinate_list)
-                        
-                #         mycursor.execute(
-                #             "INSERT INTO image_info VALUES (%s, %s, %s, %s, %s, %s)", 
-                #             (
-                #                 self.photo.get_filename(), self.photo.marker_count, 
-                #                 self.g.get_name(), date.today(), 
-                #                 coordstring, self.g.get_notes()
-                #             )
-                #         )
-                        
-                #         self.tableWidget.resizeRowsToContents()
-                    #print(mycursor.execute(sql))
-                #     else:
-                #         QMessageBox.about(self, "Warning", "Incorrect name or password!")
-                # else:
-                #     QMessageBox.about(self, "Warning", "Incorrect name or password!")
-                #     print("boo")
             
                 mydb.commit()
                 
@@ -427,8 +391,6 @@ class Coral_Window(QWidget):
         if (self.photo.get_filename() == ""):
             QMessageBox.about(self, "Warning", "Please upload an image.")
         else:
-            # self.photo.modelDisplay.setText("Running...")
-
             # Run the model on the currently displayed photo (in Image)
             count_tentacles_actual(self.photo.path)
             img = ImagePIL.open(self.photo.path)
@@ -443,8 +405,6 @@ class Coral_Window(QWidget):
             # Delete the new resized.jpg created in the main folder
             if (os.path.exists('resized.jpg')):
                 os.remove('resized.jpg')
-
-            # self.photo.modelDisplay.setText("{0}".format("Not running anymore"))
 
     def placeInitialMarkers(self, photo_width, photo_height):
         coordinates = get_coordinates()
@@ -469,13 +429,3 @@ class Coral_Window(QWidget):
             y = QMouseEvent.pos().y()
             self.photo.add_marker(x-45, y-125, "Yellow")
             self.updateMarkerCount()
-
-# if __name__ == "__main__":
-#     app = QApplication(sys.argv)
-#     window = Coral_Window()
-#     window.show()    
-
-#     instructions = InstructionsWindow()
-#     window.activateWindow()
-
-#     sys.exit(app.exec_())

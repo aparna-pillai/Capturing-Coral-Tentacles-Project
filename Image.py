@@ -12,11 +12,11 @@ class Image(QWidget):
         self.photo.setFixedWidth(800)
         self.photo.setFixedHeight(500)
         
-        btn = QPushButton('Browse')
-        btn.setFixedWidth(800)
-        btn.setFixedHeight(50)
+        self.browse_btn = QPushButton('Browse')
+        self.browse_btn.setFixedWidth(800)
+        self.browse_btn.setFixedHeight(50)
         
-        btn.setStyleSheet(
+        self.browse_btn.setStyleSheet(
             "border: 3px solid;"
             "border-top-color: #3f72af;"
             "border-left-color: #3f72af;"
@@ -26,14 +26,14 @@ class Image(QWidget):
         )
         
         self.pix = QPixmap()
-        btn.clicked.connect(self.open_image)
+        self.browse_btn.clicked.connect(self.open_image)
         
         self.path = ""
         self.file = ""
         
         grid = QGridLayout(self)
 
-        grid.addWidget(btn, 0, 0, Qt.AlignTop)
+        grid.addWidget(self.browse_btn, 0, 0, Qt.AlignTop)
 
         grid.addWidget(self.photo, 1, 0)
         self.scene = QGraphicsScene()
