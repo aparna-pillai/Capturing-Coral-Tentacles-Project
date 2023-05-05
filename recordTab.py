@@ -9,7 +9,7 @@ def recordTabUI(self):
     layout = QGridLayout()
 
     self.directions = QLabel("""
-                            You can search by filename, name of person, and date_uploaded. 
+                            You can search by filename, name of person, and date uploaded. 
                             To delete a row, please click directly on the specific filename. 
                              """)
 
@@ -114,6 +114,7 @@ def recordTabUI(self):
         "border-right-color: #00adb5;"
         "border-bottom-color: #00adb5;"
         "color: #112d4e;"
+        "width: 150px;"
     )
     
     self.btnDeleteAll.setStyleSheet(

@@ -84,9 +84,15 @@ class Coral_Window(QWidget):
         if self.tabs.isTabEnabled(0):
             self.tabs.setTabEnabled(1, True)
             self.tabs.setTabEnabled(0, False)
+            self.tabs.setTabEnabled(2, False)
+        elif self.tabs.isTabEnabled(1):
+            self.tabs.setTabEnabled(2, True)
+            self.tabs.setTabEnabled(0, False)
+            self.tabs.setTabEnabled(1, False)
         else:
             self.tabs.setTabEnabled(0, True)
             self.tabs.setTabEnabled(1, False)
+            self.tabs.setTabEnabled(2, False)
     
     def instruct(self):
         self.w = InstructionsWindow()
@@ -98,7 +104,6 @@ class Coral_Window(QWidget):
         self.w.close()
          
     def codeBeforeDeleteRow(self):
-        print("Hmmmmmm!")
         if self.tableWidget.rowCount() > 0:
             currentRow = self.tableWidget.currentRow()
             item = self.tableWidget.selectedItems()
@@ -153,8 +158,6 @@ class Coral_Window(QWidget):
             str = ''.join(myresult[0])
             print(str)
             if (self.codeDelete.codeTextBox.text() == str):
-                print("YAAAAAAAAAAAASSSSSS")
-            #print(stringOfCode[2:11])
                 sql_delete = "DELETE FROM image_info WHERE filename = %s"
                 sql_data = (filenameForQuery,)
 
@@ -179,9 +182,7 @@ class Coral_Window(QWidget):
             self.codeDeleteAllWindow = CodeDeleteWindow()
             self.codeDeleteAllWindow.setGeometry(int(self.frameGeometry().width()/2) - 150, int(self.frameGeometry().height()/2) - 150, 300, 300)
             self.codeDeleteAllWindow.show()
-            self.codeDeleteAllWindow.submitButtonLogin.clicked.connect(self.deleteAllRows)
-                #self.login.submit_shortcut.activated.connect(self.gatheringInfo)
-                    
+            self.codeDeleteAllWindow.submitButtonLogin.clicked.connect(self.deleteAllRows)    
         else:
             question.close()
                 
@@ -336,7 +337,7 @@ class Coral_Window(QWidget):
            print("Failed To Connect to Database")
             
     def recordInfo(self):   
-        if self.photo.get_filename() == "":
+        if not self.photo.get_filename():
             QMessageBox.about(self, "Warning", "You did not upload an image!")
         else:
             self.g = RecordInfoWindow(self.username)

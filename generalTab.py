@@ -164,6 +164,7 @@ def generalTabUI(self):
             "border-bottom-color: #00adb5;"
             "color: #112d4e;" 
             "padding-right: 8px;"
+            "width: 250px;"
         )
 
         self.zoomInButton.setStyleSheet(
