@@ -336,7 +336,7 @@ class Coral_Window(QWidget):
         if self.photo.get_filename() == "":
             QMessageBox.about(self, "Warning", "You did not upload an image!")
         else:
-            self.g = RecordInfoWindow()
+            self.g = RecordInfoWindow(self.username)
             self.g.submitButton.clicked.connect(self.gatheringInfo)
             self.g.submit_shortcut.activated.connect(self.gatheringInfo)
 
@@ -354,35 +354,22 @@ class Coral_Window(QWidget):
                 
                     
                 mycursor = mydb.cursor()
-                # sql =  "SELECT users_name, users_code FROM users WHERE users_name = '%s'" % self.g.get_name()
-                # mycursor.execute(sql)
-                # myresult1 = mycursor.fetchall()
-                
-                # if len(myresult1) > 0:
-                #     print(myresult1)
-                #     print(myresult1[0])
-                #     str = ''.join(myresult1[0])
-                #     print(str)
-                #     print(str[-10:])
-                #     print(self.g.get_code())
-                #     if self.g.get_code() == str[-10:]:
-                #         print("Hip hip hurray")
                         
-                        
-                        # for i, marker in enumerate(self.photo.markers):
-                        #     print(marker.scenePos())
-                        #     self.coordinate_list.append(
-                        #         marker.scenePos() + ' ; ' + self.photo.marker_colors[i]
-                        #     )
+                for i, marker in enumerate(self.photo.markers):
+                    print(marker.scenePos())
+                    self.coordinate_list.append(
+                        str(marker.scenePos()) + ' ; ' + str(self.photo.marker_colors[i])
+                    )
 
-                        # coordstring = ' | '.join(self.coordinate_list)
+                coordstring = ' | '.join(self.coordinate_list)
+                print(coordstring)
                                                 
                 mycursor.execute(
                     "INSERT INTO image_info VALUES (%s, %s, %s, %s, %s, %s)", 
                     (
                         self.photo.get_filename(), self.photo.marker_count, 
                         self.username, date.today(), 
-                        "Coordinates", self.g.get_notes()
+                        coordstring, self.g.get_notes()
                     )
                 )
                 
@@ -470,7 +457,7 @@ class Coral_Window(QWidget):
         for pair in coordinates:
             self.photo.add_marker(
                 pair[0]*(photo_width/1.6), pair[1]*(photo_height/1.5), 
-                QColor(245, 96, 42)
+                "YOLO Red"
             )
 
     def updateMarkerCount(self):
@@ -480,7 +467,7 @@ class Coral_Window(QWidget):
         if QMouseEvent.button() == Qt.LeftButton:
             x = QMouseEvent.pos().x()
             y = QMouseEvent.pos().y()
-            self.photo.add_marker(x-45, y-125, Qt.yellow)
+            self.photo.add_marker(x-45, y-125, "Yellow")
             self.updateMarkerCount()
 
 # if __name__ == "__main__":

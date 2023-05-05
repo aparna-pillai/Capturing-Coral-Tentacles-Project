@@ -65,9 +65,10 @@ class Image(QWidget):
         self.selected_marker = None 
 
         self.color_dict = {
-            "Red": Qt.red, "Orange": QColor(255, 137, 0), "Yellow": Qt.yellow,
-            "Green": Qt.green, "Blue": Qt.blue, "Purple": QColor(219, 0, 255),
-            "Pink": QColor(245, 66, 164), "Black": Qt.black, "White": Qt.white
+            "YOLO Red": QColor(245, 96, 42), "Red": Qt.red, "Orange": QColor(255, 137, 0), 
+            "Yellow": Qt.yellow, "Green": Qt.green, "Blue": Qt.blue, 
+            "Purple": QColor(219, 0, 255), "Pink": QColor(245, 66, 164), "Black": Qt.black, 
+            "White": Qt.white
         }
 
         # Keyboard shortcuts
@@ -126,10 +127,11 @@ class Image(QWidget):
     def get_markersList(self):
         return self.markers
          
-    def add_marker(self, x_pos, y_pos, color):
+    def add_marker(self, x_pos, y_pos, color_name):
         if self.path is not "":
+            print(color_name)
             ellipse = QGraphicsEllipseItem(0, 0, 15, 15)
-            ellipse.setBrush(QBrush(color))
+            ellipse.setBrush(QBrush(self.color_dict[color_name]))
             ellipse.setFlag(QGraphicsItem.ItemIsMovable)
             ellipse.setFlag(QGraphicsItem.ItemIsSelectable)
             
@@ -139,7 +141,7 @@ class Image(QWidget):
             self.scene.addItem(ellipse)
             self.marker_count += 1
             self.markers.append(ellipse)
-            self.marker_colors.append(QBrush(color))
+            self.marker_colors.append(color_name)
 
     def set_selected_marker(self, marker):
         self.selected_marker = marker

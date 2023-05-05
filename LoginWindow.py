@@ -18,8 +18,8 @@ class Login_Window(QWidget):
         self.code_label = QLabel("Code:")
         self.codeTextBox = QLineEdit()
 
-        #self.deniedLabel = QLabel("Access Denied.")
-        #self.deniedLabel.hide() # Only show if the code is incorrect
+        self.deniedLabel = QLabel("Incorrect username or code. Try again.")
+        self.deniedLabel.hide() # Only show if the code is incorrect
 
         self.enteredUsername = ""
         self.enteredCode = ""
@@ -31,18 +31,17 @@ class Login_Window(QWidget):
         self.smallerGridLayout.addWidget(self.codeTextBox, 1, 1)
         self.generalLayout.addLayout(self.smallerGridLayout, 0, 0)
 
-        #self.generalLayout.addWidget(self.deniedLabel)
+        self.generalLayout.addWidget(self.deniedLabel)
 
         self.submitButtonLogin = QPushButton("Submit")
         self.generalLayout.addWidget(self.submitButtonLogin, 2, 0)
 
         self.setLayout(self.generalLayout)
 
-
-        # # Stylesheets
-        # self.deniedLabel.setStyleSheet(
-        #     "color: red;"
-        # )
+        # Stylesheets
+        self.deniedLabel.setStyleSheet(
+            "color: red;"
+        )
 
     def check_code_on_initial_login(self):
         try:
@@ -67,8 +66,9 @@ class Login_Window(QWidget):
             myresult1 = mycursor.fetchall()
             
             if len(myresult1) == 0:
-                QMessageBox.about(self, "Warning", "Incorrect username or code. Try Again")
-                mydb.close()
+                self.deniedLabel.show()
+                # QMessageBox.about(self, "Warning", "Incorrect username or code. Try Again")
+                # mydb.close()
             else:
                 print(myresult1)
                 print(myresult1[0])
