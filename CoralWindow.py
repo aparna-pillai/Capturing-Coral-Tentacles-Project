@@ -7,10 +7,15 @@ import platform
 
 import mysql.connector as mc
 import os
+import os.path
 from dotenv import load_dotenv
-from PIL import Image as ImagePIL
+import PIL.Image
 from datetime import date, datetime
 import pandas as pd
+import base64
+
+import base64
+import io
 
 from Image import *
 from RecordInfoWindow import RecordInfoWindow
@@ -21,6 +26,8 @@ from viewOnlyTab import viewOnlyTabUI
 from CodeDeleteWindow import CodeDeleteWindow
 
 from coral_count import count_tentacles_actual, get_count, get_coordinates
+
+# https://www.geeksforgeeks.org/retrieve-image-and-file-stored-as-a-blob-from-mysql-table-using-python/ 
 
 class Coral_Window(QWidget):
     
@@ -137,7 +144,7 @@ class Coral_Window(QWidget):
                     
                 else:
                     question.close()
-            
+    
                     
     def deleteRow(self, currentRow, filenameForQuery, cell):
         
@@ -220,6 +227,8 @@ class Coral_Window(QWidget):
             else:
                 QMessageBox.about(self, "Warning", "ONLY THE ADMIN CAN DELETE ALL THE ROWS!")
                 self.codeDeleteAllWindow.close()
+                
+            
             mydb.close()
                 
         except mydb.Error as e:
@@ -280,9 +289,43 @@ class Coral_Window(QWidget):
                 counter += 1
     
     def reopen(self):
-        item = self.tableWidget.selectedItems()
-        print(item)
-        print(os.path.abspath(item[0].text()))
+        self.tabs.setCurrentIndex(2)
+        try:
+            mydb = mc.connect(
+                host=os.environ.get('HOST'),
+                user = os.getenv('NAME'),
+                password=os.getenv('PASSWORD'), 
+                database=os.getenv('DATABASE')             
+            )
+            mycursor = mydb.cursor()
+            
+            item = self.tableWidget.selectedItems()
+            filenameForQuery = item[0].text()
+            print(filenameForQuery)
+            
+            mycursor.execute("SELECT * FROM image_info WHERE filename='%s'" % filenameForQuery)
+            
+            myresult = mycursor.fetchone()[6]
+            print(myresult)
+            print("hope needed")
+            #print(myresult[0])
+
+            storefilepath = "NewImage.jpg".format(str(filenameForQuery))
+            
+            with open(storefilepath, "wb") as file:
+                file.write(myresult)
+                file.close()
+                
+            im = PIL.Image.open(r"%s" % storefilepath)
+            im.show()
+            
+            mydb.commit()
+            mydb.close()
+            
+        except mydb.Error as e:
+           print("Failed To Connect to Database")
+        
+        #print(os.path.abspath(item[0].text()))
         #self.photo.reopen_image(os.path.abspath(item[0].text()))
         #self.general_tab.pix = QPixmap(item[0].text())
         # self.smaller_pixmap = self.pix.scaled(self.view.width(), self.view.height())
@@ -351,6 +394,12 @@ class Coral_Window(QWidget):
             self.g.setGeometry(int(self.frameGeometry().width()/2) - 150, int(self.frameGeometry().height()/2) - 150, 300, 300)
             self.g.show()
             
+    def convertToBinaryData(self, filename):
+    # Convert digital data to binary format
+        with open(filename, 'rb') as file:
+            binaryData = file.read()
+        return binaryData
+            
     def gatheringInfo(self):  
             try:
                 mydb = mc.connect(
@@ -371,13 +420,24 @@ class Coral_Window(QWidget):
 
                 coordstring = ' | '.join(self.coordinate_list)
                 print(coordstring)
-                                                
+                
+                print("hey")
+                print(self.photo.get_path())
+
+                with open(self.photo.get_path(), "rb") as file:
+                    binaryData = file.read()
+                #actual_photo = open(self.photo.get_path(),'rb').read()        
+                
+                #empPicture = self.convertToBinaryData(self.photo.get_path()) 
+                
+                #actual_photo = base64.b64encode(actual_photo)            
+                                            
                 mycursor.execute(
-                    "INSERT INTO image_info VALUES (%s, %s, %s, %s, %s, %s)", 
+                    "INSERT INTO image_info VALUES (%s, %s, %s, %s, %s, %s, %s)", 
                     (
                         self.photo.get_filename(), self.photo.marker_count, 
                         self.username, date.today(), 
-                        coordstring, self.g.get_notes()
+                        coordstring, self.g.get_notes(), binaryData
                     )
                 )
                 
@@ -398,7 +458,7 @@ class Coral_Window(QWidget):
         else:
             # Run the model on the currently displayed photo (in Image)
             count_tentacles_actual(self.photo.path)
-            img = ImagePIL.open(self.photo.path)
+            img = PIL.Image.open(self.photo.path)
             
             # Add markers based on the labels generated by the model
             self.placeInitialMarkers(img.width, img.height)

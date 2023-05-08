@@ -12,6 +12,7 @@ class CodeDeleteWindow(QWidget):
 
         self.label = QLabel("Enter your code")
         self.codeTextBox = QLineEdit()
+        self.codeTextBox.setEchoMode(QLineEdit.Password)
 
         self.smallerGridLayout = QGridLayout()
         self.smallerGridLayout.addWidget(self.label, 0, 0)

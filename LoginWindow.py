@@ -24,6 +24,7 @@ class Login_Window(QWidget):
         self.userTextBox = QLineEdit()
         self.code_label = QLabel("Code:")
         self.codeTextBox = QLineEdit()
+        self.codeTextBox.setEchoMode(QLineEdit.Password)
 
         self.deniedLabel = QLabel("")
         print(self.deniedLabel.text())

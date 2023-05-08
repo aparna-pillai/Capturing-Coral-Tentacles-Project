@@ -121,6 +121,9 @@ class Image(QWidget):
     def get_filename(self):
         return self.file
     
+    def get_path(self):
+        return self.path
+    
     def get_marker_count(self):
         return self.marker_count
          

@@ -72,6 +72,7 @@ def recordTabUI(self):
     self.btnReopen = QPushButton("Reopen")
     self.btnReopen.clicked.connect(self.reopen)
     
+    
     self.exportButton = QPushButton("Export")
     load_dotenv('config.env')
     self.exportButton.clicked.connect(self.export)
