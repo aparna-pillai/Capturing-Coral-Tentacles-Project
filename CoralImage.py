@@ -4,7 +4,7 @@ from PyQt5.QtGui import *
 
 from PhotoLabel import *
 
-class Image(QWidget):
+class CoralImage(QWidget):
     
     def __init__(self):
         super().__init__()
@@ -54,13 +54,6 @@ class Image(QWidget):
         self.fileGridLayout.addWidget(self.filenameLabel, 0, 0)
         self.fileGridLayout.addWidget(self.filenameDisplay, 0, 1)
         grid.addLayout(self.fileGridLayout, 2, 0)
-
-        # self.modelGridLayout = QGridLayout()
-        # self.modelLabel = QLabel("Model status:")
-        # self.modelDisplay = QLineEdit("{0}".format("Not running"))
-        # self.modelGridLayout.addWidget(self.modelLabel, 0, 0)
-        # self.modelGridLayout.addWidget(self.modelDisplay, 0, 1)
-        # grid.addLayout(self.modelGridLayout, 3, 0)
 
         self.selected_marker = None 
 

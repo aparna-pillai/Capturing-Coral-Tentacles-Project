@@ -8,6 +8,9 @@ def recordTabUI(self):
     recordTab = QWidget()
     layout = QGridLayout()
 
+    self.reload_shortcut = QShortcut(QKeySequence("Ctrl+R"), self)
+    self.reload_shortcut.activated.connect(self.DBConnect)
+
     self.directions = QLabel("""
                             You can search by filename, name of person, and date uploaded. 
                             To delete a row, please click directly on the specific filename. 
@@ -47,10 +50,15 @@ def recordTabUI(self):
     self.searchGridLayout = QGridLayout()
     self.searchLabel = QLabel("Search:")
     self.searchBar = QLineEdit()
-    self.searchBar.textChanged.connect(self.searchRecord)
+    self.searchButton = QPushButton("Go")
+    self.searchButton.clicked.connect(lambda: self.searchRecord(self.searchBar.text()))
+
+    self.search_shortcut = QShortcut(QKeySequence("Ctrl+F"), self)
+    self.search_shortcut.activated.connect(lambda: self.searchRecord(self.searchBar.text()))
 
     self.searchGridLayout.addWidget(self.searchLabel, 0, 0)
     self.searchGridLayout.addWidget(self.searchBar, 0, 1)
+    self.searchGridLayout.addWidget(self.searchButton, 0, 2)
 
     layout.addLayout(self.searchGridLayout, 0, 0)
     layout.addWidget(self.directions, 1, 0)

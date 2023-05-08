@@ -6,7 +6,7 @@ from PyQt5.QtWidgets import *
 from PyQt5.QtCore import *
 from PyQt5.QtGui import *
 
-from Image import *
+from CoralImage import *
 
 def viewOnlyTabUI(self, load_image, load_coordinates):
     # id = QFontDatabase.addApplicationFont("fonts/Montserrat/Montserrat-Regular.ttf")
@@ -20,12 +20,11 @@ def viewOnlyTabUI(self, load_image, load_coordinates):
     self.coordString = load_coordinates
     self.coordList = load_coordinates.split("|")
 
-    self.view_photo = Image()
+    self.view_photo = CoralImage()
     self.view_photo.browse_btn.setEnabled(False)
     self.view_photo.browse_shortcut.activated.disconnect()
 
-    # self.view_photo.open_image(self.loadImage)
-    # Currently doesn't work since an image name ("IMG-6268.JPG") is not an actual filename
+    self.view_photo.open_image(filename=self.loadImage)
 
     self.generalLayout.addWidget(self.view_photo, 0, 0)
 

@@ -13,6 +13,10 @@ class Capturing_Coral_Manager(QMainWindow):
         super().__init__()
         self.setWindowTitle("Capturing Coral Tentacles")
         self.showMaximized()
+        
+        desktop = QApplication.desktop()
+        screenRect = desktop.screenGeometry()
+        self.resize(screenRect.width(), screenRect.height())
 
         self.generalLayout = QGridLayout()
 
@@ -41,6 +45,8 @@ class Capturing_Coral_Manager(QMainWindow):
             self.login.hide()
             self.main = Coral_Window(self.username)
             self.generalLayout.addWidget(self.main, 0, 0)
+
+            self.login_shortcut.activated.disconnect()
 
 if __name__ == '__main__':
     app = QApplication(sys.argv)

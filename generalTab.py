@@ -2,7 +2,7 @@ from PyQt5.QtWidgets import *
 from PyQt5.QtCore import *
 from PyQt5.QtGui import *
 
-from Image import *
+from CoralImage import *
 
 def generalTabUI(self):
         # id = QFontDatabase.addApplicationFont("fonts/Montserrat/Montserrat-Regular.ttf")
@@ -12,7 +12,7 @@ def generalTabUI(self):
         generalTab = QWidget()
         self.generalLayout = QGridLayout()
 
-        self.photo = Image()
+        self.photo = CoralImage()
 
         self.generalLayout.addWidget(self.photo, 0, 0)
 

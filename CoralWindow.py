@@ -11,7 +11,7 @@ from PyQt5.QtWidgets import *
 from PyQt5.QtCore import *
 from PyQt5.QtGui import *
 
-from Image import *
+from CoralImage import *
 from RecordInfoWindow import *
 from InstructionsWindow import *
 from generalTab import *
@@ -39,19 +39,15 @@ class Coral_Window(QWidget):
         self.count = 0
         self.coordinate_list = []
 
-        # Sample photo & coordinates for view-only tab testing
-        test_image = "IMG-6268.JPG"
-        test_coordinates = "PyQt5.QtCore.QPointF(317.0, 276.0) ; Green | PyQt5.QtCore.QPointF(401.0, 214.0) ; Purple | PyQt5.QtCore.QPointF(452.0, 277.0) ; Yellow"
-        
         # Create the tab widget with two tabs
         self.tabs = QTabWidget()
         self.general_tab = generalTabUI(self)
         self.record_tab = recordTabUI(self)
-        self.view_tab = viewOnlyTabUI(self, test_image, test_coordinates)
+        # self.view_tab = viewOnlyTabUI(self)
 
         self.tabs.addTab(self.general_tab, "Main")
         self.tabs.addTab(self.record_tab, "Record")
-        self.tabs.addTab(self.view_tab, "View")
+        # self.tabs.addTab(self.view_tab, "View")
         layout.addWidget(self.username_Label)
         layout.addWidget(self.tabs)
 
@@ -79,23 +75,17 @@ class Coral_Window(QWidget):
 
         self.zoomin_shortcut.activated.connect(self.photo.zoom_in)
         self.zoomout_shortcut.activated.connect(self.photo.zoom_out)
-
+        
         self.delete_shortcut.activated.connect(self.deleteRow)
         self.tab_shortcut.activated.connect(self.switchTabs)
         
     def switchTabs(self):
-        if self.tabs.isTabEnabled(0):
-            self.tabs.setTabEnabled(1, True)
-            self.tabs.setTabEnabled(0, False)
-            self.tabs.setTabEnabled(2, False)
-        elif self.tabs.isTabEnabled(1):
-            self.tabs.setTabEnabled(2, True)
-            self.tabs.setTabEnabled(0, False)
-            self.tabs.setTabEnabled(1, False)
+        if self.tabs.currentIndex() == (self.tabs.count() - 1):
+            self.tabs.setCurrentIndex(0)
         else:
-            self.tabs.setTabEnabled(0, True)
-            self.tabs.setTabEnabled(1, False)
-            self.tabs.setTabEnabled(2, False)
+            self.tabs.setCurrentIndex(self.tabs.currentIndex() + 1)
+            if self.tabs.currentIndex() == 1:
+                self.DBConnect()
     
     def instruct(self):
         self.w = InstructionsWindow()
@@ -228,31 +218,25 @@ class Coral_Window(QWidget):
            print("Failed To Connect to Database")
 
     def searchRecord(self, search_text):
-        if search_text == "":
-            self.DBConnect()
-        else:
-            # self.DBConnect()
-            # ^ This will ensure it works all the time, but it's very laggy
-            rowsToDelete = []
+        rowsToDelete = []
 
-            for row in range(self.tableWidget.rowCount()):
-                item_name = self.tableWidget.item(row, 2).text().lower()
-                item_file = self.tableWidget.item(row, 0).text().lower()
-                item_date = self.tableWidget.item(row, 3).text().lower()
-                item_notes = self.tableWidget.item(row, 5).text().lower()
+        for row in range(self.tableWidget.rowCount()):
+            item_name = self.tableWidget.item(row, 2).text().lower()
+            item_file = self.tableWidget.item(row, 0).text().lower()
+            item_date = self.tableWidget.item(row, 3).text().lower()
+            item_notes = self.tableWidget.item(row, 5).text().lower()
 
-                if (search_text.lower() not in item_name and search_text.lower() not in item_file 
-                    and search_text.lower() not in item_date and search_text.lower() not in item_notes):
-                        rowsToDelete.append(row)
+            if (search_text.lower() not in item_name and search_text.lower() not in item_file 
+                and search_text.lower() not in item_date and search_text.lower() not in item_notes):
+                    rowsToDelete.append(row)
 
-            # Counter: adjust for the fact that we're removing a row each time
-            counter = 0
-            for row in rowsToDelete:
-                self.tableWidget.removeRow(row-counter)
-                counter += 1
+        # Counter: adjust for the fact that we're removing a row each time
+        counter = 0
+        for row in rowsToDelete:
+            self.tableWidget.removeRow(row-counter)
+            counter += 1
     
     def reopen(self):
-        self.tabs.setCurrentIndex(2)
         try:
             mydb = connectToDatabase()
             
@@ -270,12 +254,17 @@ class Coral_Window(QWidget):
             with open(storefilepath, "wb") as file:
                 file.write(myresult)
                 file.close()
-                
-            im = PIL.Image.open(r"%s" % storefilepath)
-            im.show()
             
+            self.view_tab = viewOnlyTabUI(self, storefilepath, "-")
+            self.tabs.addTab(self.view_tab, "View")
+            self.tabs.setCurrentIndex(2)
+
+            # Finishing steps
             mydb.commit()
             mydb.close()
+
+            if (os.path.exists('NewImage.jpg')):
+                os.remove('NewImage.jpg')
             
         except mydb.Error as e:
            print("Failed To Connect to Database")
