@@ -4,15 +4,13 @@
 # https://stackoverflow.com/questions/60603243/detect-small-dots-in-image 
 
 import sys
+
+from dotenv import load_dotenv
+
 from PyQt5.QtWidgets import *
 from PyQt5.QtCore import *
 from PyQt5.QtGui import *
 
-import cv2 as cv
-import numpy as np
-import mysql.connector
-import os
-from dotenv import load_dotenv
 from connectToDatabase import *
 
 COUNT = 0

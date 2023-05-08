@@ -1,32 +1,25 @@
-import sys
+import platform
+import os
+import os.path
+import PIL.Image
+import pandas as pd
+
+from dotenv import load_dotenv
+from datetime import date
+
 from PyQt5.QtWidgets import *
 from PyQt5.QtCore import *
 from PyQt5.QtGui import *
 
-import platform
-
-import mysql.connector as mc
-import os
-import os.path
-from dotenv import load_dotenv
-import PIL.Image
-from datetime import date, datetime
-import pandas as pd
-import base64
-
-import base64
-import io
-
 from Image import *
-from RecordInfoWindow import RecordInfoWindow
-from InstructionsWindow import InstructionsWindow
-from generalTab import generalTabUI
-from recordTab import recordTabUI
-from viewOnlyTab import viewOnlyTabUI
-from CodeDeleteWindow import CodeDeleteWindow
+from RecordInfoWindow import *
+from InstructionsWindow import *
+from generalTab import *
+from recordTab import *
+from viewOnlyTab import *
+from CodeDeleteWindow import *
 from connectToDatabase import *
-
-from coral_count import count_tentacles_actual, get_count, get_coordinates
+from coral_count import *
 
 # https://www.youtube.com/watch?v=NwvTh-gkdfs 
 
@@ -189,6 +182,9 @@ class Coral_Window(QWidget):
             
             mycursor.execute("SELECT users_code FROM users WHERE users_name = '%s'" % os.getenv('ADMIN'))
             myresult = mycursor.fetchall()
+            
+            print(myresult)
+            print(myresult[0])
 
             str = ''.join(myresult[0])
 

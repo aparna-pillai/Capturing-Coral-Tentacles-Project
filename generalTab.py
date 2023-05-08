@@ -1,10 +1,8 @@
 from PyQt5.QtWidgets import *
 from PyQt5.QtCore import *
 from PyQt5.QtGui import *
-import string
 
 from Image import *
-from InstructionsWindow import InstructionsWindow
 
 def generalTabUI(self):
         # id = QFontDatabase.addApplicationFont("fonts/Montserrat/Montserrat-Regular.ttf")

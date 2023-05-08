@@ -4,16 +4,10 @@
 # https://stackoverflow.com/questions/60603243/detect-small-dots-in-image 
 
 import sys
-from tkinter import mainloop
+
 from PyQt5.QtWidgets import *
 from PyQt5.QtCore import *
 from PyQt5.QtGui import *
-from tkinter import *
-
-import cv2 as cv
-import numpy as np
-from numpy import asarray
-import tkinter as tk
 
 
 COUNT = 0

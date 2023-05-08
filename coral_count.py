@@ -1,9 +1,8 @@
 import os.path
 import shutil
-from PIL import Image
-
 import platform
 
+from PIL import Image
 from yolov5.detect import run
 
 def count_tentacles_actual(img):

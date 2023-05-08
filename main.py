@@ -1,23 +1,11 @@
 import sys
-from tkinter import mainloop
+
 from PyQt5.QtWidgets import *
 from PyQt5.QtCore import *
 from PyQt5.QtGui import *
-from tkinter import *
-from ImageTrial import ImageTrial
 
-
-import cv2 as cv
-import os
-import numpy as np
-from numpy import asarray
-
-from LoginWindow import Login_Window
-from CoralWindow import Coral_Window
-
-
-COUNT = 0
-PATH = ""
+from LoginWindow import *
+from CoralWindow import *
 
 class Capturing_Coral_Manager(QMainWindow):
     

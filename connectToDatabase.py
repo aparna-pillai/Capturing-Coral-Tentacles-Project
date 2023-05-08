@@ -1,5 +1,5 @@
-import mysql.connector as mc
 import os
+import mysql.connector as mc
 
 # function
 def connectToDatabase():

@@ -1,8 +1,8 @@
-from PhotoLabel import PhotoLabel
-
 from PyQt5.QtWidgets import *
 from PyQt5.QtCore import *
 from PyQt5.QtGui import *
+
+from PhotoLabel import *
 
 class Image(QWidget):
     

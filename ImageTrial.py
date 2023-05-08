@@ -1,18 +1,8 @@
-import sys
-
-from PhotoLabel import PhotoLabel
-
 from PyQt5.QtWidgets import *
 from PyQt5.QtCore import *
 from PyQt5.QtGui import *
-from PyQt5 import QtCore
-from PyQt5.QtWidgets import QApplication, QGraphicsView, QGraphicsScene, QGraphicsEllipseItem
-from tkinter import *
 
-from PIL import Image, ImageTk
-
-import cv2 as cv
-import numpy as np
+from PhotoLabel import PhotoLabel
 
 class ImageTrial(QWidget):
     

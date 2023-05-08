@@ -1,6 +1,5 @@
-import sys
-from PyQt5.QtWidgets import QApplication, QGraphicsView, QGraphicsScene, QGraphicsEllipseItem
-from PyQt5.QtCore import Qt, QPointF
+from PyQt5.QtWidgets import *
+from PyQt5.QtCore import *
 
 
 class MovingObject(QGraphicsEllipseItem):
