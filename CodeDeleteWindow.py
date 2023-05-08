@@ -22,6 +22,7 @@ class CodeDeleteWindow(QWidget):
 
         self.submitButtonLogin = QPushButton("Submit")
         self.generalLayout.addWidget(self.submitButtonLogin, 1, 0)
+        self.submit_shortcut = QShortcut(Qt.Key_Return, self)
 
         self.setLayout(self.generalLayout)
 

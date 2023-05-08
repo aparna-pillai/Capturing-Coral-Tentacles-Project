@@ -76,7 +76,7 @@ class Coral_Window(QWidget):
         self.zoomin_shortcut.activated.connect(self.photo.zoom_in)
         self.zoomout_shortcut.activated.connect(self.photo.zoom_out)
         
-        self.delete_shortcut.activated.connect(self.deleteRow)
+        self.delete_shortcut.activated.connect(self.codeBeforeDeleteRow)
         self.tab_shortcut.activated.connect(self.switchTabs)
         
     def switchTabs(self):
@@ -120,6 +120,8 @@ class Coral_Window(QWidget):
                     self.codeDelete.setGeometry(int(self.frameGeometry().width()/2) - 150, int(self.frameGeometry().height()/2) - 150, 300, 300)
                     self.codeDelete.show()
                     self.codeDelete.submitButtonLogin.clicked.connect(lambda: self.deleteRow(currentRow, filenameForQuery, cell))
+
+                    self.codeDelete.submit_shortcut.activated.connect(lambda: self.deleteRow(currentRow, filenameForQuery, cell))
                     #self.login.submit_shortcut.activated.connect(self.gatheringInfo)
                     
                 else:
@@ -302,10 +304,12 @@ class Coral_Window(QWidget):
 
             df = pd.DataFrame(dictionary)
             if platform.system() == 'Windows':
-                df.to_csv("C:\\temp\CountEntries.csv", na_rep="None")
+                df.to_csv("C:\\temp\CoralCountEntries.csv", na_rep="None")
             else:
-                df.to_csv(os.path.expanduser("~/Desktop/CountEntries.csv"))
-            QMessageBox.about(self, "Warning", "Check your desktop for the csv file!")
+                df.to_csv(os.path.expanduser("~/Desktop/CoralCountEntries.csv"))
+            QMessageBox.about(self, "Notice", 
+                              """Check your desktop for the csv file!\n
+                              (Windows: See temp folder in C: drive)""")
             mydb.close()
         except mydb.Error as e:
            print("Failed To Connect to Database")
@@ -328,41 +332,41 @@ class Coral_Window(QWidget):
         return binaryData
             
     def gatheringInfo(self):  
-            try:
-                mydb = connectToDatabase()
-                
-                    
-                mycursor = mydb.cursor()
-                        
-                for i, marker in enumerate(self.photo.markers):
-                    self.coordinate_list.append(
-                        str(marker.scenePos()) + ' ; ' + str(self.photo.marker_colors[i])
-                    )
-
-                coordstring = ' | '.join(self.coordinate_list)
-
-                with open(self.photo.get_path(), "rb") as file:
-                    binaryData = file.read()       
-                                            
-                mycursor.execute(
-                    "INSERT INTO image_info VALUES (%s, %s, %s, %s, %s, %s, %s)", 
-                    (
-                        self.photo.get_filename(), self.photo.marker_count, 
-                        self.username, date.today(), 
-                        coordstring, self.g.get_notes(), binaryData
-                    )
-                )
-                
-                self.tableWidget.resizeRowsToContents()
+        try:
+            mydb = connectToDatabase()
             
-                mydb.commit()
                 
-                self.DBConnect()
-                self.g.close()
-                mydb.close()
-                
-            except mydb.Error as e:
-                print("Failed To Connect to Database")
+            mycursor = mydb.cursor()
+                    
+            for i, marker in enumerate(self.photo.markers):
+                self.coordinate_list.append(
+                    str(marker.scenePos()) + ' ; ' + str(self.photo.marker_colors[i])
+                )
+
+            coordstring = ' | '.join(self.coordinate_list)
+
+            with open(self.photo.get_path(), "rb") as file:
+                binaryData = file.read()       
+                                        
+            mycursor.execute(
+                "INSERT INTO image_info VALUES (%s, %s, %s, %s, %s, %s, %s)", 
+                (
+                    self.photo.get_filename(), self.photo.marker_count, 
+                    self.username, date.today(), 
+                    coordstring, self.g.get_notes(), binaryData
+                )
+            )
+            
+            self.tableWidget.resizeRowsToContents()
+        
+            mydb.commit()
+            
+            self.DBConnect()
+            self.g.close()
+            mydb.close()
+            
+        except mydb.Error as e:
+            print("Failed To Connect to Database")
 
     def countTentacles(self):
         if (self.photo.get_filename() == ""):

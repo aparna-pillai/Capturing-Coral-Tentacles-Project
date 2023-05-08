@@ -13,6 +13,8 @@ def generalTabUI(self):
         self.generalLayout = QGridLayout()
 
         self.photo = CoralImage()
+        self.photo.view.setFixedWidth(800)
+        self.photo.view.setFixedHeight(500)
 
         self.generalLayout.addWidget(self.photo, 0, 0)
 
