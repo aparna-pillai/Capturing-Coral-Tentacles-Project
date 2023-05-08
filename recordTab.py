@@ -55,10 +55,6 @@ def recordTabUI(self):
     layout.addLayout(self.searchGridLayout, 0, 0)
     layout.addWidget(self.directions, 1, 0)
     layout.addWidget(self.tableWidget, 2, 0)
-
-    # self.btnLoad = QPushButton("Load")
-    # load_dotenv('config.env')
-    # self.btnLoad.clicked.connect(self.DBConnect)
     
     load_dotenv('config.env')
     self.DBConnect()
@@ -78,7 +74,6 @@ def recordTabUI(self):
     self.exportButton.clicked.connect(self.export)
 
     self.smGridLayout = QGridLayout()
-    #self.smGridLayout.addWidget(self.btnLoad, 0, 0)
     self.smGridLayout.addWidget(self.btnDelete, 0, 0)
     self.smGridLayout.addWidget(self.btnDeleteAll, 1, 0)
     self.smGridLayout.addWidget(self.btnReopen, 2, 0)

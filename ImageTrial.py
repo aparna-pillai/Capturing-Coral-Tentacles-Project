@@ -14,8 +14,6 @@ from PIL import Image, ImageTk
 import cv2 as cv
 import numpy as np
 
-#photo_path = ""
-
 class ImageTrial(QWidget):
     
     def __init__(self):
@@ -36,8 +34,7 @@ class ImageTrial(QWidget):
         self.file = ""
         
         grid = QGridLayout(self)
-        #basewidth = 100
-        #img = Image.open(self.photo)
+
         grid.addWidget(btn, 0, 0, Qt.AlignTop)
         
         grid.addWidget(self.photo, 1, 0)
@@ -76,8 +73,6 @@ class ImageTrial(QWidget):
             self.path = str(filename)
             url = QUrl.fromLocalFile(filename)
             self.file = QFileInfo(filename).fileName()
-            #path = str(filename)
-            #print("Hello: " + self.path)
         
         self.pix = QPixmap(filename)
         self.scene.clear()
@@ -86,7 +81,6 @@ class ImageTrial(QWidget):
 
         self.photo.setPixmap(self.pix.scaledToHeight(625, Qt.FastTransformation))
        
-        #self.path = str(photo_path)
         
     def add_marker(self):
         ellipse = QGraphicsEllipseItem(0, 0, 15, 15)

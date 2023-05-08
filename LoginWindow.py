@@ -7,6 +7,8 @@ import mysql.connector as mc
 import os
 import time
 
+from connectToDatabase import *
+
 class Login_Window(QWidget):
     
     def __init__(self):
@@ -60,20 +62,11 @@ class Login_Window(QWidget):
         try:
             self.enteredUsername = self.userTextBox.text()
             self.enteredCode = self.codeTextBox.text()
-            # print(self.enteredUsername, self.enteredCode)
             
-            mydb = mc.connect(
-                host = os.environ.get('HOST'),
-                user = os.getenv('NAME'),
-                password = os.getenv('PASSWORD'),
-                database = os.getenv('DATABASE')
-            )
+            mydb = connectToDatabase()
+            
             mycursor = mydb.cursor()
 
-            # mycursor.execute("SELECT users_code FROM users WHERE users_name = '%s'" % self.enteredUsername)
-            # myresult = mycursor.fetchall()
-            
-            # mycursor = mydb.cursor()
             sql =  "SELECT users_name, users_code FROM users WHERE users_name = '%s'" % self.enteredUsername
             mycursor.execute(sql)
             myresult1 = mycursor.fetchall()
@@ -82,28 +75,19 @@ class Login_Window(QWidget):
                 self.deniedLabel.setText(self.error_messages[0])
                 self.deniedLabel.show()
                 
-                # QMessageBox.about(self, "Warning", "Incorrect username or code. Try Again")
-                # mydb.close()
             else:
                 print(myresult1)
                 print(myresult1[0])
-                #print(myresult1[1])
                 code = ''.join(myresult1[0])
                
                 mydb.close()
 
                 print(code)
                 print(code[-10:])
-                #print(self.g.get_code())
+
                 if self.enteredCode == code[-10:]:
-                    # print(code)
-                    # mycursor.execute("SELECT users_name FROM users WHERE users_code = '%s'" % code)
-                    # myresult1 = mycursor.fetchall()
-                    # name = ''.join(myresult1[0])
-                    # print(code[:-10])
                     return code[:-10]
                 else:
-                    # QMessageBox.about(self, "Warning", "Incorrect username or code. Try Again")
                     self.deniedLabel.setText(self.error_messages[1])
                     self.deniedLabel.show()
 

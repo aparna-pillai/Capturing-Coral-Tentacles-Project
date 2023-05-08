@@ -24,10 +24,11 @@ from generalTab import generalTabUI
 from recordTab import recordTabUI
 from viewOnlyTab import viewOnlyTabUI
 from CodeDeleteWindow import CodeDeleteWindow
+from connectToDatabase import *
 
 from coral_count import count_tentacles_actual, get_count, get_coordinates
 
-# https://www.geeksforgeeks.org/retrieve-image-and-file-stored-as-a-blob-from-mysql-table-using-python/ 
+# https://www.youtube.com/watch?v=NwvTh-gkdfs 
 
 class Coral_Window(QWidget):
     
@@ -36,8 +37,6 @@ class Coral_Window(QWidget):
         self.setWindowTitle("Capturing Coral Tentacles")
         
         self.username = username
-        
-        print(self.username)
         
         self.username_Label = QLabel("Welcome " + self.username.upper() + "!")
                 
@@ -118,7 +117,6 @@ class Coral_Window(QWidget):
         if self.tableWidget.rowCount() > 0:
             currentRow = self.tableWidget.currentRow()
             item = self.tableWidget.selectedItems()
-            print(item)
             if (len(item) < 1):
                 QMessageBox.about(self, "Warning", "Please select an entry to delete.")
             else:             
@@ -131,7 +129,6 @@ class Coral_Window(QWidget):
                         headertext = self.tableWidget.horizontalHeaderItem(x).text()
                         if headertext == "NAME OF PERSON":
                             cell = self.tableWidget.item(currentRow, x).text()  # get cell at row, col
-                            print(cell)
                             
             
                     filenameForQuery = item[0].text()
@@ -146,28 +143,16 @@ class Coral_Window(QWidget):
                     question.close()
     
                     
-    def deleteRow(self, currentRow, filenameForQuery, cell):
-        
-        print("seven malicious hats")
-        print(currentRow)
-        print(filenameForQuery)
-        print(cell)
-        
+    def deleteRow(self, currentRow, filenameForQuery, cell):        
         try:
-            mydb = mc.connect(
-                host=os.environ.get('HOST'),
-                user = os.getenv('NAME'),
-                password=os.getenv('PASSWORD'), 
-                database=os.getenv('DATABASE')             
-            )
+            mydb = connectToDatabase()
             mycursor = mydb.cursor()
             
             mycursor.execute("SELECT users_code FROM users WHERE users_name = '%s'" % cell)
             myresult = mycursor.fetchall()
-            print(myresult)
-            print(myresult[0])
+
             str = ''.join(myresult[0])
-            print(str)
+
             if (self.codeDelete.codeTextBox.text() == str):
                 sql_delete = "DELETE FROM image_info WHERE filename = %s"
                 sql_data = (filenameForQuery,)
@@ -198,25 +183,15 @@ class Coral_Window(QWidget):
             question.close()
                 
     def deleteAllRows(self):
-        # question = QMessageBox()
-        # response = question.question(self,'', "Are you sure you want to delete ALL the rows?", question.Yes | question.No)
-                
-        # if response == question.Yes:
         try:
-            mydb = mc.connect(
-                host=os.environ.get('HOST'),
-                user = os.getenv('NAME'),
-                password=os.getenv('PASSWORD'), 
-                database=os.getenv('DATABASE')             
-            )
+            mydb = connectToDatabase()
             mycursor = mydb.cursor()
             
             mycursor.execute("SELECT users_code FROM users WHERE users_name = '%s'" % os.getenv('ADMIN'))
             myresult = mycursor.fetchall()
-            print(myresult)
-            print(myresult[0])
+
             str = ''.join(myresult[0])
-            print(str)
+
             if (self.codeDeleteAllWindow.codeTextBox.text() == str):
                 mycursor.execute("DELETE FROM image_info")
             
@@ -233,17 +208,12 @@ class Coral_Window(QWidget):
                 
         except mydb.Error as e:
             print("Failed To Connect to Database")
-        #self.tableWidget.removeRow(currentRow)
+
         
     
     def DBConnect(self):
         try:
-            mydb = mc.connect(
-                host=os.environ.get('HOST'),
-                user=os.getenv('NAME'),
-                password=os.getenv('PASSWORD'), 
-                database=os.getenv('DATABASE')             
-            )
+            mydb = connectToDatabase()
             
             mycursor = mydb.cursor()
 
@@ -291,24 +261,16 @@ class Coral_Window(QWidget):
     def reopen(self):
         self.tabs.setCurrentIndex(2)
         try:
-            mydb = mc.connect(
-                host=os.environ.get('HOST'),
-                user = os.getenv('NAME'),
-                password=os.getenv('PASSWORD'), 
-                database=os.getenv('DATABASE')             
-            )
+            mydb = connectToDatabase()
+            
             mycursor = mydb.cursor()
             
             item = self.tableWidget.selectedItems()
             filenameForQuery = item[0].text()
-            print(filenameForQuery)
             
             mycursor.execute("SELECT * FROM image_info WHERE filename='%s'" % filenameForQuery)
             
             myresult = mycursor.fetchone()[6]
-            print(myresult)
-            print("hope needed")
-            #print(myresult[0])
 
             storefilepath = "NewImage.jpg".format(str(filenameForQuery))
             
@@ -324,27 +286,10 @@ class Coral_Window(QWidget):
             
         except mydb.Error as e:
            print("Failed To Connect to Database")
-        
-        #print(os.path.abspath(item[0].text()))
-        #self.photo.reopen_image(os.path.abspath(item[0].text()))
-        #self.general_tab.pix = QPixmap(item[0].text())
-        # self.smaller_pixmap = self.pix.scaled(self.view.width(), self.view.height())
-        # self.scene.clear()
-        # self.scene.addPixmap(self.smaller_pixmap)
-        # self.filenameDisplay.setText("{0}".format(self.get_filename()))
-        # self.reopenedImage = Image()
-        # self.gempix = QPixmap(filename)
-        # self.reopenedImage.open_image(item[0].text())
-        
-            
+                    
     def export(self):
         try:
-            mydb = mc.connect(
-                host=os.environ.get('HOST'),
-                user=os.getenv('NAME'),
-                password=os.getenv('PASSWORD'), 
-                database=os.getenv('DATABASE')             
-            )
+            mydb = connectToDatabase()
             
             mycursor = mydb.cursor()
 
@@ -402,35 +347,20 @@ class Coral_Window(QWidget):
             
     def gatheringInfo(self):  
             try:
-                mydb = mc.connect(
-                    host=os.environ.get('HOST'),
-                    user=os.getenv('NAME'),
-                    password=os.getenv('PASSWORD'), 
-                    database=os.getenv('DATABASE')             
-                )
+                mydb = connectToDatabase()
                 
                     
                 mycursor = mydb.cursor()
                         
                 for i, marker in enumerate(self.photo.markers):
-                    print(marker.scenePos())
                     self.coordinate_list.append(
                         str(marker.scenePos()) + ' ; ' + str(self.photo.marker_colors[i])
                     )
 
                 coordstring = ' | '.join(self.coordinate_list)
-                print(coordstring)
-                
-                print("hey")
-                print(self.photo.get_path())
 
                 with open(self.photo.get_path(), "rb") as file:
-                    binaryData = file.read()
-                #actual_photo = open(self.photo.get_path(),'rb').read()        
-                
-                #empPicture = self.convertToBinaryData(self.photo.get_path()) 
-                
-                #actual_photo = base64.b64encode(actual_photo)            
+                    binaryData = file.read()       
                                             
                 mycursor.execute(
                     "INSERT INTO image_info VALUES (%s, %s, %s, %s, %s, %s, %s)", 

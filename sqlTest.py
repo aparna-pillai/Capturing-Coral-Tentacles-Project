@@ -13,6 +13,7 @@ import numpy as np
 import mysql.connector
 import os
 from dotenv import load_dotenv
+from connectToDatabase import *
 
 COUNT = 0
 PATH = ""
@@ -137,11 +138,7 @@ class Window(QWidget):
     def DBConnect(self):
          
         try:
-            mydb = mysql.connector.connect(
-                host=os.environ.get('HOST'),
-                user=os.environ.get('NAME'),
-                password=os.getenv('PASSWORD')               
-            )
+            mydb = connectToDatabase()
             QMessageBox.about(self, "Connection", "Database Connected Successfully")
             print(mydb)
         

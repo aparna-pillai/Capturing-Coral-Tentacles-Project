@@ -39,8 +39,6 @@ class RecordInfoWindow(QWidget):
         layout.addLayout(self.dateGridLayout, 2, 0)
         layout.addWidget(self.submitButton, 3, 0)
         
-        # print(self.name_of_person_Display.text())
-        
         self.setLayout(layout)
      
     def get_name(self):
