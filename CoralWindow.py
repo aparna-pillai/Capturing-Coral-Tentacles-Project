@@ -182,9 +182,6 @@ class Coral_Window(QWidget):
             
             mycursor.execute("SELECT users_code FROM users WHERE users_name = '%s'" % os.getenv('ADMIN'))
             myresult = mycursor.fetchall()
-            
-            print(myresult)
-            print(myresult[0])
 
             str = ''.join(myresult[0])
 

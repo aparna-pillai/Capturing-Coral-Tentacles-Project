@@ -37,8 +37,6 @@ class Capturing_Coral_Manager(QMainWindow):
     def moveToNextScreen(self):
         if (self.login.check_code_on_initial_login() != None):
             self.username = self.login.check_code_on_initial_login()
-            print("ok")
-            print(self.username)
             self.generalLayout.removeWidget(self.login)
             self.login.hide()
             self.main = Coral_Window(self.username)

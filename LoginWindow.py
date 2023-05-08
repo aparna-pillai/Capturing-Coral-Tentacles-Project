@@ -24,7 +24,6 @@ class Login_Window(QWidget):
         self.codeTextBox.setEchoMode(QLineEdit.Password)
 
         self.deniedLabel = QLabel("")
-        print(self.deniedLabel.text())
         self.deniedLabel.hide() # Only show if the code is incorrect
 
         self.enteredUsername = ""
@@ -71,14 +70,9 @@ class Login_Window(QWidget):
                 self.deniedLabel.show()
                 
             else:
-                print(myresult1)
-                print(myresult1[0])
                 code = ''.join(myresult1[0])
                
                 mydb.close()
-
-                print(code)
-                print(code[-10:])
 
                 if self.enteredCode == code[-10:]:
                     return code[:-10]

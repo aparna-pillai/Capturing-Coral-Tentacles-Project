@@ -100,4 +100,3 @@ class ImageTrial(QWidget):
     def print_markers(self):
         for marker in self.markers:
             self.list.append("({}, {})".format(marker.x(), marker.y()))
-        print(self.list) 

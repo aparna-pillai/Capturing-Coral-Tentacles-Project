@@ -138,7 +138,6 @@ class Window(QWidget):
         try:
             mydb = connectToDatabase()
             QMessageBox.about(self, "Connection", "Database Connected Successfully")
-            print(mydb)
         
         except mydb.Error as e:
             QMessageBox.about(self, "Connect", "Failed To Connect to Database")
