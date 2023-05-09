@@ -76,7 +76,28 @@ class CoralImage(QWidget):
             "Purple": QColor(219, 0, 255), "Pink": QColor(245, 66, 164), "Black": Qt.black, 
             "White": Qt.white
         }
+        
+        
+        
+        # self.color_btn = QToolButton()
+        # self.color_btn.setText("Change Color")
+        # self.color_menu = QMenu()
+        # self.color_btn.setMenu(self.color_menu)
 
+        # self.colors = ["Yellow", "Red", "Blue", "Green"]
+        # for color in self.colors:
+        #     action = QAction(color, self)
+        #     action.triggered.connect(lambda: self.change_color(color))
+        #     self.color_menu.addAction(action)
+
+        # self.color_btn.clicked.connect(self.color_menu.show)
+        
+        self.colorChange_Label = QLabel("Change Color of Selected Marker: ")
+        self.colorChange = QComboBox()
+        self.colorChange.addItems(["Red", "Orange", "Yellow", "Green", "Blue", "Purple", "Pink", "Black", "White"])
+        
+        self.colorChange.activated[str].connect(self.change_color)
+        
         # Keyboard shortcuts
         self.browse_shortcut = QShortcut(QKeySequence("Ctrl+O"), self)
         self.browse_shortcut.activated.connect(self.open_image)
@@ -160,12 +181,7 @@ class CoralImage(QWidget):
             self.marker_colors.pop(len(self.markers) - 1)
             self.marker_count -= 1
 
-    def change_color(self, color):
-        brush_color = self.color_dict[color]
-        for i, marker in enumerate(self.markers):
-            if marker.isSelected():
-                marker.setBrush(QBrush(brush_color))
-                self.marker_colors[i] = color
+
 
         # Clear the drop-down menu and add the color options agai(n)
 
@@ -174,6 +190,42 @@ class CoralImage(QWidget):
 
     def zoom_out(self):
         self.view.scale(1/1.2, 1/1.2)
+        
+    def change_color(self, color):
+        print(color)
+        print(self.colorChange.currentText())
+        brush_color = None
+        if color == "Red":
+            brush_color = Qt.red
+        elif color == "Orange":
+            brush_color = QColor(255, 137, 0)
+        elif color == "Yellow":
+            brush_color = Qt.yellow
+        elif color == "Green":
+            brush_color = Qt.green
+        elif color == "Blue":
+            brush_color = Qt.blue
+        elif color == "Purple":
+            brush_color = QColor(219, 0, 255)
+        elif color == "Pink":
+            brush_color = QColor(245, 66, 164)
+        elif color == "Black":
+            brush_color = Qt.black
+        elif color == "White":
+            brush_color = Qt.white
+                
+        if brush_color:
+            for marker in self.markers:
+                if marker.isSelected():
+                    marker.setBrush(QBrush(brush_color))
+
+        # self.color_menu.clear()
+        # colors = ["Yellow", "Red", "Blue", "Green"]
+        # for color in colors:
+        #     action = QAction(color, self)
+        #     action.triggered.connect(lambda: self.change_color(color))
+        #     self.color_menu.addAction(action)
+
 
 
     

@@ -52,30 +52,6 @@ def generalTabUI(self):
         self.undoMarkerButton.clicked.connect(self.photo.undo_last_marker)
         self.undoMarkerButton.clicked.connect(self.updateMarkerCount)
 
-        self.changeColorButton = QToolButton()
-        self.changeColorButton.setText("Change Color\t")
-        # self.changeColorButton.setFont(QFont(montserrat_font))
-        
-        self.color_menu = QMenu()
-        # self.color_menu.setFont(QFont(montserrat_font))
-        self.changeColorButton.setMenu(self.color_menu)
-
-        # Add different color options to the drop-down menu
-        self.colors = ["Red", "Orange", "Yellow", "Green", "Blue", "Purple", "Pink", "Black", "White"]
-        for color in self.colors:
-            action = QAction(color, self)
-            action.triggered.connect(lambda _, color=color: self.photo.change_color(color))
-            self.color_menu.addAction(action)
-
-        self.changeColorButton.clicked.connect(self.color_menu.show)
-
-        self.color_menu.clear()
-        colors = ["Red", "Orange", "Yellow", "Green", "Blue", "Purple", "Pink", "Black", "White"]
-        for color in colors:
-            action = QAction(color, self)
-            action.triggered.connect(lambda _, color=color: self.photo.change_color(color))
-            self.color_menu.addAction(action)
-
         self.photo.view.setDragMode(QGraphicsView.ScrollHandDrag)
         self.photo.view.setRenderHint(QPainter.Antialiasing)
         self.photo.view.setRenderHint(QPainter.SmoothPixmapTransform)
@@ -103,16 +79,23 @@ def generalTabUI(self):
         self.smallGridLayout.addLayout(self.smallerGridLayout, 3, 0)
         self.smallGridLayout.addWidget(self.removeMarkerButton, 4, 0)
         self.smallGridLayout.addWidget(self.undoMarkerButton, 5, 0)
-        self.smallGridLayout.addWidget(self.changeColorButton, 6, 0)
-
-        self.smallGridLayout.addWidget(self.zoomInButton, 7, 0)
-        self.smallGridLayout.addWidget(self.zoomOutButton, 8, 0)
-
+        self.smallGridLayout.addWidget(self.zoomInButton, 6, 0)
+        self.smallGridLayout.addWidget(self.zoomOutButton, 7, 0)
+        
+        self.smallestGridLayout = QGridLayout()
+        self.smallestGridLayout.addWidget(self.photo.colorChange_Label, 0, 0)
+        self.smallestGridLayout.addWidget(self.photo.colorChange, 0, 1)
+        #self.smallGridLayout.addWidget(self.photo.color_menu, 9, 0)
+        
         self.generalLayout.addLayout(self.smallGridLayout, 0, 1)
-
+        self.generalLayout.addLayout(self.smallestGridLayout, 1, 1)
         
         # Stylesheets
         self.countLabel.setStyleSheet(
+            "color: #112d4e;"
+        )
+        
+        self.photo.colorChange_Label.setStyleSheet(
             "color: #112d4e;"
         )
         
@@ -159,7 +142,7 @@ def generalTabUI(self):
             "background-color : #00adb5;"
         )
 
-        self.changeColorButton.setStyleSheet(
+        self.photo.colorChange.setStyleSheet(
             "border: 3px solid;"
             "border-top-color: #00adb5;"
             "border-left-color: #00adb5;"
@@ -195,4 +178,26 @@ def generalTabUI(self):
         generalTab.setLayout(self.generalLayout)
         return generalTab
     
+# def change_color(self, color):
+#     brush_color = None
+#     if color == "Yellow":
+#         brush_color = Qt.yellow
+#     elif color == "Red":
+#         brush_color = Qt.red
+#     elif color == "Blue":
+#         brush_color = Qt.blue
+#     elif color == "Green":
+#         brush_color = Qt.green
+
+#     if brush_color:
+#         for marker in self.markers:
+#             if marker.isSelected():
+#                 marker.setBrush(QBrush(brush_color))
+
+#     self.color_menu.clear()
+#     self.colors = ["Red", "Orange", "Yellow", "Green", "Blue", "Purple", "Pink", "Black", "White"]
+#     for color in self.colors:
+#         action = QAction(color, self)
+#         action.triggered.connect(lambda _, color=color: self.change_color(color))
+#         self.color_menu.addAction(action)
     
