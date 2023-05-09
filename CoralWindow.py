@@ -274,7 +274,7 @@ class Coral_Window(QWidget):
                 self.tabs.setCurrentIndex(0)
                     
             # Finishing steps
-            mydb.commit()
+            #mydb.commit()
             mydb.close()
             
         except mydb.Error as e:
