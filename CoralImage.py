@@ -89,6 +89,9 @@ class CoralImage(QWidget):
         )
 
     def open_image(self, filename=None):
+        self.marker_count = 0
+        self.markers.clear()
+
         if not filename:
             filename, _ = QFileDialog.getOpenFileName(self, 'Select Photo', QDir.currentPath(), 'Images (*.png *.jpg)')
             if not filename:

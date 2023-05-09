@@ -18,6 +18,9 @@ def generalTabUI(self):
 
         self.generalLayout.addWidget(self.photo, 0, 0)
 
+        self.photo.browse_btn.clicked.connect(self.clearOldCoordinates)
+        self.photo.browse_shortcut.activated.connect(self.clearOldCoordinates)
+
         self.g = None
         self.w = None
         

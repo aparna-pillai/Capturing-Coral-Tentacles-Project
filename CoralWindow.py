@@ -262,19 +262,25 @@ class Coral_Window(QWidget):
                 file.close()
             
             if (ownerName != self.username):
+                self.closeViewOnlyTab()
+
                 self.view_tab = viewOnlyTabUI(self, filenameForQuery, coordinates, ownerName)
-                self.tabs.addTab(self.view_tab, "View")
+                self.tabs.addTab(self.view_tab, "View - " + ownerName + ", " + filenameForQuery)
                 self.tabs.setCurrentIndex(2)
 
                 if (os.path.exists(filenameForQuery)):
                     os.remove(filenameForQuery)
             else:
                 self.photo.open_image(filename=filenameForQuery)
+
+                self.photo.marker_count = 0
+                self.updateMarkerCount()
+                self.photo.markers.clear()
+                self.coordinate_list.clear()
+
                 placeLoadedCoordinates(coordinates.split("|"), self.photo)
                 self.tabs.setCurrentIndex(0)
-                    
-            # Finishing steps
-            #mydb.commit()
+
             mydb.close()
             
         except mydb.Error as e:
@@ -421,6 +427,10 @@ class Coral_Window(QWidget):
             y = QMouseEvent.pos().y()
             self.photo.add_marker(x-45, y-125, "Yellow")
             self.updateMarkerCount()
+
+    def clearOldCoordinates(self):
+        self.coordinate_list.clear()
+        self.updateMarkerCount()
 
     def closeViewOnlyTab(self):
         if self.tabs.count() == 3:

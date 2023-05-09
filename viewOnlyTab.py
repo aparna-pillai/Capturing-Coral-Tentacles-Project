@@ -24,6 +24,11 @@ def viewOnlyTabUI(self, load_image, load_coordinates, owner_name):
     self.view_photo = CoralImage(isViewOnly=True)
     self.view_photo.browse_btn.setEnabled(False)
 
+    self.view_photo.marker_count = 0
+    self.updateMarkerCount()
+    self.view_photo.markers.clear()
+    self.coordinate_list.clear()
+
     self.view_photo.open_image(filename=self.loadImageName)
     self.view_photo.imageOwnerDisplay.setText("{0}".format(self.ownerName))
 
