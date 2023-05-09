@@ -78,6 +78,8 @@ class Coral_Window(QWidget):
         
         self.delete_shortcut.activated.connect(self.codeBeforeDeleteRow)
         self.tab_shortcut.activated.connect(self.switchTabs)
+
+        self.tableWidget.doubleClicked.connect(self.reopen)
         
     def switchTabs(self):
         if self.tabs.currentIndex() == (self.tabs.count() - 1):
@@ -256,6 +258,7 @@ class Coral_Window(QWidget):
             myresult = mycursor.fetchone()[6]
             ownerName = self.tableWidget.item(row, 2).text()
             coordinates = self.tableWidget.item(row, 4).text()
+            ownerNotes = self.tableWidget.item(row, 5).text()
 
             with open(filenameForQuery, "wb") as file:
                 file.write(myresult)
@@ -264,7 +267,7 @@ class Coral_Window(QWidget):
             if (ownerName != self.username):
                 self.closeViewOnlyTab()
 
-                self.view_tab = viewOnlyTabUI(self, filenameForQuery, coordinates, ownerName)
+                self.view_tab = viewOnlyTabUI(self, filenameForQuery, coordinates, ownerName, ownerNotes)
                 self.tabs.addTab(self.view_tab, "View - " + ownerName + ", " + filenameForQuery)
                 self.tabs.setCurrentIndex(2)
 
@@ -279,6 +282,7 @@ class Coral_Window(QWidget):
                 self.coordinate_list.clear()
 
                 placeLoadedCoordinates(coordinates.split("|"), self.photo)
+                self.updateMarkerCount()
                 self.tabs.setCurrentIndex(0)
 
             mydb.close()

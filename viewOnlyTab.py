@@ -8,7 +8,7 @@ from PyQt5.QtGui import *
 
 from CoralImage import *
 
-def viewOnlyTabUI(self, load_image, load_coordinates, owner_name):
+def viewOnlyTabUI(self, load_image, load_coordinates, owner_name, owner_notes):
     # id = QFontDatabase.addApplicationFont("fonts/Montserrat/Montserrat-Regular.ttf")
     # families = QFontDatabase.applicationFontFamilies(id)
     # montserrat_font = families[0]
@@ -34,14 +34,6 @@ def viewOnlyTabUI(self, load_image, load_coordinates, owner_name):
 
     placeLoadedCoordinates(self.coordList, self.view_photo)
 
-    # for point in self.coordList:
-    #     color = point.split(";")[1].strip()
-    #     coord = point.split(";")[0].strip()
-    #     point_x = float(coord.split(",")[0].strip())
-    #     point_y = float(coord.split(",")[1].strip())
-
-    #     self.view_photo.add_marker(point_x, point_y, color)
-
     self.generalLayout.addWidget(self.view_photo, 0, 0)
 
     self.view_photo.view.setFixedWidth(800)
@@ -57,10 +49,20 @@ def viewOnlyTabUI(self, load_image, load_coordinates, owner_name):
     self.closeTabButton = QPushButton('Close Tab')
     self.closeTabButton.clicked.connect(self.closeViewOnlyTab)
 
+    self.countLabel = QLabel("Tentacle Count:")
+    self.countDisplay = QLineEdit("{0}".format(int(self.photo.get_marker_count())))
+    self.countGridLayout = QGridLayout()
+    self.countGridLayout.addWidget(self.countLabel, 0, 0)
+    self.countGridLayout.addWidget(self.countDisplay, 0, 1)
+
+    self.notesLabel = QLabel("Notes:")
+    self.notesDisplay = QLineEdit(owner_notes)
+    self.notesGridLayout = QGridLayout()
+    self.notesGridLayout.addWidget(self.notesLabel, 0, 0)
+    self.notesGridLayout.addWidget(self.notesDisplay, 0, 1)
+
     self.zoomInButton = QPushButton('Zoom In')
     self.zoomOutButton = QPushButton('Zoom Out')
-    # self.zoomInButton.setFont(QFont(montserrat_font))
-    # self.zoomOutButton.setFont(QFont(montserrat_font))
     self.zoomInButton.clicked.connect(self.view_photo.zoom_in)
     self.zoomOutButton.clicked.connect(self.view_photo.zoom_out)
 
@@ -70,11 +72,13 @@ def viewOnlyTabUI(self, load_image, load_coordinates, owner_name):
     self.smallGridLayout.addWidget(self.zoomInButton, 0, 0)
     self.smallGridLayout.addWidget(self.zoomOutButton, 0, 1)
 
-    self.allButtonsGridLayout = QGridLayout()
-    self.allButtonsGridLayout.addWidget(self.closeTabButton, 0, 0)
-    self.allButtonsGridLayout.addLayout(self.smallGridLayout, 1, 0)
+    self.rightGridLayout = QGridLayout()
+    self.rightGridLayout.addWidget(self.closeTabButton, 0, 0)
+    self.rightGridLayout.addLayout(self.countGridLayout, 1, 0)
+    self.rightGridLayout.addLayout(self.notesGridLayout, 2, 0)
+    self.rightGridLayout.addLayout(self.smallGridLayout, 3, 0)
 
-    self.generalLayout.addLayout(self.allButtonsGridLayout, 0, 1)
+    self.generalLayout.addLayout(self.rightGridLayout, 0, 1)
 
     
     # Stylesheets
@@ -100,6 +104,13 @@ def viewOnlyTabUI(self, load_image, load_coordinates, owner_name):
 
     self.setStyleSheet(
         "QLabel {color: blue;}"
+    )
+
+    self.countDisplay.setStyleSheet(
+        "border: none;"
+    )
+    self.notesDisplay.setStyleSheet(
+        "border: none;"
     )
 
     viewOnlyTab.setLayout(self.generalLayout)
