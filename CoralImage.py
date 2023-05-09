@@ -4,9 +4,12 @@ from PyQt5.QtGui import *
 
 from PhotoLabel import *
 
+import platform
+import os.path
+
 class CoralImage(QWidget):
     
-    def __init__(self):
+    def __init__(self, isViewOnly):
         super().__init__()
         self.photo = PhotoLabel()
         self.photo.setFixedWidth(800)
@@ -33,7 +36,8 @@ class CoralImage(QWidget):
         
         grid = QGridLayout(self)
 
-        grid.addWidget(self.browse_btn, 0, 0, Qt.AlignTop)
+        if not isViewOnly:
+            grid.addWidget(self.browse_btn, 0, 0, Qt.AlignTop)
 
         grid.addWidget(self.photo, 1, 0)
         self.scene = QGraphicsScene()
@@ -55,6 +59,15 @@ class CoralImage(QWidget):
         self.fileGridLayout.addWidget(self.filenameDisplay, 0, 1)
         grid.addLayout(self.fileGridLayout, 2, 0)
 
+        self.ownerGridLayout = QGridLayout()
+        self.imageOwnerLabel = QLabel("Image owner:")
+        self.imageOwnerDisplay = QLineEdit("{0}".format(324324))
+        self.ownerGridLayout.addWidget(self.imageOwnerLabel, 0, 0)
+        self.ownerGridLayout.addWidget(self.imageOwnerDisplay, 0, 1)
+
+        if isViewOnly:
+            grid.addLayout(self.ownerGridLayout, 3, 0)
+
         self.selected_marker = None 
 
         self.color_dict = {
@@ -70,11 +83,10 @@ class CoralImage(QWidget):
 
         self.filenameDisplay.setStyleSheet(
             "border: none;"
+        )        
+        self.imageOwnerDisplay.setStyleSheet(
+            "border: none;"
         )
-
-        # self.modelDisplay.setStyleSheet(
-        #     "border: none;"
-        # )        
 
     def open_image(self, filename=None):
         if not filename:
@@ -82,8 +94,14 @@ class CoralImage(QWidget):
             if not filename:
                 return
             self.path = str(filename)
-            url = QUrl.fromLocalFile(filename)
+            # url = QUrl.fromLocalFile(filename)
             self.file = QFileInfo(filename).fileName()
+        else:
+            if platform.system() == 'Windows':
+                self.path = os.getcwd() + '\\' + filename
+            else:
+                self.path = os.getcwd() + '/' + filename
+            self.file = filename
             
         self.photo.setStyleSheet(
             "background: transparent;"
@@ -107,7 +125,7 @@ class CoralImage(QWidget):
         return self.markers
          
     def add_marker(self, x_pos, y_pos, color_name):
-        if self.path is not "":
+        if self.file is not "":
             ellipse = QGraphicsEllipseItem(0, 0, 15, 15)
             ellipse.setBrush(QBrush(self.color_dict[color_name]))
             ellipse.setFlag(QGraphicsItem.ItemIsMovable)

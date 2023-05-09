@@ -122,7 +122,6 @@ class Coral_Window(QWidget):
                     self.codeDelete.submitButtonLogin.clicked.connect(lambda: self.deleteRow(currentRow, filenameForQuery, cell))
 
                     self.codeDelete.submit_shortcut.activated.connect(lambda: self.deleteRow(currentRow, filenameForQuery, cell))
-                    #self.login.submit_shortcut.activated.connect(self.gatheringInfo)
                     
                 else:
                     question.close()
@@ -213,6 +212,10 @@ class Coral_Window(QWidget):
 
                 for column_number, data in enumerate(row_data):
                     item = QTableWidgetItem(str(data))
+                    # Only filename should be selectable
+                    if column_number != 0:
+                        item.setFlags(item.flags() & ~Qt.ItemIsSelectable)
+
                     self.tableWidget.setItem(row_number, column_number, item)
 
             mydb.close()
@@ -245,28 +248,34 @@ class Coral_Window(QWidget):
             mycursor = mydb.cursor()
             
             item = self.tableWidget.selectedItems()
+            row = item[0].row()
             filenameForQuery = item[0].text()
             
             mycursor.execute("SELECT * FROM image_info WHERE filename='%s'" % filenameForQuery)
             
             myresult = mycursor.fetchone()[6]
+            ownerName = self.tableWidget.item(row, 2).text()
+            coordinates = self.tableWidget.item(row, 4).text()
 
-            storefilepath = "NewImage.jpg".format(str(filenameForQuery))
-            
-            with open(storefilepath, "wb") as file:
+            with open(filenameForQuery, "wb") as file:
                 file.write(myresult)
                 file.close()
             
-            self.view_tab = viewOnlyTabUI(self, storefilepath, "-")
-            self.tabs.addTab(self.view_tab, "View")
-            self.tabs.setCurrentIndex(2)
+            if (ownerName != self.username):
+                self.view_tab = viewOnlyTabUI(self, filenameForQuery, coordinates, ownerName)
+                self.tabs.addTab(self.view_tab, "View")
+                self.tabs.setCurrentIndex(2)
 
+                if (os.path.exists(filenameForQuery)):
+                    os.remove(filenameForQuery)
+            else:
+                self.photo.open_image(filename=filenameForQuery)
+                placeLoadedCoordinates(coordinates.split("|"), self.photo)
+                self.tabs.setCurrentIndex(0)
+                    
             # Finishing steps
             mydb.commit()
             mydb.close()
-
-            if (os.path.exists('NewImage.jpg')):
-                os.remove('NewImage.jpg')
             
         except mydb.Error as e:
            print("Failed To Connect to Database")
@@ -340,7 +349,8 @@ class Coral_Window(QWidget):
                     
             for i, marker in enumerate(self.photo.markers):
                 self.coordinate_list.append(
-                    str(marker.scenePos()) + ' ; ' + str(self.photo.marker_colors[i])
+                    str(marker.x()) + ', ' + str(marker.y()) 
+                    + ' ; ' + str(self.photo.marker_colors[i])
                 )
 
             coordstring = ' | '.join(self.coordinate_list)
@@ -411,3 +421,7 @@ class Coral_Window(QWidget):
             y = QMouseEvent.pos().y()
             self.photo.add_marker(x-45, y-125, "Yellow")
             self.updateMarkerCount()
+
+    def closeViewOnlyTab(self):
+        if self.tabs.count() == 3:
+            self.tabs.removeTab(2)
