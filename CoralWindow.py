@@ -51,6 +51,14 @@ class Coral_Window(QWidget):
         layout.addWidget(self.username_Label)
         layout.addWidget(self.tabs)
 
+        self.closeViewTabButton = QPushButton()
+        self.closeViewTabButton.setIcon(self.style().standardIcon(QStyle.SP_TitleBarCloseButton))
+        self.closeViewTabButton.setIconSize(QSize(10, 10))
+        self.closeViewTabButton.setStyleSheet(
+            "border: none;"
+        )
+        self.closeViewTabButton.clicked.connect(self.closeViewOnlyTab)
+
         # Keyboard shortcuts
         self.instructions_shortcut = QShortcut(Qt.Key_I, self)
         self.count_shortcut = QShortcut(Qt.Key_C, self)
@@ -267,8 +275,11 @@ class Coral_Window(QWidget):
             if (ownerName != self.username):
                 self.closeViewOnlyTab()
 
-                self.view_tab = viewOnlyTabUI(self, filenameForQuery, coordinates, ownerName, ownerNotes)
+                self.view_tab = viewOnlyTabUI(
+                    self, filenameForQuery, coordinates, ownerName, ownerNotes
+                )
                 self.tabs.addTab(self.view_tab, "View - " + ownerName + ", " + filenameForQuery)
+                self.tabs.tabBar().setTabButton(2, QTabBar.RightSide, self.closeViewTabButton)
                 self.tabs.setCurrentIndex(2)
 
                 if (os.path.exists(filenameForQuery)):
@@ -419,7 +430,7 @@ class Coral_Window(QWidget):
         for pair in coordinates:
             self.photo.add_marker(
                 pair[0]*(photo_width/1.6), pair[1]*(photo_height/1.5), 
-                "YOLO Red"
+                "YOLO Red", False
             )
 
     def updateMarkerCount(self):
@@ -429,7 +440,7 @@ class Coral_Window(QWidget):
         if QMouseEvent.button() == Qt.LeftButton:
             x = QMouseEvent.pos().x()
             y = QMouseEvent.pos().y()
-            self.photo.add_marker(x-45, y-125, "Yellow")
+            self.photo.add_marker(x-45, y-125, "Yellow", False)
             self.updateMarkerCount()
 
     def clearOldCoordinates(self):

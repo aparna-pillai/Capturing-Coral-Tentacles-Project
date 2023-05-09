@@ -57,16 +57,15 @@ class CoralImage(QWidget):
         self.filenameDisplay = QLineEdit("{0}".format(self.get_filename()))
         self.fileGridLayout.addWidget(self.filenameLabel, 0, 0)
         self.fileGridLayout.addWidget(self.filenameDisplay, 0, 1)
-        grid.addLayout(self.fileGridLayout, 2, 0)
+        
+        if not isViewOnly:
+            grid.addLayout(self.fileGridLayout, 2, 0)
 
         self.ownerGridLayout = QGridLayout()
         self.imageOwnerLabel = QLabel("Image owner:")
         self.imageOwnerDisplay = QLineEdit("{0}".format(324324))
         self.ownerGridLayout.addWidget(self.imageOwnerLabel, 0, 0)
         self.ownerGridLayout.addWidget(self.imageOwnerDisplay, 0, 1)
-
-        if isViewOnly:
-            grid.addLayout(self.ownerGridLayout, 3, 0)
 
         self.selected_marker = None 
 
@@ -77,24 +76,11 @@ class CoralImage(QWidget):
             "White": Qt.white
         }
         
-        
-        
-        # self.color_btn = QToolButton()
-        # self.color_btn.setText("Change Color")
-        # self.color_menu = QMenu()
-        # self.color_btn.setMenu(self.color_menu)
-
-        # self.colors = ["Yellow", "Red", "Blue", "Green"]
-        # for color in self.colors:
-        #     action = QAction(color, self)
-        #     action.triggered.connect(lambda: self.change_color(color))
-        #     self.color_menu.addAction(action)
-
-        # self.color_btn.clicked.connect(self.color_menu.show)
-        
         self.colorChange_Label = QLabel("Change Color of Selected Marker: ")
         self.colorChange = QComboBox()
-        self.colorChange.addItems(["Red", "Orange", "Yellow", "Green", "Blue", "Purple", "Pink", "Black", "White"])
+        for key in self.color_dict:
+            if key != "YOLO Red":
+                self.colorChange.addItem(key)
         
         self.colorChange.activated[str].connect(self.change_color)
         
@@ -118,7 +104,6 @@ class CoralImage(QWidget):
             if not filename:
                 return
             self.path = str(filename)
-            # url = QUrl.fromLocalFile(filename)
             self.file = QFileInfo(filename).fileName()
         else:
             if platform.system() == 'Windows':
@@ -148,12 +133,14 @@ class CoralImage(QWidget):
     def get_markersList(self):
         return self.markers
          
-    def add_marker(self, x_pos, y_pos, color_name):
+    def add_marker(self, x_pos, y_pos, color_name, isViewOnly):
         if self.file is not "":
             ellipse = QGraphicsEllipseItem(0, 0, 15, 15)
             ellipse.setBrush(QBrush(self.color_dict[color_name]))
-            ellipse.setFlag(QGraphicsItem.ItemIsMovable)
-            ellipse.setFlag(QGraphicsItem.ItemIsSelectable)
+            
+            if not isViewOnly:
+                ellipse.setFlag(QGraphicsItem.ItemIsMovable)
+                ellipse.setFlag(QGraphicsItem.ItemIsSelectable)
             
             ellipse.setPos(x_pos, y_pos)
 
@@ -181,10 +168,6 @@ class CoralImage(QWidget):
             self.marker_colors.pop(len(self.markers) - 1)
             self.marker_count -= 1
 
-
-
-        # Clear the drop-down menu and add the color options agai(n)
-
     def zoom_in(self):
         self.view.scale(1.2, 1.2)
 
@@ -192,39 +175,10 @@ class CoralImage(QWidget):
         self.view.scale(1/1.2, 1/1.2)
         
     def change_color(self, color):
-        print(color)
-        print(self.colorChange.currentText())
-        brush_color = None
-        if color == "Red":
-            brush_color = Qt.red
-        elif color == "Orange":
-            brush_color = QColor(255, 137, 0)
-        elif color == "Yellow":
-            brush_color = Qt.yellow
-        elif color == "Green":
-            brush_color = Qt.green
-        elif color == "Blue":
-            brush_color = Qt.blue
-        elif color == "Purple":
-            brush_color = QColor(219, 0, 255)
-        elif color == "Pink":
-            brush_color = QColor(245, 66, 164)
-        elif color == "Black":
-            brush_color = Qt.black
-        elif color == "White":
-            brush_color = Qt.white
-                
-        if brush_color:
-            for marker in self.markers:
-                if marker.isSelected():
-                    marker.setBrush(QBrush(brush_color))
-
-        # self.color_menu.clear()
-        # colors = ["Yellow", "Red", "Blue", "Green"]
-        # for color in colors:
-        #     action = QAction(color, self)
-        #     action.triggered.connect(lambda: self.change_color(color))
-        #     self.color_menu.addAction(action)
+        brush_color = self.color_dict[color]        
+        for marker in self.markers:
+            if marker.isSelected():
+                marker.setBrush(QBrush(brush_color))
 
 
 

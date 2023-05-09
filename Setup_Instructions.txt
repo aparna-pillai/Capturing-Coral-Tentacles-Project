@@ -27,7 +27,7 @@ To be able to run this project in VS Code, please complete the following steps.
     On Main tab:
         Ctrl+O (Windows), Command+O (Mac) - Browse photos
         C - Count
-        Click - Add marker
+        Double click - Add marker
         R - Remove selected marker
         Ctrl+Z (Windows), Command+Z (Mac) - Undo most recent marker
         Ctrl+S (Windows), Command+S (Mac) - Save photo to record

@@ -18,8 +18,8 @@ class Capturing_Coral_Manager(QMainWindow):
             desktop = QApplication.desktop()
             screenRect = desktop.screenGeometry()
             self.resize(screenRect.width(), screenRect.height())
-        else:
-            self.showMaximized()
+            
+        self.showMaximized()
     
         self.generalLayout = QGridLayout()
 

@@ -46,9 +46,6 @@ def viewOnlyTabUI(self, load_image, load_coordinates, owner_name, owner_notes):
     self.view_photo.view.setResizeAnchor(QGraphicsView.AnchorUnderMouse)
     self.view_photo.view.setTransformationAnchor(QGraphicsView.AnchorUnderMouse)
 
-    self.closeTabButton = QPushButton('Close Tab')
-    self.closeTabButton.clicked.connect(self.closeViewOnlyTab)
-
     self.countLabel = QLabel("Tentacle Count:")
     self.countDisplay = QLineEdit("{0}".format(int(self.photo.get_marker_count())))
     self.countGridLayout = QGridLayout()
@@ -73,10 +70,11 @@ def viewOnlyTabUI(self, load_image, load_coordinates, owner_name, owner_notes):
     self.smallGridLayout.addWidget(self.zoomOutButton, 0, 1)
 
     self.rightGridLayout = QGridLayout()
-    self.rightGridLayout.addWidget(self.closeTabButton, 0, 0)
-    self.rightGridLayout.addLayout(self.countGridLayout, 1, 0)
-    self.rightGridLayout.addLayout(self.notesGridLayout, 2, 0)
-    self.rightGridLayout.addLayout(self.smallGridLayout, 3, 0)
+    self.rightGridLayout.addLayout(self.view_photo.fileGridLayout, 1, 0)
+    self.rightGridLayout.addLayout(self.view_photo.ownerGridLayout, 2, 0)
+    self.rightGridLayout.addLayout(self.countGridLayout, 3, 0)
+    self.rightGridLayout.addLayout(self.notesGridLayout, 4, 0)
+    self.rightGridLayout.addLayout(self.smallGridLayout, 5, 0)
 
     self.generalLayout.addLayout(self.rightGridLayout, 0, 1)
 
@@ -118,7 +116,6 @@ def viewOnlyTabUI(self, load_image, load_coordinates, owner_name, owner_notes):
 
 
 def placeLoadedCoordinates(coordList, coralImage):
-    print(coordList)
     if coordList[0] == '':
         return
     else:
@@ -128,4 +125,4 @@ def placeLoadedCoordinates(coordList, coralImage):
             point_x = float(coord.split(",")[0].strip())
             point_y = float(coord.split(",")[1].strip())
 
-            coralImage.add_marker(point_x, point_y, color)
+            coralImage.add_marker(point_x, point_y, color, True)
