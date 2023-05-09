@@ -1,4 +1,5 @@
 import sys
+import platform
 
 from PyQt5.QtWidgets import *
 from PyQt5.QtCore import *
@@ -12,12 +13,14 @@ class Capturing_Coral_Manager(QMainWindow):
     def __init__(self):
         super().__init__()
         self.setWindowTitle("Capturing Coral Tentacles")
-        self.showMaximized()
         
-        desktop = QApplication.desktop()
-        screenRect = desktop.screenGeometry()
-        self.resize(screenRect.width(), screenRect.height())
-
+        if platform.system() == 'Windows':
+            desktop = QApplication.desktop()
+            screenRect = desktop.screenGeometry()
+            self.resize(screenRect.width(), screenRect.height())
+        else:
+            self.showMaximized()
+    
         self.generalLayout = QGridLayout()
 
         self.login = Login_Window()

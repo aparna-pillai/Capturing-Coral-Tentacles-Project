@@ -21,16 +21,20 @@ def count_tentacles_actual(img):
     resized_img = Image.open(img).resize((640, 640))
     resized_img.save('resized.jpg')
 
+    if platform.system() == 'Windows':
+        model = parent_folder + '\\coral_model.pt'
+    else:
+        model = parent_folder + '/coral_model.pt'
+
     # Run the model
     run(
-        weights='coral_model.pt', 
+        weights=model, 
         data = 'Coral-Tentacle-Detection-1/data.yaml',
         source='resized.jpg',
         imgsz=(640, 640),
         conf_thres=0.3,
         save_txt=True,
-        hide_labels=True,
-        # save_conf=True
+        hide_labels=True
     )
 
     # Return filename of new labeled image
