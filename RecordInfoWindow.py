@@ -2,7 +2,7 @@ from PyQt5.QtWidgets import *
 from PyQt5.QtCore import *
 from PyQt5.QtGui import *
 
-from datetime import date
+from datetime import datetime
 
 class RecordInfoWindow(QWidget):
     submitButton = None
@@ -15,7 +15,7 @@ class RecordInfoWindow(QWidget):
         self.username_Label = QLabel("Name: " + self.username)
         
         self.date_Label = QLabel("Date Added:")
-        self.date_Display = QLabel("{0}".format(date.today()))
+        self.date_Display = QLabel("{0}".format(datetime.today()))
         self.dateGridLayout = QGridLayout()
         self.dateGridLayout.addWidget(self.date_Label, 0, 0)
         self.dateGridLayout.addWidget(self.date_Display, 0, 1)

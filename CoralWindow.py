@@ -5,7 +5,7 @@ import PIL.Image
 import pandas as pd
 
 from dotenv import load_dotenv
-from datetime import date
+from datetime import datetime
 
 from PyQt5.QtWidgets import *
 from PyQt5.QtCore import *
@@ -121,7 +121,12 @@ class Coral_Window(QWidget):
                     for x in range(headercount):
                         headertext = self.tableWidget.horizontalHeaderItem(x).text()
                         if headertext == "NAME OF PERSON":
-                            cell = self.tableWidget.item(currentRow, x).text()  # get cell at row, col
+                            nameOfPerson = self.tableWidget.item(currentRow, x).text()  # get cell at row, col
+                        if headertext == "DATE UPLOADED":
+                            dateUploaded = self.tableWidget.item(currentRow, x).text()
+                    
+                    print(nameOfPerson)
+                    print(dateUploaded)
                             
             
                     filenameForQuery = item[0].text()
@@ -129,27 +134,31 @@ class Coral_Window(QWidget):
                     self.codeDelete = CodeDeleteWindow()
                     self.codeDelete.setGeometry(int(self.frameGeometry().width()/2) - 150, int(self.frameGeometry().height()/2) - 150, 300, 300)
                     self.codeDelete.show()
-                    self.codeDelete.submitButtonLogin.clicked.connect(lambda: self.deleteRow(currentRow, filenameForQuery, cell))
+                    self.codeDelete.submitButtonLogin.clicked.connect(lambda: self.deleteRow(currentRow, filenameForQuery, nameOfPerson, dateUploaded))
 
-                    self.codeDelete.submit_shortcut.activated.connect(lambda: self.deleteRow(currentRow, filenameForQuery, cell))
+                    self.codeDelete.submit_shortcut.activated.connect(lambda: self.deleteRow(currentRow, filenameForQuery, nameOfPerson, dateUploaded))
                     
                 else:
                     question.close()
     
                     
-    def deleteRow(self, currentRow, filenameForQuery, cell):        
+    def deleteRow(self, currentRow, filenameForQuery, nameOfPerson, dateUploaded):        
         try:
             mydb = connectToDatabase()
             mycursor = mydb.cursor()
             
-            mycursor.execute("SELECT users_code FROM users WHERE users_name = '%s'" % cell)
+            print("please work")
+            print(nameOfPerson)
+            print(dateUploaded)
+            
+            mycursor.execute("SELECT users_code FROM users WHERE users_name = '%s'" % nameOfPerson)
             myresult = mycursor.fetchall()
 
             str = ''.join(myresult[0])
 
             if (self.codeDelete.codeTextBox.text() == str):
-                sql_delete = "DELETE FROM image_info WHERE filename = %s"
-                sql_data = (filenameForQuery,)
+                sql_delete = "DELETE FROM image_info WHERE filename = %s and date_uploaded = %s"
+                sql_data = (filenameForQuery, dateUploaded)
 
                 mycursor.execute(sql_delete, sql_data)
                 self.tableWidget.removeRow(currentRow)
@@ -383,7 +392,7 @@ class Coral_Window(QWidget):
                 "INSERT INTO image_info VALUES (%s, %s, %s, %s, %s, %s, %s)", 
                 (
                     self.photo.get_filename(), self.photo.marker_count, 
-                    self.username, date.today(), 
+                    self.username, datetime.today(), 
                     coordstring, self.g.get_notes(), binaryData
                 )
             )

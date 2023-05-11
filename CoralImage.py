@@ -42,6 +42,7 @@ class CoralImage(QWidget):
         grid.addWidget(self.photo, 1, 0)
         self.scene = QGraphicsScene()
         self.view = QGraphicsView(self.scene)
+        
         self.view.setStyleSheet(
             "background: transparent;"
         )
@@ -120,6 +121,8 @@ class CoralImage(QWidget):
         self.scene.clear()
         self.scene.addPixmap(self.smaller_pixmap)
         self.filenameDisplay.setText("{0}".format(self.get_filename()))
+        
+        
         
     def get_filename(self):
         return self.file
