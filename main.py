@@ -26,7 +26,7 @@ class Capturing_Coral_Manager(QMainWindow):
         self.login = Login_Window()
         self.login.submitButtonLogin.clicked.connect(self.moveToNextScreen)
         self.username = ""
-        # self.main = Coral_Window(self.username)
+        self.main = Coral_Window(self.username)
 
         self.generalLayout.addWidget(self.login, 0, 0)
 

@@ -48,6 +48,8 @@ class Coral_Window(QWidget):
         layout.addWidget(self.username_Label)
         layout.addWidget(self.tabs)
 
+        self.photo.clicked.connect(self.updateMarkerCount)
+
         self.closeViewTabButton = QPushButton()
         self.closeViewTabButton.setIcon(self.style().standardIcon(QStyle.SP_TitleBarCloseButton))
         self.closeViewTabButton.setIconSize(QSize(10, 10))

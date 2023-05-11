@@ -9,6 +9,8 @@ import os.path
 
 class CoralImage(QWidget):
     
+    clicked = pyqtSignal()
+    
     def __init__(self, isViewOnly):
         super().__init__()
         self.photo = PhotoLabel()
@@ -188,6 +190,7 @@ class CoralImage(QWidget):
     def mousePressEvent(self, QMouseEvent):
         if self.file is not "" and QMouseEvent.type() == QEvent.MouseButtonDblClick:
             print("Double click")
+            self.clicked.emit()
             x = QMouseEvent.pos().x()
             y = QMouseEvent.pos().y()
             self.add_marker(x-20, y-325, "Yellow", False)
