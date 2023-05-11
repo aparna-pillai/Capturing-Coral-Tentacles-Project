@@ -30,7 +30,6 @@ class Coral_Window(QWidget):
         self.setWindowTitle("Capturing Coral Tentacles")
         
         self.username = username
-        
         self.username_Label = QLabel("Welcome " + self.username.upper() + "!")
                 
         self.move(0,0)
@@ -43,11 +42,9 @@ class Coral_Window(QWidget):
         self.tabs = QTabWidget()
         self.general_tab = generalTabUI(self)
         self.record_tab = recordTabUI(self)
-        # self.view_tab = viewOnlyTabUI(self)
 
         self.tabs.addTab(self.general_tab, "Main")
         self.tabs.addTab(self.record_tab, "Record")
-        # self.tabs.addTab(self.view_tab, "View")
         layout.addWidget(self.username_Label)
         layout.addWidget(self.tabs)
 
@@ -74,7 +71,11 @@ class Coral_Window(QWidget):
 
         # Connect shortcuts
         self.instructions_shortcut.activated.connect(self.instruct)
-        self.count_shortcut.activated.connect(self.countTentacles)
+
+        if self.modelHasCounted == False:
+            self.count_shortcut.activated.connect(self.countTentacles)
+            self.count_shortcut.activated.connect(self.setModelCountedTrue)
+
         self.save_shortcut.activated.connect(self.recordInfo)
         self.remove_shortcut.activated.connect(self.photo.remove_marker)
         self.remove_shortcut.activated.connect(self.updateMarkerCount)
@@ -92,6 +93,7 @@ class Coral_Window(QWidget):
     def switchTabs(self):
         if self.tabs.currentIndex() == (self.tabs.count() - 1):
             self.tabs.setCurrentIndex(0)
+            self.updateMarkerCount()
         else:
             self.tabs.setCurrentIndex(self.tabs.currentIndex() + 1)
             if self.tabs.currentIndex() == 1:
@@ -105,6 +107,9 @@ class Coral_Window(QWidget):
         
     def instructions_close(self):
         self.w.close()
+
+    def setModelCountedTrue(self):
+        self.modelHasCounted = True
          
     def codeBeforeDeleteRow(self):
         if self.tableWidget.rowCount() > 0:
@@ -421,7 +426,6 @@ class Coral_Window(QWidget):
 
             # Get tentacle count
             self.count = get_count()
-            self.countDisplay.setText(str(get_count()))
 
             # Delete the new resized.jpg created in the main folder
             if (os.path.exists('resized.jpg')):
@@ -430,27 +434,16 @@ class Coral_Window(QWidget):
     def placeInitialMarkers(self, photo_width, photo_height):
         coordinates = get_coordinates()
 
-        # Clear out all old results
-        self.photo.marker_count = 0
-        self.updateMarkerCount()
-        self.photo.markers.clear()
-        self.coordinate_list.clear()
-
         for pair in coordinates:
             self.photo.add_marker(
                 pair[0]*(photo_width/1.6), pair[1]*(photo_height/1.5), 
                 "YOLO Red", False
             )
+        
+        self.updateMarkerCount()
 
     def updateMarkerCount(self):
         self.countDisplay.setText("{0}".format(self.photo.marker_count))
-
-    def mousePressEvent(self, QMouseEvent):
-        if QMouseEvent.button() == Qt.LeftButton:
-            x = QMouseEvent.pos().x()
-            y = QMouseEvent.pos().y()
-            self.photo.add_marker(x-45, y-125, "Yellow", False)
-            self.updateMarkerCount()
 
     def clearOldCoordinates(self):
         self.coordinate_list.clear()

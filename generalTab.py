@@ -5,12 +5,10 @@ from PyQt5.QtGui import *
 from CoralImage import *
 
 def generalTabUI(self):
-    # id = QFontDatabase.addApplicationFont("fonts/Montserrat/Montserrat-Regular.ttf")
-    # families = QFontDatabase.applicationFontFamilies(id)
-    # montserrat_font = families[0]
-
     generalTab = QWidget()
     self.generalLayout = QGridLayout()
+
+    self.modelHasCounted = False
 
     self.photo = CoralImage(isViewOnly=False)
     self.photo.view.setFixedWidth(800)
@@ -34,7 +32,9 @@ def generalTabUI(self):
     
     self.countButton = QPushButton("Count")
     # self.countButton.setFont(QFont(montserrat_font))
-    self.countButton.clicked.connect(self.countTentacles)
+    if self.modelHasCounted == False:
+        self.countButton.clicked.connect(self.countTentacles)
+        self.countButton.clicked.connect(self.setModelCountedTrue)
     
     self.countLabel = QLabel("Tentacle Count:")
     # self.countLabel.setFont(QFont(montserrat_font))

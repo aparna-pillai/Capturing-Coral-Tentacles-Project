@@ -48,12 +48,14 @@ def viewOnlyTabUI(self, load_image, load_coordinates, owner_name, owner_notes):
 
     self.countLabel = QLabel("Tentacle Count:")
     self.countDisplay = QLineEdit("{0}".format(int(self.photo.get_marker_count())))
+    self.countDisplay.setReadOnly(True)
     self.countGridLayout = QGridLayout()
     self.countGridLayout.addWidget(self.countLabel, 0, 0)
     self.countGridLayout.addWidget(self.countDisplay, 0, 1)
 
     self.notesLabel = QLabel("Notes:")
     self.notesDisplay = QLineEdit(owner_notes)
+    self.notesDisplay.setReadOnly(True)
     self.notesGridLayout = QGridLayout()
     self.notesGridLayout.addWidget(self.notesLabel, 0, 0)
     self.notesGridLayout.addWidget(self.notesDisplay, 0, 1)

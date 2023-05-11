@@ -52,10 +52,12 @@ class CoralImage(QWidget):
         self.markers = []
         self.marker_colors = []
         self.setAcceptDrops(True)
+        self.setMouseTracking(True)
 
         self.fileGridLayout = QGridLayout()
         self.filenameLabel = QLabel("Current image being displayed:")
         self.filenameDisplay = QLineEdit("{0}".format(self.get_filename()))
+        self.filenameDisplay.setReadOnly(True)
         self.fileGridLayout.addWidget(self.filenameLabel, 0, 0)
         self.fileGridLayout.addWidget(self.filenameDisplay, 0, 1)
         
@@ -64,7 +66,8 @@ class CoralImage(QWidget):
 
         self.ownerGridLayout = QGridLayout()
         self.imageOwnerLabel = QLabel("Image owner:")
-        self.imageOwnerDisplay = QLineEdit("{0}".format(324324))
+        self.imageOwnerDisplay = QLineEdit("{0}".format("-"))
+        self.imageOwnerDisplay.setReadOnly(True)
         self.ownerGridLayout.addWidget(self.imageOwnerLabel, 0, 0)
         self.ownerGridLayout.addWidget(self.imageOwnerDisplay, 0, 1)
 
@@ -121,7 +124,6 @@ class CoralImage(QWidget):
         self.scene.clear()
         self.scene.addPixmap(self.smaller_pixmap)
         self.filenameDisplay.setText("{0}".format(self.get_filename()))
-        
         
         
     def get_filename(self):
@@ -183,6 +185,12 @@ class CoralImage(QWidget):
             if marker.isSelected():
                 marker.setBrush(QBrush(brush_color))
 
+    def mousePressEvent(self, QMouseEvent):
+        if self.file is not "" and QMouseEvent.type() == QEvent.MouseButtonDblClick:
+            print("Double click")
+            x = QMouseEvent.pos().x()
+            y = QMouseEvent.pos().y()
+            self.add_marker(x-20, y-325, "Yellow", False)
 
 
     
