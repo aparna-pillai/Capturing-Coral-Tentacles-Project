@@ -297,9 +297,6 @@ class Coral_Window(QWidget):
                 self.tabs.addTab(self.view_tab, "View - " + ownerName + ", " + filenameForQuery)
                 self.tabs.tabBar().setTabButton(2, QTabBar.RightSide, self.closeViewTabButton)
                 self.tabs.setCurrentIndex(2)
-
-                if (os.path.exists(filenameForQuery)):
-                    os.remove(filenameForQuery)
             else:
                 self.photo.open_image(filename=filenameForQuery)
 
@@ -308,9 +305,12 @@ class Coral_Window(QWidget):
                 self.photo.markers.clear()
                 self.coordinate_list.clear()
 
-                placeLoadedCoordinates(coordinates.split("|"), self.photo)
+                placeLoadedCoordinates(coordinates.split("|"), self.photo, False)
                 self.updateMarkerCount()
                 self.tabs.setCurrentIndex(0)
+            
+            if (os.path.exists(filenameForQuery)):
+                os.remove(filenameForQuery)
 
             mydb.close()
             
@@ -321,7 +321,7 @@ class Coral_Window(QWidget):
         try:
             mydb = connectToDatabase()
             
-            mycursor = mydb.cursor()
+            mycursor = mydb.cursor(buffered=True) # Needed for saving all pictures to desktop
 
             mycursor.execute("Select filename, tentacle_count, name_of_person, date_uploaded, coordinates_of_markers, notes from image_info")
 
@@ -349,13 +349,36 @@ class Coral_Window(QWidget):
             }
 
             df = pd.DataFrame(dictionary)
+            windows_dirname = "C:\\temp\Capturing Coral Images"
+            mac_dirname = os.path.expanduser("~/Desktop/Capturing Coral Images")
+
             if platform.system() == 'Windows':
                 df.to_csv("C:\\temp\CoralCountEntries.csv", na_rep="None")
+                if not os.path.exists(windows_dirname):
+                    os.mkdir(windows_dirname)
             else:
                 df.to_csv(os.path.expanduser("~/Desktop/CoralCountEntries.csv"))
+                if not os.path.exists(mac_dirname):
+                    os.mkdir(mac_dirname)
+            
+            # Save all pictures to the person's computer. [*set()] clears duplicates.
+            for filename in [*set(all_filenames)]:
+                mycursor.execute("SELECT * FROM image_info WHERE filename='%s'" % filename)
+                myresult = mycursor.fetchone()[6]
+
+                if platform.system() == 'Windows':
+                    with open(os.path.join(windows_dirname, filename), "wb") as file:
+                        file.write(myresult)
+                        file.close()
+                else:
+                    with open(os.path.join(mac_dirname, filename), "wb") as file:
+                        file.write(myresult)
+                        file.close()                
+
             QMessageBox.about(self, "Notice", 
-                              """Check your desktop for the csv file!\n
-                              (Windows: See temp folder in C: drive)""")
+                """Check your desktop for the csv file and all image files!
+                \n(Windows: See temp folder in C: drive)"""
+            )
             mydb.close()
         except mydb.Error as e:
            print("Failed To Connect to Database")

@@ -32,7 +32,7 @@ def viewOnlyTabUI(self, load_image, load_coordinates, owner_name, owner_notes):
     self.view_photo.open_image(filename=self.loadImageName)
     self.view_photo.imageOwnerDisplay.setText("{0}".format(self.ownerName))
 
-    placeLoadedCoordinates(self.coordList, self.view_photo)
+    placeLoadedCoordinates(self.coordList, self.view_photo, True)
 
     self.generalLayout.addWidget(self.view_photo, 0, 0)
 
@@ -117,14 +117,17 @@ def viewOnlyTabUI(self, load_image, load_coordinates, owner_name, owner_notes):
     return viewOnlyTab
 
 
-def placeLoadedCoordinates(coordList, coralImage):
+def placeLoadedCoordinates(coordList, coralImage, isViewOnly):
     if coordList[0] == '':
         return
     else:
         for point in coordList:
             color = point.split(";")[1].strip()
             coord = point.split(";")[0].strip()
+            
             point_x = float(coord.split(",")[0].strip())
             point_y = float(coord.split(",")[1].strip())
+            if isViewOnly:
+                point_x -= 100
 
-            coralImage.add_marker(point_x, point_y, color, True)
+            coralImage.add_marker(point_x, point_y, color, isViewOnly)

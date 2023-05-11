@@ -35,6 +35,7 @@ class CoralImage(QWidget):
         
         self.path = ""
         self.file = ""
+        self.isViewOnly = isViewOnly
         
         grid = QGridLayout(self)
 
@@ -186,9 +187,12 @@ class CoralImage(QWidget):
         for marker in self.markers:
             if marker.isSelected():
                 marker.setBrush(QBrush(brush_color))
+                i = self.markers.index(marker)
+                self.marker_colors[i] = color
 
     def mousePressEvent(self, QMouseEvent):
-        if self.file is not "" and QMouseEvent.type() == QEvent.MouseButtonDblClick:
+        if (self.file is not "" and QMouseEvent.type() == QEvent.MouseButtonDblClick
+        and not self.isViewOnly):
             print("Double click")
             self.clicked.emit()
             x = QMouseEvent.pos().x()
