@@ -10,6 +10,7 @@ def recordTabUI(self):
 
     self.reload_shortcut = QShortcut(QKeySequence("Ctrl+R"), self)
     self.reload_shortcut.activated.connect(self.DBConnect)
+    # self.reload_shortcut.activated.connect(self.searchBar.setText(""))
 
     self.directions = QLabel("""
                             You can search by filename, name of person, and date uploaded. 
@@ -51,14 +52,19 @@ def recordTabUI(self):
     self.searchLabel = QLabel("Search:")
     self.searchBar = QLineEdit()
     self.searchButton = QPushButton("Go")
-    self.searchButton.clicked.connect(lambda: self.searchRecord(self.searchBar.text()))
+    self.reloadButton = QPushButton("Reload")
 
-    self.search_shortcut = QShortcut(QKeySequence("Ctrl+F"), self)
-    self.search_shortcut.activated.connect(lambda: self.searchRecord(self.searchBar.text()))
+    self.searchBar.returnPressed.connect(lambda: self.searchRecord(self.searchBar.text()))
+    self.searchButton.clicked.connect(lambda: self.searchRecord(self.searchBar.text()))
+    
+    self.reloadButton.clicked.connect(self.DBConnect)
+    self.reloadButton.clicked.connect(self.searchBar.clear)
+    self.reload_shortcut.activated.connect(self.searchBar.clear)
 
     self.searchGridLayout.addWidget(self.searchLabel, 0, 0)
     self.searchGridLayout.addWidget(self.searchBar, 0, 1)
     self.searchGridLayout.addWidget(self.searchButton, 0, 2)
+    self.searchGridLayout.addWidget(self.reloadButton, 0, 3)
 
     layout.addLayout(self.searchGridLayout, 0, 0)
     layout.addWidget(self.directions, 1, 0)
@@ -75,7 +81,6 @@ def recordTabUI(self):
     self.btnDeleteAll.clicked.connect(self.codeBeforeDeleteAllRows)
     self.btnReopen = QPushButton("Reopen")
     self.btnReopen.clicked.connect(self.reopen)
-    
     
     self.exportButton = QPushButton("Export")
     load_dotenv('config.env')
@@ -102,15 +107,26 @@ def recordTabUI(self):
         "color: #112d4e;"
     )
 
-    # self.btnLoad.setStyleSheet(
-    #     "border: 3px solid;"
-    #     "border-top-color: #00adb5;"
-    #     "border-left-color: #00adb5;"
-    #     "border-right-color: #00adb5;"
-    #     "border-bottom-color: #00adb5;"
-    #     "color: #112d4e;"
-    # )
-
+    self.searchButton.setStyleSheet(
+        "border: 3px solid;"
+        "border-top-color: #00adb5;"
+        "border-left-color: #00adb5;"
+        "border-right-color: #00adb5;"
+        "border-bottom-color: #00adb5;"
+        "color: #112d4e;"
+        "width: 150px;"
+    )
+    
+    self.reloadButton.setStyleSheet(
+        "border: 3px solid;"
+        "border-top-color: #00adb5;"
+        "border-left-color: #00adb5;"
+        "border-right-color: #00adb5;"
+        "border-bottom-color: #00adb5;"
+        "color: #112d4e;"
+        "width: 150px;"
+    )
+    
     self.btnDelete.setStyleSheet(
         "border: 3px solid;"
         "border-top-color: #00adb5;"

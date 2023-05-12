@@ -9,6 +9,7 @@ class RecordInfoWindow(QWidget):
     
     def __init__(self, username):
         super().__init__()
+        self.setWindowTitle("Save Image to Record")
         layout = QGridLayout()
 
         self.username = username
