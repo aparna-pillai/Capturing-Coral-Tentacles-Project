@@ -109,12 +109,13 @@ class CoralImage(QWidget):
         if not filename:
             filename, _ = QFileDialog.getOpenFileName(self, 'Select Photo', QDir.currentPath(), 'Images (*.png *.jpg)')
             if not filename:
-                return
+                return "Image not found"
             self.path = str(filename)
             self.file = QFileInfo(filename).fileName()
         else:
             if platform.system() == 'Windows':
                 self.path = os.getcwd() + '\\' + filename
+                print(self.path)
             else:
                 self.path = os.getcwd() + '/' + filename
             self.file = filename
@@ -141,12 +142,12 @@ class CoralImage(QWidget):
     def get_markersList(self):
         return self.markers
          
-    def add_marker(self, x_pos, y_pos, color_name, isViewOnly):
+    def add_marker(self, x_pos, y_pos, color_name):
         if self.file is not "":
             ellipse = QGraphicsEllipseItem(0, 0, 15, 15)
             ellipse.setBrush(QBrush(self.color_dict[color_name]))
             
-            if not isViewOnly:
+            if not self.isViewOnly:
                 ellipse.setFlag(QGraphicsItem.ItemIsMovable)
                 ellipse.setFlag(QGraphicsItem.ItemIsSelectable)
             
@@ -169,12 +170,20 @@ class CoralImage(QWidget):
                 self.marker_count -= 1
 
     def undo_last_marker(self):
-        if len(self.markers) > 0:
-            last_marker = self.markers[len(self.markers) - 1]
-            self.scene.removeItem(last_marker)
-            self.markers.pop(len(self.markers) - 1)
-            self.marker_colors.pop(len(self.markers) - 1)
-            self.marker_count -= 1
+        marker_list_length = len(self.markers)
+        if marker_list_length > 0 and not self.isViewOnly:
+            reversed_markers = list(reversed(self.markers))
+            reversed_colors = list(reversed(self.marker_colors))
+
+            for i, marker in enumerate(reversed_markers):
+                if reversed_colors[i] != "YOLO Red":
+                    index = self.markers.index(marker)
+                    self.scene.removeItem(marker)
+                    self.markers.pop(index)
+                    self.marker_colors.pop(index)
+                    self.marker_count -= 1
+
+                    return
 
     def zoom_in(self):
         self.view.scale(1.2, 1.2)
@@ -193,11 +202,10 @@ class CoralImage(QWidget):
     def mousePressEvent(self, QMouseEvent):
         if (self.file is not "" and QMouseEvent.type() == QEvent.MouseButtonDblClick
         and not self.isViewOnly):
-            print("Double click")
-            self.clicked.emit()
             x = QMouseEvent.pos().x()
             y = QMouseEvent.pos().y()
-            self.add_marker(x-20, y-325, "Yellow", False)
+            self.add_marker(x-20, y-325, "Yellow")
+            self.clicked.emit()
 
 
     

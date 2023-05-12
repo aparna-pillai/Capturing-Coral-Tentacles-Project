@@ -15,6 +15,7 @@ def generalTabUI(self):
     self.photo.view.setFixedHeight(500)
 
     self.generalLayout.addWidget(self.photo, 0, 0)
+    self.photo.clicked.connect(self.updateMarkerCount)
 
     self.photo.browse_btn.clicked.connect(self.clearOldCoordinates)
     self.photo.browse_shortcut.activated.connect(self.clearOldCoordinates)
@@ -31,10 +32,8 @@ def generalTabUI(self):
     self.savePicButton.clicked.connect(self.recordInfo)
     
     self.countButton = QPushButton("Count")
+    self.countButton.clicked.connect(self.countTentacles)
     # self.countButton.setFont(QFont(montserrat_font))
-    if self.modelHasCounted == False:
-        self.countButton.clicked.connect(self.countTentacles)
-        self.countButton.clicked.connect(self.setModelCountedTrue)
     
     self.countLabel = QLabel("Tentacle Count:")
     # self.countLabel.setFont(QFont(montserrat_font))
@@ -51,6 +50,9 @@ def generalTabUI(self):
     # self.undoMarkerButton.setFont(QFont(montserrat_font))
     self.undoMarkerButton.clicked.connect(self.photo.undo_last_marker)
     self.undoMarkerButton.clicked.connect(self.updateMarkerCount)
+
+    self.clearAllMarkersButton = QPushButton('Delete All Markers')
+    self.clearAllMarkersButton.clicked.connect(self.confirmForClearCoordinates)
 
     self.photo.view.setDragMode(QGraphicsView.ScrollHandDrag)
     self.photo.view.setRenderHint(QPainter.Antialiasing)
@@ -78,9 +80,10 @@ def generalTabUI(self):
     self.smallGridLayout.addWidget(self.countButton, 2, 0)
     self.smallGridLayout.addLayout(self.smallerGridLayout, 3, 0)
     self.smallGridLayout.addWidget(self.removeMarkerButton, 4, 0)
-    self.smallGridLayout.addWidget(self.undoMarkerButton, 5, 0)
-    self.smallGridLayout.addWidget(self.zoomInButton, 6, 0)
-    self.smallGridLayout.addWidget(self.zoomOutButton, 7, 0)
+    self.smallGridLayout.addWidget(self.clearAllMarkersButton, 5, 0)
+    self.smallGridLayout.addWidget(self.undoMarkerButton, 6, 0)
+    self.smallGridLayout.addWidget(self.zoomInButton, 7, 0)
+    self.smallGridLayout.addWidget(self.zoomOutButton, 8, 0)
     
     self.smallestGridLayout = QGridLayout()
     self.smallestGridLayout.addWidget(self.photo.colorChange_Label, 0, 0)
@@ -108,6 +111,14 @@ def generalTabUI(self):
         "color: #112d4e;"
     )
     self.countButton.setStyleSheet(
+        "border: 3px solid;"
+        "border-top-color: #00adb5;"
+        "border-left-color: #00adb5;"
+        "border-right-color: #00adb5;"
+        "border-bottom-color: #00adb5;"
+        "color: #112d4e;"
+    )
+    self.clearAllMarkersButton.setStyleSheet(
         "border: 3px solid;"
         "border-top-color: #00adb5;"
         "border-left-color: #00adb5;"

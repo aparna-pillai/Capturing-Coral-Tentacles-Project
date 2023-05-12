@@ -130,4 +130,4 @@ def placeLoadedCoordinates(coordList, coralImage, isViewOnly):
             if isViewOnly:
                 point_x -= 100
 
-            coralImage.add_marker(point_x, point_y, color, isViewOnly)
+            coralImage.add_marker(point_x, point_y, color)
