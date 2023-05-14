@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>442</width>
-    <height>527</height>
+    <width>370</width>
+    <height>482</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -16,11 +16,15 @@
   <widget class="QWidget" name="widget" native="true">
    <property name="geometry">
     <rect>
-     <x>30</x>
-     <y>30</y>
+     <x>0</x>
+     <y>0</y>
      <width>370</width>
      <height>480</height>
     </rect>
+   </property>
+   <property name="styleSheet">
+    <string notr="true">background-color: rgb(0, 0, 0);
+background-color: rgb(0, 0, 70);</string>
    </property>
    <widget class="QLabel" name="label_2">
     <property name="geometry">
@@ -76,7 +80,9 @@ border-radius:15px;</string>
      </font>
     </property>
     <property name="styleSheet">
-     <string notr="true">color:rgba(255, 255, 255, 210);</string>
+     <string notr="true">color:rgba(255, 255, 255, 210);
+background-color:rgba(0, 0, 0, 0);
+border:none;</string>
     </property>
     <property name="text">
      <string>LOGIN</string>
@@ -194,10 +200,10 @@ border-radius:20px;</string>
    <zorder>label</zorder>
    <zorder>label_2</zorder>
    <zorder>label_3</zorder>
-   <zorder>label_4</zorder>
    <zorder>lineEdit</zorder>
    <zorder>lineEdit_2</zorder>
    <zorder>pushButton</zorder>
+   <zorder>label_4</zorder>
   </widget>
  </widget>
  <resources>

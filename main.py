@@ -13,17 +13,17 @@ class Capturing_Coral_Manager(QMainWindow):
     
     def __init__(self):
         super().__init__()
-        # self.setWindowTitle("Capturing Coral Tentacles")
+        self.setWindowTitle("Capturing Coral Tentacles")
 
-        self.setWindowFlags(QtCore.Qt.FramelessWindowHint)
-        self.setAttribute(QtCore.Qt.WA_TranslucentBackground)
+        #self.setWindowFlags(QtCore.Qt.FramelessWindowHint)
+        #self.setAttribute(QtCore.Qt.WA_TranslucentBackground)
         
         if platform.system() == 'Windows':
-            desktop = QApplication.desktop()
-            screenRect = desktop.screenGeometry()
-            self.resize(screenRect.width(), screenRect.height())
+            # desktop = QApplication.desktop()
+            # screenRect = desktop.screenGeometry()
+            self.resize(380, 500)
         else:
-            self.showMaximized()
+            self.resize(380, 500)
     
         self.generalLayout = QGridLayout()
 

@@ -72,7 +72,7 @@ class Login_Window(QWidget, Ui_Form):
         # )
 
     def check_code_on_initial_login(self):
-        try:
+        # try:
             #self.lineEdit = self.userTextBox.text()
             #self.lineEdit_2 = self.codeTextBox.text()
             
@@ -87,7 +87,7 @@ class Login_Window(QWidget, Ui_Form):
             if len(myresult1) == 0:
                 self.deniedLabel.setText(self.error_messages[0])
                 self.deniedLabel.show()
-                
+
             else:
                 code = ''.join(myresult1[0])
                
@@ -99,7 +99,17 @@ class Login_Window(QWidget, Ui_Form):
                 else:
                     self.deniedLabel.setText(self.error_messages[1])
                     self.deniedLabel.show()
-                    return None
+                    return None\
 
-        except mydb.Error as e:
-           print("Failed To Connect to Database")
+
+        # except mydb.Error as e:
+        #    print("Failed To Connect to Database")
+
+    def show_popup(self):
+        msg = QMessageBox()
+        msg.setWindowTitle("Error")
+        msg.setText("You entered the wrong username or code.")
+        msg.setIcon(QMessageBox.critical)
+        msg.setStandardButtons(QMessageBox.Retry)
+        msg.setInformativeText("If you are having trouble logging in, contact Ms. Kennedy for a new username or code.")
+        msg = QMessageBox(Login_Window)

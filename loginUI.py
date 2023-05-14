@@ -5,13 +5,11 @@ import sys, res_login
 class Ui_Form(object):
     def setupUi(self, Form):
         Form.setObjectName("Form")
-        Form.resize(450, 550)
-
-        Form.setWindowFlags(QtCore.Qt.FramelessWindowHint)
-        Form.setAttribute(QtCore.Qt.WA_TranslucentBackground)
-
+        Form.resize(370, 482)
         self.widget = QtWidgets.QWidget(Form)
-        self.widget.setGeometry(QtCore.QRect(30, 30, 370, 480))
+        self.widget.setGeometry(QtCore.QRect(0, 0, 370, 480))
+        self.widget.setStyleSheet("background-color: rgb(0, 0, 0);\n"
+"background-color: rgb(0, 0, 70);")
         self.widget.setObjectName("widget")
         self.label_2 = QtWidgets.QLabel(self.widget)
         self.label_2.setGeometry(QtCore.QRect(30, 30, 300, 420))
@@ -35,7 +33,9 @@ class Ui_Form(object):
         font.setItalic(False)
         font.setWeight(75)
         self.label_4.setFont(font)
-        self.label_4.setStyleSheet("color:rgba(255, 255, 255, 210);")
+        self.label_4.setStyleSheet("color:rgba(255, 255, 255, 210);\n"
+"background-color:rgba(0, 0, 0, 0);\n"
+"border:none;")
         self.label_4.setObjectName("label_4")
         self.lineEdit = QtWidgets.QLineEdit(self.widget)
         self.lineEdit.setGeometry(QtCore.QRect(80, 165, 200, 40))
@@ -94,10 +94,10 @@ class Ui_Form(object):
         self.label.raise_()
         self.label_2.raise_()
         self.label_3.raise_()
-        self.label_4.raise_()
         self.lineEdit.raise_()
         self.lineEdit_2.raise_()
         self.pushButton.raise_()
+        self.label_4.raise_()
 
         self.retranslateUi(Form)
         QtCore.QMetaObject.connectSlotsByName(Form)
