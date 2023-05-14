@@ -1,19 +1,27 @@
 import sys
 import platform
+import typing
+from PyQt5 import QtCore
 
 from PyQt5.QtWidgets import *
 from PyQt5.QtCore import *
 from PyQt5.QtGui import *
+from PyQt5.QtWidgets import QWidget
 
 from LoginWindow import *
 from CoralWindow import *
 from connectToDatabase import *
+
+from splash_screen import Ui_SplashScreen
+
+counter = 0
 
 class Capturing_Coral_Manager(QMainWindow):
     
     def __init__(self):
         super().__init__()
         self.setWindowTitle("Capturing Coral Tentacles")
+
 
         #self.setWindowFlags(QtCore.Qt.FramelessWindowHint)
         #self.setAttribute(QtCore.Qt.WA_TranslucentBackground)
@@ -56,8 +64,45 @@ class Capturing_Coral_Manager(QMainWindow):
 
             self.login_shortcut.activated.disconnect()
 
+class SplashScreen(QMainWindow):
+    def __init__(self):
+        QMainWindow.__init__(self)
+        self.ui = Ui_SplashScreen()
+        self.ui.setupUi(self)
+        self.shadow = QGraphicsDropShadowEffect(self)
+        self.shadow.setBlurRadius(20)
+        self.shadow.setXOffset(0)
+        self.shadow.setYOffset(0)
+        self.shadow.setColor(QColor(0, 0, 0, 60))
+        self.ui.dropShadowFrame.setGraphicsEffect(self.shadow)
+
+        self.timer = QtCore.QTimer()
+        self.timer.timeout.connect(self.progress)
+        self.timer.start(35)
+
+        self.show()
+
+    def progress(self):
+            global counter
+            self.ui.progressBar.setValue(counter)
+
+            if counter > 100:
+                self.timer.stop()
+                self.main = Capturing_Coral_Manager()
+                self.main.show()
+
+                self.close()
+
+            counter += 1
+
+
+
 if __name__ == '__main__':
+    # app = QApplication(sys.argv)
+    # gui = Capturing_Coral_Manager()
+    # gui.show()
+    # sys.exit(app.exec_())
+
     app = QApplication(sys.argv)
-    gui = Capturing_Coral_Manager()
-    gui.show()
+    window = SplashScreen()
     sys.exit(app.exec_())
