@@ -1,61 +1,80 @@
 from PyQt5.QtWidgets import *
 from PyQt5.QtCore import *
 from PyQt5.QtGui import *
+from PyQt5 import QtCore
+from loginUI import Ui_Form
+import sys
 
 from connectToDatabase import *
 
-class Login_Window(QWidget):
+class Login_Window(QWidget, Ui_Form):
     
     def __init__(self):
-        super().__init__()
-        self.setWindowTitle("Log In")
-        self.generalLayout = QGridLayout()
 
-        self.title_label = QLabel("Login")
-        self.title_label.setStyleSheet(
-            "font-size: 20px;"
-            "font-weight: bold;"
-        )
+        super(Login_Window, self).__init__()
+        self.setupUi(self)
 
-        self.user_label = QLabel("Username:")
-        self.userTextBox = QLineEdit()
-        self.code_label = QLabel("Code:")
-        self.codeTextBox = QLineEdit()
-        self.codeTextBox.setEchoMode(QLineEdit.Password)
+        # super().__init__()
 
-        self.deniedLabel = QLabel("")
-        self.deniedLabel.hide() # Only show if the code is incorrect
+        # self.setWindowTitle("Log In")
+        # self.generalLayout = QGridLayout()
 
-        self.enteredUsername = ""
-        self.enteredCode = ""
+        # self.title_label = QLabel("Login")
+        # self.title_label.setStyleSheet(
+        #     "font-size: 20px;"
+        #     "font-weight: bold;"
+        # )
 
-        self.error_messages = ["No associated user found. Try a different name.",
-                              "Incorrect code. Try again."]
+        # self.user_label = QLabel("Username:")
+        # self.userTextBox = QLineEdit()
 
-        self.smallerGridLayout = QGridLayout()
-        self.smallerGridLayout.addWidget(self.title_label, 0, 0)
-        self.smallerGridLayout.addWidget(self.user_label, 1, 0)
-        self.smallerGridLayout.addWidget(self.userTextBox, 1, 1)
-        self.smallerGridLayout.addWidget(self.code_label, 2, 0)
-        self.smallerGridLayout.addWidget(self.codeTextBox, 2, 1)
-        self.generalLayout.addLayout(self.smallerGridLayout, 0, 0)
+        # self.code_label = QLabel("Code:")
+        # self.codeTextBox = QLineEdit()
+        # self.codeTextBox.setEchoMode(QLineEdit.Password)
 
-        self.generalLayout.addWidget(self.deniedLabel)
+        # self.deniedLabel = QLabel("")
+        # self.deniedLabel.hide() # Only show if the code is incorrect
 
-        self.submitButtonLogin = QPushButton("Submit")
-        self.generalLayout.addWidget(self.submitButtonLogin, 2, 0)
+        # self.enteredUsername = ""
+        # self.enteredCode = ""
 
-        self.setLayout(self.generalLayout)
+        # self.error_messages = ["No associated user found. Try a different name.",
+        #                       "Incorrect code. Try again."]
 
-        # Stylesheets
-        self.deniedLabel.setStyleSheet(
-            "color: red;"
-        )
+        # self.smallerGridLayout = QGridLayout()
+
+        # self.smallerGridLayout.addWidget(self.title_label, 1, 0)
+        # self.smallerGridLayout.addWidget(self.user_label, 1, 1)
+        # self.smallerGridLayout.addWidget(self.userTextBox, 1, 2)
+        # self.smallerGridLayout.addWidget(self.code_label, 2, 1)
+        # self.smallerGridLayout.addWidget(self.codeTextBox, 2, 2)
+        # self.generalLayout.addLayout(self.smallerGridLayout, 0, 0)
+        
+
+        #self.generalLayout.addWidget(self.deniedLabel)
+
+        # self.submitButtonLogin = QPushButton("Submit")
+        # self.generalLayout.addWidget(self.submitButtonLogin, 2, 0)
+
+        # self.setLayout(self.generalLayout)
+
+        # # Stylesheets
+        # self.deniedLabel.setStyleSheet(
+        #     "color: red;"
+        # )
+
+        # self.userTextBox.setStyleSheet(
+        #     "color: blue;"
+        # )
+
+        # self.codeTextBox.setStyleSheet(
+        #     "color: blue;"
+        # )
 
     def check_code_on_initial_login(self):
         try:
-            self.enteredUsername = self.userTextBox.text()
-            self.enteredCode = self.codeTextBox.text()
+            self.lineEdit = self.userTextBox.text()
+            self.lineEdit_2 = self.codeTextBox.text()
             
             mydb = connectToDatabase()
             

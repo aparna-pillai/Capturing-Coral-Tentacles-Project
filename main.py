@@ -12,19 +12,22 @@ class Capturing_Coral_Manager(QMainWindow):
     
     def __init__(self):
         super().__init__()
-        self.setWindowTitle("Capturing Coral Tentacles")
+        # self.setWindowTitle("Capturing Coral Tentacles")
+
+        self.setWindowFlags(QtCore.Qt.FramelessWindowHint)
+        self.setAttribute(QtCore.Qt.WA_TranslucentBackground)
         
         if platform.system() == 'Windows':
             desktop = QApplication.desktop()
             screenRect = desktop.screenGeometry()
             self.resize(screenRect.width(), screenRect.height())
             
-        self.showMaximized()
+        # self.showMaximized()
     
         self.generalLayout = QGridLayout()
 
         self.login = Login_Window()
-        self.login.submitButtonLogin.clicked.connect(self.moveToNextScreen)
+        self.login.pushButton.clicked.connect(self.moveToNextScreen)
         self.username = ""
         self.main = Coral_Window(self.username)
 
