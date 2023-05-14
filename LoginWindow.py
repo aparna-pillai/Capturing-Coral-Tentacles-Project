@@ -73,14 +73,14 @@ class Login_Window(QWidget, Ui_Form):
 
     def check_code_on_initial_login(self):
         try:
-            self.lineEdit = self.userTextBox.text()
-            self.lineEdit_2 = self.codeTextBox.text()
+            #self.lineEdit = self.userTextBox.text()
+            #self.lineEdit_2 = self.codeTextBox.text()
             
             mydb = connectToDatabase()
             
             mycursor = mydb.cursor()
 
-            sql =  "SELECT users_name, users_code FROM users WHERE users_name = '%s'" % self.enteredUsername
+            sql =  "SELECT users_name, users_code FROM users WHERE users_name = '%s'" % self.lineEdit.text()
             mycursor.execute(sql)
             myresult1 = mycursor.fetchall()
             
@@ -93,12 +93,12 @@ class Login_Window(QWidget, Ui_Form):
                
                 mydb.close()
 
-                if self.enteredCode == code[-10:]:
+                if self.lineEdit_2.text() == code[-10:]:
+                    print(code[:-10])
                     return code[:-10]
                 else:
                     self.deniedLabel.setText(self.error_messages[1])
                     self.deniedLabel.show()
-
                     return None
 
         except mydb.Error as e:

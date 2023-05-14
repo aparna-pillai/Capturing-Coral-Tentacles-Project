@@ -7,6 +7,7 @@ from PyQt5.QtGui import *
 
 from LoginWindow import *
 from CoralWindow import *
+from connectToDatabase import *
 
 class Capturing_Coral_Manager(QMainWindow):
     
@@ -21,8 +22,8 @@ class Capturing_Coral_Manager(QMainWindow):
             desktop = QApplication.desktop()
             screenRect = desktop.screenGeometry()
             self.resize(screenRect.width(), screenRect.height())
-            
-        # self.showMaximized()
+        else:
+            self.showMaximized()
     
         self.generalLayout = QGridLayout()
 
