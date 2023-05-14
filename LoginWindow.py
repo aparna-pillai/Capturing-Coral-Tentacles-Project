@@ -14,6 +14,9 @@ class Login_Window(QWidget, Ui_Form):
         super(Login_Window, self).__init__()
         self.setupUi(self)
 
+        self.error_messages = ["No associated user found. Try a different name.",
+                              "Incorrect code. Try again."]
+
         # super().__init__()
 
         # self.setWindowTitle("Log In")
@@ -85,8 +88,7 @@ class Login_Window(QWidget, Ui_Form):
             myresult1 = mycursor.fetchall()
             
             if len(myresult1) == 0:
-                self.deniedLabel.setText(self.error_messages[0])
-                self.deniedLabel.show()
+                QMessageBox.about(self, "Error", self.error_messages[0])
 
             else:
                 code = ''.join(myresult1[0])
@@ -97,9 +99,10 @@ class Login_Window(QWidget, Ui_Form):
                     print(code[:-10])
                     return code[:-10]
                 else:
-                    self.deniedLabel.setText(self.error_messages[1])
-                    self.deniedLabel.show()
-                    return None\
+                    # self.deniedLabel.setText(self.error_messages[1])
+                    # self.deniedLabel.show()
+                    QMessageBox.about(self, "Error", self.error_messages[1])
+                    return None
 
 
         # except mydb.Error as e:
