@@ -71,4 +71,4 @@ class Ui_SplashScreen(object):
     def retranslateUi(self, SplashScreen):
         _translate = QtCore.QCoreApplication.translate
         SplashScreen.setWindowTitle(_translate("SplashScreen", "MainWindow"))
-        self.label.setText(_translate("SplashScreen", "loading..."))
+        self.label.setText(_translate("SplashScreen", "Loading..."))

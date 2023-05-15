@@ -22,13 +22,8 @@ class Capturing_Coral_Manager(QMainWindow):
         super().__init__()
         self.setWindowTitle("Capturing Coral Tentacles")
         
-        if platform.system() == 'Windows':
-        #     # desktop = QApplication.desktop()
-        #     # screenRect = desktop.screenGeometry()
-            self.resize(380, 500)
-        else:
-            self.resize(380, 500)
-    
+        self.resize(380, 500)
+        
         self.generalLayout = QGridLayout()
 
         palette = self.palette()
@@ -36,7 +31,6 @@ class Capturing_Coral_Manager(QMainWindow):
         self.setPalette(palette)
 
         self.login = Login_Window()
-
 
         self.login.pushButton.clicked.connect(self.moveToNextScreen)
         self.username = ""

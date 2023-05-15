@@ -9,10 +9,6 @@ from PyQt5.QtGui import *
 from CoralImage import *
 
 def viewOnlyTabUI(self, load_image, load_coordinates, owner_name, owner_notes):
-    # id = QFontDatabase.addApplicationFont("fonts/Montserrat/Montserrat-Regular.ttf")
-    # families = QFontDatabase.applicationFontFamilies(id)
-    # montserrat_font = families[0]
-
     viewOnlyTab = QWidget()
     self.generalLayout = QGridLayout()
 
@@ -83,23 +79,23 @@ def viewOnlyTabUI(self, load_image, load_coordinates, owner_name, owner_notes):
     
     # Stylesheets
     self.zoomInButton.setStyleSheet(
-        "border: 3px solid;"
-        "border-top-color: #00adb5;"
-        "border-left-color: #00adb5;"
-        "border-right-color: #00adb5;"
-        "border-bottom-color: #00adb5;"
-        "color: #112d4e;"
-        "width: 250px;" 
+        " color: white;"
+        " background-color: #4216a1;"
+        " font-family: 'Lucida Sans Typewriter';"
+        " font-size: 15px;"
+        " font-weight: bold;"
+        " border-radius: 10px;"
+        " padding: 10px 20px;"
     )
 
     self.zoomOutButton.setStyleSheet(
-        "border: 3px solid;"
-        "border-top-color: #00adb5;"
-        "border-left-color: #00adb5;"
-        "border-right-color: #00adb5;"
-        "border-bottom-color: #00adb5;"
-        "color: #112d4e;" 
-        "width: 250px;"
+        " color: white;"
+        " background-color: #4216a1;"
+        " font-family: 'Lucida Sans Typewriter';"
+        " font-size: 15px;"
+        " font-weight: bold;"
+        " border-radius: 10px;"
+        " padding: 10px 20px;"
     )
 
     self.setStyleSheet(
@@ -111,6 +107,35 @@ def viewOnlyTabUI(self, load_image, load_coordinates, owner_name, owner_notes):
     )
     self.notesDisplay.setStyleSheet(
         "border: none;"
+    )
+
+    self.setStyleSheet(
+        "QLabel {"
+        " color: #f30497;"
+        " font-family: 'Lucida Sans Typewriter';"
+        " font-size: 15px;"
+        " font-weight: bold;"
+        "}"
+
+        "QPushButton {"
+        " color: white;"
+        " background-color: #4216a1;"
+        " font-family: 'Lucida Sans Typewriter';"
+        " font-size: 15px;"
+        " font-weight: bold;"
+        " border-radius: 10px;"
+        " padding: 10px 20px;"
+        "}"
+
+        "QPushButton:hover {"
+        " background-color: #f30497;"
+        "}"
+
+        "QLineEdit {"
+        " font-size: 15px;"
+        " font-family: 'Lucida Sans Typewriter';"
+        "}"
+
     )
 
     viewOnlyTab.setLayout(self.generalLayout)

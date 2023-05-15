@@ -18,63 +18,6 @@ class Login_Window(QWidget, Ui_Form):
         self.error_messages = ["No associated user found. Try a different name.",
                               "Incorrect code. Try again."]
 
-        # super().__init__()
-
-        # self.setWindowTitle("Log In")
-        # self.generalLayout = QGridLayout()
-
-        # self.title_label = QLabel("Login")
-        # self.title_label.setStyleSheet(
-        #     "font-size: 20px;"
-        #     "font-weight: bold;"
-        # )
-
-        # self.user_label = QLabel("Username:")
-        # self.userTextBox = QLineEdit()
-
-        # self.code_label = QLabel("Code:")
-        # self.codeTextBox = QLineEdit()
-        # self.codeTextBox.setEchoMode(QLineEdit.Password)
-
-        # self.deniedLabel = QLabel("")
-        # self.deniedLabel.hide() # Only show if the code is incorrect
-
-        # self.enteredUsername = ""
-        # self.enteredCode = ""
-
-        # self.error_messages = ["No associated user found. Try a different name.",
-        #                       "Incorrect code. Try again."]
-
-        # self.smallerGridLayout = QGridLayout()
-
-        # self.smallerGridLayout.addWidget(self.title_label, 1, 0)
-        # self.smallerGridLayout.addWidget(self.user_label, 1, 1)
-        # self.smallerGridLayout.addWidget(self.userTextBox, 1, 2)
-        # self.smallerGridLayout.addWidget(self.code_label, 2, 1)
-        # self.smallerGridLayout.addWidget(self.codeTextBox, 2, 2)
-        # self.generalLayout.addLayout(self.smallerGridLayout, 0, 0)
-        
-
-        #self.generalLayout.addWidget(self.deniedLabel)
-
-        # self.submitButtonLogin = QPushButton("Submit")
-        # self.generalLayout.addWidget(self.submitButtonLogin, 2, 0)
-
-        # self.setLayout(self.generalLayout)
-
-        # # Stylesheets
-        # self.deniedLabel.setStyleSheet(
-        #     "color: red;"
-        # )
-
-        # self.userTextBox.setStyleSheet(
-        #     "color: blue;"
-        # )
-
-        # self.codeTextBox.setStyleSheet(
-        #     "color: blue;"
-        # )
-
     def check_code_on_initial_login(self):
         # try:
             #self.lineEdit = self.userTextBox.text()

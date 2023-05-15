@@ -30,7 +30,7 @@ class Coral_Window(QWidget):
         self.setWindowTitle("Capturing Coral Tentacles")
         
         self.username = username
-        self.username_Label = QLabel("Welcome " + self.username.upper() + "!")
+        self.username_Label = QLabel("Welcome, " + self.username + "!")
                 
         self.move(0,0)
         layout = QVBoxLayout()
@@ -49,13 +49,13 @@ class Coral_Window(QWidget):
 
         self.photo.clicked.connect(self.updateMarkerCount)
 
-        self.closeViewTabButton = QPushButton()
-        self.closeViewTabButton.setIcon(self.style().standardIcon(QStyle.SP_TitleBarCloseButton))
-        self.closeViewTabButton.setIconSize(QSize(10, 10))
-        self.closeViewTabButton.setStyleSheet(
-            "border: none;"
-        )
-        self.closeViewTabButton.clicked.connect(self.closeViewOnlyTab)
+        # self.closeViewTabButton = QPushButton()
+        # self.closeViewTabButton.setIcon(self.style().standardIcon(QStyle.SP_TitleBarCloseButton))
+        # self.closeViewTabButton.setIconSize(QSize(10, 10))
+        # self.closeViewTabButton.setStyleSheet(
+        #     "border: none;"
+        # )
+        # self.closeViewTabButton.clicked.connect(self.closeViewOnlyTab)
 
         # Keyboard shortcuts
         self.instructions_shortcut = QShortcut(Qt.Key_I, self)
@@ -291,6 +291,14 @@ class Coral_Window(QWidget):
                 self.view_tab = viewOnlyTabUI(
                     self, filenameForQuery, coordinates, ownerName, ownerNotes
                 )
+                self.closeViewTabButton = QPushButton()
+                self.closeViewTabButton.setIcon(self.style().standardIcon(QStyle.SP_TitleBarCloseButton))
+                self.closeViewTabButton.setIconSize(QSize(10, 10))
+                self.closeViewTabButton.setStyleSheet(
+                    "border: none;"
+                )
+                self.closeViewTabButton.clicked.connect(self.closeViewOnlyTab)
+
                 self.tabs.addTab(self.view_tab, "View - " + ownerName + ", " + filenameForQuery)
                 self.tabs.tabBar().setTabButton(2, QTabBar.RightSide, self.closeViewTabButton)
                 self.tabs.setCurrentIndex(2)

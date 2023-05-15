@@ -22,13 +22,8 @@ class CoralImage(QWidget):
         self.browse_btn.setFixedHeight(50)
         
         self.browse_btn.setStyleSheet(
-            # "border: 3px solid;"
-            # "border-top-color: #3f72af;"
-            # "border-left-color: #3f72af;"
-            # "border-right-color: #3f72af;"
-            # "border-bottom-color: #3f72af;"
             "color: white;"
-            " background-color: #f30497;"
+            "background-color: #f30497;"
         )
         
         self.pix = QPixmap()
@@ -50,7 +45,7 @@ class CoralImage(QWidget):
         self.view.setStyleSheet(
             "background: transparent;"
         )
-        grid.addWidget(self.view, 1, 0, 1, 0)
+        grid.addWidget(self.view, 1, 0)
 
         self.marker_count = 0
         self.markers = []
@@ -90,6 +85,7 @@ class CoralImage(QWidget):
             if key != "YOLO Red":
                 self.colorChange.addItem(key)
         
+        self.colorChange.setCurrentIndex(2)
         self.colorChange.activated[str].connect(self.change_color)
         
         # Keyboard shortcuts
@@ -126,6 +122,7 @@ class CoralImage(QWidget):
         )
         self.pix = QPixmap(filename)
         self.smaller_pixmap = self.pix.scaled(self.view.width(), self.view.height())
+        self.browse_btn.setFixedWidth(self.view.width())
         self.scene.clear()
         self.scene.addPixmap(self.smaller_pixmap)
         self.filenameDisplay.setText("{0}".format(self.get_filename()))
@@ -205,7 +202,7 @@ class CoralImage(QWidget):
         and not self.isViewOnly):
             x = QMouseEvent.pos().x()
             y = QMouseEvent.pos().y()
-            self.add_marker(x-20, y-325, "Yellow")
+            self.add_marker(x-17, y-85, self.colorChange.currentText())
             self.clicked.emit()
 
 
