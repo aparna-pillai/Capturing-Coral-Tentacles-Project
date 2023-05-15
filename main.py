@@ -83,17 +83,17 @@ class SplashScreen(QMainWindow):
         self.show()
 
     def progress(self):
-            global counter
-            self.ui.progressBar.setValue(counter)
+        global counter
+        self.ui.progressBar.setValue(counter)
 
-            if counter > 100:
-                self.timer.stop()
-                self.main = Capturing_Coral_Manager()
-                self.main.show()
+        if counter > 100:
+            self.timer.stop()
+            self.main = Capturing_Coral_Manager()
+            self.main.show()
 
-                self.close()
+            self.close()
 
-            counter += 1
+        counter += 1
 
 
 

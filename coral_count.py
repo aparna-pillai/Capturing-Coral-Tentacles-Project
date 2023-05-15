@@ -44,33 +44,28 @@ def count_tentacles_actual(img):
         text = os.getcwd() + '/runs/detect/exp/resized.jpg'
     return (text)
 
-def get_count():
-    if platform.system() == 'Windows':
-        filename = os.getcwd() + '\\runs\detect\exp\labels\\resized.txt'
-    else:
-        filename = os.getcwd() + '/runs/detect/exp/labels/resized.txt'
-    with open(filename, 'r') as textfile:
-        lines = len(textfile.readlines()) 
-
-    return lines
 
 def get_coordinates():
     if platform.system() == 'Windows':
         filename = os.getcwd() + '\\runs\detect\exp\labels\\resized.txt'
     else:
         filename = os.getcwd() + '/runs/detect/exp/labels/resized.txt'
-    file = open(filename, 'r')
-    file_lines = file.readlines()
-    large_array = []
+    
+    if not os.path.exists(filename):
+        return None
+    else:
+        file = open(filename, 'r')
+        file_lines = file.readlines()
+        large_array = []
 
-    for line in file_lines:
-        array = line.split(' ')
-        new_array = []
+        for line in file_lines:
+            array = line.split(' ')
+            new_array = []
 
-        new_array.append(float(array[1]))   # x_center of bounding box
-        new_array.append(float(array[2]))   # y_center of bounding box
-        
-        large_array.append(new_array)
+            new_array.append(float(array[1]))   # x_center of bounding box
+            new_array.append(float(array[2]))   # y_center of bounding box
+            
+            large_array.append(new_array)
 
-    file.close()
-    return large_array
+        file.close()
+        return large_array

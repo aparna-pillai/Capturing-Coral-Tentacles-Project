@@ -26,6 +26,35 @@ class CodeDeleteWindow(QWidget):
 
         self.setLayout(self.generalLayout)
 
+        self.setStyleSheet(
+        "QLabel {"
+        " color: #00adb5;"
+        " font-family: 'Lucida Sans Typewriter';"
+        " font-size: 15px;"
+        " font-weight: bold;"
+        "}"
+
+        "QPushButton {"
+        " color: white;"
+        " background-color: #3f72af;"
+        " font-family: 'Lucida Sans Typewriter';"
+        " font-size: 15px;"
+        " font-weight: bold;"
+        " border-radius: 10px;"
+        " padding: 10px 20px;"
+        "}"
+
+        "QPushButton:hover {"
+        " background-color: #00adb5;"
+        "}"
+
+        "QLineEdit {"
+        " font-size: 15px;"
+        " font-family: 'Lucida Sans Typewriter';"
+        "}"
+
+    )
+
 if __name__ == "__main__":
     app = QApplication(sys.argv)
     window = CodeDeleteWindow()

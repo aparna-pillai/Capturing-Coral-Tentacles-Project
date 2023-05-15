@@ -8,11 +8,12 @@ from PyQt5.QtGui import *
 
 from CoralImage import *
 
-def viewOnlyTabUI(self, load_image, load_coordinates, owner_name, owner_notes):
+def viewOnlyTabUI(self, load_image, load_count, load_coordinates, owner_name, owner_notes):
     viewOnlyTab = QWidget()
     self.generalLayout = QGridLayout()
 
     self.loadImageName = load_image
+    self.tentacleCount = load_count
     self.ownerName = owner_name
     self.coordString = load_coordinates
     self.coordList = load_coordinates.split("|")
@@ -43,7 +44,7 @@ def viewOnlyTabUI(self, load_image, load_coordinates, owner_name, owner_notes):
     self.view_photo.view.setTransformationAnchor(QGraphicsView.AnchorUnderMouse)
 
     self.countLabel = QLabel("Tentacle Count:")
-    self.countDisplay = QLineEdit("{0}".format(int(self.photo.get_marker_count())))
+    self.countDisplay = QLineEdit("{0}".format(self.tentacleCount))
     self.countDisplay.setReadOnly(True)
     self.countGridLayout = QGridLayout()
     self.countGridLayout.addWidget(self.countLabel, 0, 0)
@@ -80,7 +81,7 @@ def viewOnlyTabUI(self, load_image, load_coordinates, owner_name, owner_notes):
     # Stylesheets
     self.zoomInButton.setStyleSheet(
         " color: white;"
-        " background-color: #4216a1;"
+        " background-color: #3f72af;"
         " font-family: 'Lucida Sans Typewriter';"
         " font-size: 15px;"
         " font-weight: bold;"
@@ -90,7 +91,7 @@ def viewOnlyTabUI(self, load_image, load_coordinates, owner_name, owner_notes):
 
     self.zoomOutButton.setStyleSheet(
         " color: white;"
-        " background-color: #4216a1;"
+        " background-color: #3f72af;"
         " font-family: 'Lucida Sans Typewriter';"
         " font-size: 15px;"
         " font-weight: bold;"
@@ -111,7 +112,7 @@ def viewOnlyTabUI(self, load_image, load_coordinates, owner_name, owner_notes):
 
     self.setStyleSheet(
         "QLabel {"
-        " color: #f30497;"
+        " color: #00adb5;"
         " font-family: 'Lucida Sans Typewriter';"
         " font-size: 15px;"
         " font-weight: bold;"
@@ -119,7 +120,7 @@ def viewOnlyTabUI(self, load_image, load_coordinates, owner_name, owner_notes):
 
         "QPushButton {"
         " color: white;"
-        " background-color: #4216a1;"
+        " background-color: #3f72af;"
         " font-family: 'Lucida Sans Typewriter';"
         " font-size: 15px;"
         " font-weight: bold;"
@@ -128,7 +129,7 @@ def viewOnlyTabUI(self, load_image, load_coordinates, owner_name, owner_notes):
         "}"
 
         "QPushButton:hover {"
-        " background-color: #f30497;"
+        " background-color: #00adb5;"
         "}"
 
         "QLineEdit {"

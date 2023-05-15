@@ -3,6 +3,7 @@ from PyQt5.QtCore import *
 from PyQt5.QtGui import *
 
 from PhotoLabel import *
+from main import SplashScreen
 
 import platform
 import os.path
@@ -23,7 +24,7 @@ class CoralImage(QWidget):
         
         self.browse_btn.setStyleSheet(
             "color: white;"
-            "background-color: #f30497;"
+            "background-color: #00adb5;"
         )
         
         self.pix = QPixmap()
@@ -112,7 +113,6 @@ class CoralImage(QWidget):
         else:
             if platform.system() == 'Windows':
                 self.path = os.getcwd() + '\\' + filename
-                print(self.path)
             else:
                 self.path = os.getcwd() + '/' + filename
             self.file = filename

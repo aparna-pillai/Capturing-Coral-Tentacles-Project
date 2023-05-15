@@ -110,60 +110,31 @@ def recordTabUI(self):
     )
 
     self.searchButton.setStyleSheet(
-        # "border: 3px solid;"
-        # "border-top-color: #00adb5;"
-        # "border-left-color: #00adb5;"
-        # "border-right-color: #00adb5;"
-        # "border-bottom-color: #00adb5;"
         "color: white;"
         "width: 150px;"
     
     )
     
     self.reloadButton.setStyleSheet(
-        # "border: 3px solid;"
-        # "border-top-color: #00adb5;"
-        # "border-left-color: #00adb5;"
-        # "border-right-color: #00adb5;"
-        # "border-bottom-color: #00adb5;"
         "color: white;"
         "width: 150px;"
     )
     
     self.btnDelete.setStyleSheet(
-        # "border: 3px solid;"
-        # "border-top-color: #00adb5;"
-        # "border-left-color: #00adb5;"
-        # "border-right-color: #00adb5;"
-        # "border-bottom-color: #00adb5;"
         "color: white;"
         "width: 150px;"
     )
     
     self.btnDeleteAll.setStyleSheet(
-        # "border: 3px solid;"
-        # "border-top-color: #00adb5;"
-        # "border-left-color: #00adb5;"
-        # "border-right-color: #00adb5;"
         "border-bottom-color: #00adb5;"
         "color: white;"
     )
     
     self.btnReopen.setStyleSheet(
-        # "border: 3px solid;"
-        # "border-top-color: #00adb5;"
-        # "border-left-color: #00adb5;"
-        # "border-right-color: #00adb5;"
-        # "border-bottom-color: #00adb5;"
         "color: white;"
     )
     
     self.exportButton.setStyleSheet(
-        # "border: 3px solid;"
-        # "border-top-color: #00adb5;"
-        # "border-left-color: #00adb5;"
-        # "border-right-color: #00adb5;"
-        # "border-bottom-color: #00adb5;"
         "color: white;"
     )
     

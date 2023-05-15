@@ -40,11 +40,8 @@ class Login_Window(QWidget, Ui_Form):
                 mydb.close()
 
                 if self.lineEdit_2.text() == code[-10:]:
-                    print(code[:-10])
                     return code[:-10]
                 else:
-                    # self.deniedLabel.setText(self.error_messages[1])
-                    # self.deniedLabel.show()
                     QMessageBox.about(self, "Error", self.error_messages[1])
                     return None
 

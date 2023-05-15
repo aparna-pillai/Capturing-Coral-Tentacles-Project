@@ -49,14 +49,6 @@ class Coral_Window(QWidget):
 
         self.photo.clicked.connect(self.updateMarkerCount)
 
-        # self.closeViewTabButton = QPushButton()
-        # self.closeViewTabButton.setIcon(self.style().standardIcon(QStyle.SP_TitleBarCloseButton))
-        # self.closeViewTabButton.setIconSize(QSize(10, 10))
-        # self.closeViewTabButton.setStyleSheet(
-        #     "border: none;"
-        # )
-        # self.closeViewTabButton.clicked.connect(self.closeViewOnlyTab)
-
         # Keyboard shortcuts
         self.instructions_shortcut = QShortcut(Qt.Key_I, self)
         self.count_shortcut = QShortcut(Qt.Key_C, self)
@@ -129,10 +121,6 @@ class Coral_Window(QWidget):
                         if headertext == "DATE UPLOADED":
                             dateUploaded = self.tableWidget.item(currentRow, x).text()
                     
-                    print(nameOfPerson)
-                    print(dateUploaded)
-                            
-            
                     filenameForQuery = item[0].text()
                     
                     self.codeDelete = CodeDeleteWindow()
@@ -150,10 +138,6 @@ class Coral_Window(QWidget):
         try:
             mydb = connectToDatabase()
             mycursor = mydb.cursor()
-            
-            print("please work")
-            print(nameOfPerson)
-            print(dateUploaded)
             
             mycursor.execute("SELECT users_code FROM users WHERE users_name = '%s'" % nameOfPerson)
             myresult = mycursor.fetchall()
@@ -265,63 +249,67 @@ class Coral_Window(QWidget):
             counter += 1
     
     def reopen(self):
-        try:
-            mydb = connectToDatabase()
-            
-            mycursor = mydb.cursor()
-            
-            item = self.tableWidget.selectedItems()
-            row = item[0].row()
-            filenameForQuery = item[0].text()
-            
-            mycursor.execute("SELECT * FROM image_info WHERE filename='%s'" % filenameForQuery)
-            
-            myresult = mycursor.fetchone()[6]
-            ownerName = self.tableWidget.item(row, 2).text()
-            coordinates = self.tableWidget.item(row, 4).text()
-            ownerNotes = self.tableWidget.item(row, 5).text()
+        if not self.tableWidget.selectedItems():
+            QMessageBox.about(self, "Warning", "Please select an entry to reopen.")
+        else:
+            try:
+                mydb = connectToDatabase()
+                
+                mycursor = mydb.cursor()
+                
+                item = self.tableWidget.selectedItems()
+                row = item[0].row()
+                filenameForQuery = item[0].text()
+                
+                mycursor.execute("SELECT * FROM image_info WHERE filename='%s'" % filenameForQuery)
+                
+                myresult = mycursor.fetchone()[6]
+                tentacleCount = self.tableWidget.item(row, 1).text()
+                ownerName = self.tableWidget.item(row, 2).text()
+                coordinates = self.tableWidget.item(row, 4).text()
+                ownerNotes = self.tableWidget.item(row, 5).text()
 
-            with open(filenameForQuery, "wb") as file:
-                file.write(myresult)
-                file.close()
+                with open(filenameForQuery, "wb") as file:
+                    file.write(myresult)
+                    file.close()
+                
+                if (ownerName != self.username):
+                    self.closeViewOnlyTab()
+
+                    self.view_tab = viewOnlyTabUI(
+                        self, filenameForQuery, tentacleCount, coordinates, ownerName, ownerNotes
+                    )
+                    self.closeViewTabButton = QPushButton()
+                    self.closeViewTabButton.setIcon(
+                        self.style().standardIcon(QStyle.SP_TitleBarCloseButton)
+                    )
+                    self.closeViewTabButton.setIconSize(QSize(10, 10))
+                    self.closeViewTabButton.setStyleSheet(
+                        "border: none;"
+                        "color: white;"
+                        "background-color: none;"
+                        "padding: 0px;"
+                    )
+                    self.closeViewTabButton.clicked.connect(self.closeViewOnlyTab)
+
+                    self.tabs.addTab(self.view_tab, "View - " + ownerName + ", " + filenameForQuery)
+                    self.tabs.tabBar().setTabButton(2, QTabBar.RightSide, self.closeViewTabButton)
+                    self.tabs.setCurrentIndex(2)
+
+                    if (os.path.exists(filenameForQuery)):
+                        os.remove(filenameForQuery)
+                else:
+                    self.photo.open_image(filename=filenameForQuery)
+                    self.clearOldCoordinates()
+
+                    placeLoadedCoordinates(coordinates.split("|"), self.photo, False)
+                    self.updateMarkerCount()
+                    self.tabs.setCurrentIndex(0)
+
+                mydb.close()
             
-            if (ownerName != self.username):
-                self.closeViewOnlyTab()
-
-                self.view_tab = viewOnlyTabUI(
-                    self, filenameForQuery, coordinates, ownerName, ownerNotes
-                )
-                self.closeViewTabButton = QPushButton()
-                self.closeViewTabButton.setIcon(
-                    self.style().standardIcon(QStyle.SP_TitleBarCloseButton)
-                )
-                self.closeViewTabButton.setIconSize(QSize(10, 10))
-                self.closeViewTabButton.setStyleSheet(
-                    "border: none;"
-                    "color: white;"
-                    "background-color: none;"
-                    "padding: 0px;"
-                )
-                self.closeViewTabButton.clicked.connect(self.closeViewOnlyTab)
-
-                self.tabs.addTab(self.view_tab, "View - " + ownerName + ", " + filenameForQuery)
-                self.tabs.tabBar().setTabButton(2, QTabBar.RightSide, self.closeViewTabButton)
-                self.tabs.setCurrentIndex(2)
-
-                if (os.path.exists(filenameForQuery)):
-                    os.remove(filenameForQuery)
-            else:
-                self.photo.open_image(filename=filenameForQuery)
-                self.clearOldCoordinates()
-
-                placeLoadedCoordinates(coordinates.split("|"), self.photo, False)
-                self.updateMarkerCount()
-                self.tabs.setCurrentIndex(0)
-
-            mydb.close()
-            
-        except mydb.Error as e:
-           print("Failed To Connect to Database")
+            except mydb.Error as e:
+                print("Failed To Connect to Database")
                     
     def export(self):
         try:
@@ -461,10 +449,18 @@ class Coral_Window(QWidget):
                 if (os.path.exists('resized.jpg')):
                     os.remove('resized.jpg')
         else:
-            print("Model already ran")
+            QMessageBox.about(self, "Error", "The model has already run.")
 
     def placeInitialMarkers(self, photo_width, photo_height):
         coordinates = get_coordinates()
+
+        if not coordinates or len(coordinates) <= 5:
+            QMessageBox.about(
+                self, "Error", 
+                """Few to no tentacles were found. Are you sure this is a clear coral image?"""
+            )
+            if not coordinates:
+                return None
 
         for pair in coordinates:
             self.photo.add_marker(
