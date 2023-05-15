@@ -56,8 +56,8 @@ class Coral_Window(QWidget):
         self.remove_shortcut = QShortcut(Qt.Key_R, self)
         self.undo_shortcut = QShortcut(QKeySequence("Ctrl+Z"), self)
 
-        self.zoomin_shortcut = QShortcut(Qt.Key_Plus, self)
-        self.zoomout_shortcut = QShortcut(Qt.Key_Minus, self)
+        self.zoomin_shortcut = QShortcut(QKeySequence("Ctrl+="), self)
+        self.zoomout_shortcut = QShortcut(QKeySequence("Ctrl+-"), self)
 
         self.delete_shortcut = QShortcut(Qt.Key_Delete, self)
         self.tab_shortcut = QShortcut(Qt.Key_Tab, self)
@@ -304,7 +304,11 @@ class Coral_Window(QWidget):
 
                     placeLoadedCoordinates(coordinates.split("|"), self.photo, False)
                     self.updateMarkerCount()
-                    self.tabs.setCurrentIndex(0)
+
+                    if self.photo.marker_count == 0 and len(coordinates.split("|") > 0):
+                        self.marker_count = tentacleCount
+                    else:
+                        self.tabs.setCurrentIndex(0)
 
                 mydb.close()
             

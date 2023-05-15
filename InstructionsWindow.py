@@ -45,7 +45,7 @@ On Main tab:
     C - Count
     Double click - Add marker
     R - Remove selected marker
-    Ctrl+Z (Windows), Command+Z (Mac) - Undo most recent marker
+    Ctrl+Z (Windows), Command+Z (Mac) - Undo most recently placed marker
     Ctrl+S (Windows), Command+S (Mac) - Save photo to record
     I - Instructions
 

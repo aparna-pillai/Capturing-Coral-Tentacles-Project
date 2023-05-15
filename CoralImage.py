@@ -56,6 +56,8 @@ class CoralImage(QWidget):
 
         self.fileGridLayout = QGridLayout()
         self.filenameLabel = QLabel("Current image being displayed:")
+        if isViewOnly:
+            self.filenameLabel.setText("Image Name:")
         self.filenameDisplay = QLineEdit("{0}".format(self.get_filename()))
         self.filenameDisplay.setReadOnly(True)
         self.fileGridLayout.addWidget(self.filenameLabel, 0, 0)
@@ -65,7 +67,7 @@ class CoralImage(QWidget):
             grid.addLayout(self.fileGridLayout, 2, 0)
 
         self.ownerGridLayout = QGridLayout()
-        self.imageOwnerLabel = QLabel("Image owner:")
+        self.imageOwnerLabel = QLabel("Image Owner:")
         self.imageOwnerDisplay = QLineEdit("{0}".format("-"))
         self.imageOwnerDisplay.setReadOnly(True)
         self.ownerGridLayout.addWidget(self.imageOwnerLabel, 0, 0)

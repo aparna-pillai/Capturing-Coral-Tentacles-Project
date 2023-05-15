@@ -68,6 +68,11 @@ def viewOnlyTabUI(self, load_image, load_count, load_coordinates, owner_name, ow
     self.smallGridLayout.addWidget(self.zoomInButton, 0, 0)
     self.smallGridLayout.addWidget(self.zoomOutButton, 0, 1)
 
+    self.zoomin_shortcut = QShortcut(QKeySequence("Ctrl+="), self)
+    self.zoomout_shortcut = QShortcut(QKeySequence("Ctrl+-"), self)
+    self.zoomin_shortcut.activated.connect(self.view_photo.zoom_in)
+    self.zoomout_shortcut.activated.connect(self.view_photo.zoom_out)
+
     self.rightGridLayout = QGridLayout()
     self.rightGridLayout.addLayout(self.view_photo.fileGridLayout, 1, 0)
     self.rightGridLayout.addLayout(self.view_photo.ownerGridLayout, 2, 0)
