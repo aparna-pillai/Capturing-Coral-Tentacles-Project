@@ -292,10 +292,15 @@ class Coral_Window(QWidget):
                     self, filenameForQuery, coordinates, ownerName, ownerNotes
                 )
                 self.closeViewTabButton = QPushButton()
-                self.closeViewTabButton.setIcon(self.style().standardIcon(QStyle.SP_TitleBarCloseButton))
+                self.closeViewTabButton.setIcon(
+                    self.style().standardIcon(QStyle.SP_TitleBarCloseButton)
+                )
                 self.closeViewTabButton.setIconSize(QSize(10, 10))
                 self.closeViewTabButton.setStyleSheet(
                     "border: none;"
+                    "color: white;"
+                    "background-color: none;"
+                    "padding: 0px;"
                 )
                 self.closeViewTabButton.clicked.connect(self.closeViewOnlyTab)
 
