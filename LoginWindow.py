@@ -12,6 +12,7 @@ class Login_Window(QWidget, Ui_Form):
     def __init__(self):
 
         super(Login_Window, self).__init__()
+        
         self.setupUi(self)
 
         self.error_messages = ["No associated user found. Try a different name.",

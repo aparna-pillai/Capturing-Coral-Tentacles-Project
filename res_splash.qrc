@@ -2,4 +2,7 @@
   <qresource prefix="fish">
     <file>splash-fish.png</file>
   </qresource>
+  <qresource prefix="title">
+    <file>splash-title.png</file>
+  </qresource>
 </RCC>

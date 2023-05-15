@@ -21,21 +21,23 @@ class Capturing_Coral_Manager(QMainWindow):
     def __init__(self):
         super().__init__()
         self.setWindowTitle("Capturing Coral Tentacles")
-
-
-        #self.setWindowFlags(QtCore.Qt.FramelessWindowHint)
-        #self.setAttribute(QtCore.Qt.WA_TranslucentBackground)
         
         if platform.system() == 'Windows':
-            # desktop = QApplication.desktop()
-            # screenRect = desktop.screenGeometry()
+        #     # desktop = QApplication.desktop()
+        #     # screenRect = desktop.screenGeometry()
             self.resize(380, 500)
         else:
             self.resize(380, 500)
     
         self.generalLayout = QGridLayout()
 
+        palette = self.palette()
+        palette.setBrush(QPalette.Window, QColor(66, 22, 161))  
+        self.setPalette(palette)
+
         self.login = Login_Window()
+
+
         self.login.pushButton.clicked.connect(self.moveToNextScreen)
         self.username = ""
         self.main = Coral_Window(self.username)
@@ -67,6 +69,10 @@ class Capturing_Coral_Manager(QMainWindow):
 class SplashScreen(QMainWindow):
     def __init__(self):
         QMainWindow.__init__(self)
+
+        self.setWindowFlags(QtCore.Qt.FramelessWindowHint)
+        self.setAttribute(QtCore.Qt.WA_TranslucentBackground)
+
         self.ui = Ui_SplashScreen()
         self.ui.setupUi(self)
         self.shadow = QGraphicsDropShadowEffect(self)

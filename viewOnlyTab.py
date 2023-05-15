@@ -103,7 +103,7 @@ def viewOnlyTabUI(self, load_image, load_coordinates, owner_name, owner_notes):
     )
 
     self.setStyleSheet(
-        "QLabel {color: blue;}"
+        "QLabel {color: white;}"
     )
 
     self.countDisplay.setStyleSheet(

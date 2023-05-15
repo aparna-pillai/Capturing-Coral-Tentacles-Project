@@ -101,67 +101,70 @@ def recordTabUI(self):
         "border-right-color: #00adb5;"
         "border-bottom-color: #00adb5;"
         "color: #112d4e;"
+        " font-family: 'Lucida Sans Typewriter';"
     )
 
     header.setStyleSheet(
         "color: #112d4e;"
+        " font-family: 'Lucida Sans Typewriter';"
     )
 
     self.searchButton.setStyleSheet(
-        "border: 3px solid;"
-        "border-top-color: #00adb5;"
-        "border-left-color: #00adb5;"
-        "border-right-color: #00adb5;"
-        "border-bottom-color: #00adb5;"
-        "color: #112d4e;"
+        # "border: 3px solid;"
+        # "border-top-color: #00adb5;"
+        # "border-left-color: #00adb5;"
+        # "border-right-color: #00adb5;"
+        # "border-bottom-color: #00adb5;"
+        "color: white;"
         "width: 150px;"
+    
     )
     
     self.reloadButton.setStyleSheet(
-        "border: 3px solid;"
-        "border-top-color: #00adb5;"
-        "border-left-color: #00adb5;"
-        "border-right-color: #00adb5;"
-        "border-bottom-color: #00adb5;"
-        "color: #112d4e;"
+        # "border: 3px solid;"
+        # "border-top-color: #00adb5;"
+        # "border-left-color: #00adb5;"
+        # "border-right-color: #00adb5;"
+        # "border-bottom-color: #00adb5;"
+        "color: white;"
         "width: 150px;"
     )
     
     self.btnDelete.setStyleSheet(
-        "border: 3px solid;"
-        "border-top-color: #00adb5;"
-        "border-left-color: #00adb5;"
-        "border-right-color: #00adb5;"
-        "border-bottom-color: #00adb5;"
-        "color: #112d4e;"
+        # "border: 3px solid;"
+        # "border-top-color: #00adb5;"
+        # "border-left-color: #00adb5;"
+        # "border-right-color: #00adb5;"
+        # "border-bottom-color: #00adb5;"
+        "color: white;"
         "width: 150px;"
     )
     
     self.btnDeleteAll.setStyleSheet(
-        "border: 3px solid;"
-        "border-top-color: #00adb5;"
-        "border-left-color: #00adb5;"
-        "border-right-color: #00adb5;"
+        # "border: 3px solid;"
+        # "border-top-color: #00adb5;"
+        # "border-left-color: #00adb5;"
+        # "border-right-color: #00adb5;"
         "border-bottom-color: #00adb5;"
-        "color: #112d4e;"
+        "color: white;"
     )
     
     self.btnReopen.setStyleSheet(
-        "border: 3px solid;"
-        "border-top-color: #00adb5;"
-        "border-left-color: #00adb5;"
-        "border-right-color: #00adb5;"
-        "border-bottom-color: #00adb5;"
-        "color: #112d4e;"
+        # "border: 3px solid;"
+        # "border-top-color: #00adb5;"
+        # "border-left-color: #00adb5;"
+        # "border-right-color: #00adb5;"
+        # "border-bottom-color: #00adb5;"
+        "color: white;"
     )
     
     self.exportButton.setStyleSheet(
-        "border: 3px solid;"
-        "border-top-color: #00adb5;"
-        "border-left-color: #00adb5;"
-        "border-right-color: #00adb5;"
-        "border-bottom-color: #00adb5;"
-        "color: #112d4e;"
+        # "border: 3px solid;"
+        # "border-top-color: #00adb5;"
+        # "border-left-color: #00adb5;"
+        # "border-right-color: #00adb5;"
+        # "border-bottom-color: #00adb5;"
+        "color: white;"
     )
     
     recordTab.setLayout(layout)

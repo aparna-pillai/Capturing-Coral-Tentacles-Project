@@ -22,12 +22,13 @@ class CoralImage(QWidget):
         self.browse_btn.setFixedHeight(50)
         
         self.browse_btn.setStyleSheet(
-            "border: 3px solid;"
-            "border-top-color: #3f72af;"
-            "border-left-color: #3f72af;"
-            "border-right-color: #3f72af;"
-            "border-bottom-color: #3f72af;"
-            "color: #00adb5;"
+            # "border: 3px solid;"
+            # "border-top-color: #3f72af;"
+            # "border-left-color: #3f72af;"
+            # "border-right-color: #3f72af;"
+            # "border-bottom-color: #3f72af;"
+            "color: white;"
+            " background-color: #f30497;"
         )
         
         self.pix = QPixmap()
