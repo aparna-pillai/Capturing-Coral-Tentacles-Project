@@ -92,11 +92,7 @@ class Coral_Window(QWidget):
     def instruct(self):
         self.w = InstructionsWindow()
         self.w.closeButton.clicked.connect(self.instructions_close)
-        self.w.setGeometry(
-            int(self.frameGeometry().width()/2), 
-            int(self.frameGeometry().height()/2), 
-            300, 300)
-        
+        self.w.setGeometry(int(self.frameGeometry().width()/2) - 150, int(self.frameGeometry().height()/2) - 150, 300, 300)
         self.w.show()
         
     def instructions_close(self):

@@ -6,7 +6,6 @@ from PyQt5 import QtCore
 from PyQt5.QtWidgets import *
 from PyQt5.QtCore import *
 from PyQt5.QtGui import *
-from PyQt5.QtWidgets import QWidget
 
 from LoginWindow import *
 from CoralWindow import *
@@ -23,7 +22,7 @@ class Capturing_Coral_Manager(QMainWindow):
         self.setWindowTitle("Capturing Coral Tentacles")
         
         self.resize(380, 500)
-        
+
         self.generalLayout = QGridLayout()
 
         palette = self.palette()

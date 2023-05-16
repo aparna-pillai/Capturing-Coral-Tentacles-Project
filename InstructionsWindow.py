@@ -66,8 +66,19 @@ Ctrl+W (Windows), Command+W (Mac) - Close application or the
         self.instruct_close_shortcut = QShortcut(Qt.Key_Return, self)
         self.instruct_close_shortcut.activated.connect(self.close)
 
-        layout.addWidget(self.instructions_Label, 0, 0)
+        #layout.addWidget(self.instructions_Label, 0, 0)
         layout.addWidget(self.closeButton, 1, 0)
+        
+        scroll = QScrollArea()
+        scroll.setWidget(self.instructions_Label)
+        scroll.setWidgetResizable(True)
+        scroll.setFixedWidth(600)
+        scroll.setFixedHeight(600)
+        
+        layout = QGridLayout()
+        layout.addWidget(scroll, 0, 0)
+        layout.addWidget(self.closeButton, 1, 0)
+        
         self.setLayout(layout)
 
         self.setStyleSheet(
