@@ -305,8 +305,9 @@ class Coral_Window(QWidget):
                     placeLoadedCoordinates(coordinates.split("|"), self.photo, False)
                     self.updateMarkerCount()
 
-                    if self.photo.marker_count == 0 and len(coordinates.split("|") > 0):
-                        self.marker_count = tentacleCount
+                    if self.photo.marker_count != len(coordinates.split("|")):
+                        self.photo.marker_count = tentacleCount
+                        self.updateMarkerCount()
                     else:
                         self.tabs.setCurrentIndex(0)
 

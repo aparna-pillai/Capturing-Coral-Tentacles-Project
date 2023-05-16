@@ -8,7 +8,7 @@ class CodeDeleteWindow(QWidget):
     
     def __init__(self):
         super().__init__()
-        self.setWindowTitle("Log In")
+        self.setWindowTitle("Delete")
         self.generalLayout = QGridLayout()
 
         self.label = QLabel("Enter your code")

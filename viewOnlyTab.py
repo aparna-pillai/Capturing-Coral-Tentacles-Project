@@ -28,6 +28,7 @@ def viewOnlyTabUI(self, load_image, load_count, load_coordinates, owner_name, ow
 
     self.view_photo.open_image(filename=self.loadImageName)
     self.view_photo.imageOwnerDisplay.setText("{0}".format(self.ownerName))
+    self.view_photo.zoom_in()
 
     placeLoadedCoordinates(self.coordList, self.view_photo, True)
 
@@ -159,6 +160,6 @@ def placeLoadedCoordinates(coordList, coralImage, isViewOnly):
             point_x = float(coord.split(",")[0].strip())
             point_y = float(coord.split(",")[1].strip())
             if isViewOnly:
-                point_x -= 100
+                point_x /= 1.3
 
             coralImage.add_marker(point_x, point_y, color)

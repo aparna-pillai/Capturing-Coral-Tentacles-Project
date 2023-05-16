@@ -204,7 +204,7 @@ class CoralImage(QWidget):
         and not self.isViewOnly):
             x = QMouseEvent.pos().x()
             y = QMouseEvent.pos().y()
-            self.add_marker(x-17, y-85, self.colorChange.currentText())
+            self.add_marker(x-19, y-81, self.colorChange.currentText())
             self.clicked.emit()
 
 
