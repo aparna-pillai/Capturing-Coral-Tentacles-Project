@@ -44,12 +44,12 @@ def viewOnlyTabUI(self, load_image, load_count, load_coordinates, owner_name, ow
     self.view_photo.view.setResizeAnchor(QGraphicsView.AnchorUnderMouse)
     self.view_photo.view.setTransformationAnchor(QGraphicsView.AnchorUnderMouse)
 
-    self.countLabel = QLabel("Tentacle Count:")
-    self.countDisplay = QLineEdit("{0}".format(self.tentacleCount))
-    self.countDisplay.setReadOnly(True)
-    self.countGridLayout = QGridLayout()
-    self.countGridLayout.addWidget(self.countLabel, 0, 0)
-    self.countGridLayout.addWidget(self.countDisplay, 0, 1)
+    self.view_countLabel = QLabel("Tentacle Count:")
+    self.view_countDisplay = QLineEdit("{0}".format(self.tentacleCount))
+    self.view_countDisplay.setReadOnly(True)
+    self.view_countGridLayout = QGridLayout()
+    self.view_countGridLayout.addWidget(self.view_countLabel, 0, 0)
+    self.view_countGridLayout.addWidget(self.view_countDisplay, 0, 1)
 
     self.notesLabel = QLabel("Notes:")
     self.notesDisplay = QLineEdit(owner_notes)
@@ -77,7 +77,7 @@ def viewOnlyTabUI(self, load_image, load_count, load_coordinates, owner_name, ow
     self.rightGridLayout = QGridLayout()
     self.rightGridLayout.addLayout(self.view_photo.fileGridLayout, 1, 0)
     self.rightGridLayout.addLayout(self.view_photo.ownerGridLayout, 2, 0)
-    self.rightGridLayout.addLayout(self.countGridLayout, 3, 0)
+    self.rightGridLayout.addLayout(self.view_countGridLayout, 3, 0)
     self.rightGridLayout.addLayout(self.notesGridLayout, 4, 0)
     self.rightGridLayout.addLayout(self.smallGridLayout, 5, 0)
 
@@ -109,7 +109,7 @@ def viewOnlyTabUI(self, load_image, load_count, load_coordinates, owner_name, ow
         "QLabel {color: white;}"
     )
 
-    self.countDisplay.setStyleSheet(
+    self.view_countDisplay.setStyleSheet(
         "border: none;"
     )
     self.notesDisplay.setStyleSheet(

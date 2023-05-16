@@ -41,6 +41,7 @@ def generalTabUI(self):
     
     self.countLabel = QLabel("Tentacle Count:")
     self.countDisplay = QLineEdit("{0}".format(int(self.photo.get_marker_count())))
+    self.countDisplay.setReadOnly(True)
 
     self.removeMarkerButton = QPushButton('Remove Marker')
     self.removeMarkerButton.clicked.connect(self.photo.remove_marker)

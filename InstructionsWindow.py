@@ -89,6 +89,10 @@ Ctrl+W (Windows), Command+W (Mac) - Close application or the
             " font-weight: bold;"
             "}"
 
+            "QScrollArea {"
+            "   border: none;"
+            "}"
+
             "QPushButton {"
             " color: white;"
             " background-color: #3f72af;"
