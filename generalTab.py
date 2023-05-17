@@ -20,8 +20,8 @@ def generalTabUI(self):
     self.modelHasCounted = False
 
     self.photo = CoralImage(isViewOnly=False)
-    self.photo.view.setFixedWidth(700)
-    self.photo.view.setFixedHeight(650)
+    self.photo.view.setFixedWidth(800)
+    self.photo.view.setFixedHeight(500)
 
     self.generalLayout.addWidget(self.photo, 0, 0)
     self.photo.clicked.connect(self.updateMarkerCount)

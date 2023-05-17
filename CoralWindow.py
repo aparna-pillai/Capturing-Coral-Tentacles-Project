@@ -290,7 +290,7 @@ class Coral_Window(QWidget):
                         "padding: 0px;"
                     )
                     
-                    viewTabText = "View - " + ownerName + ", " + filenameForQuery + "| " + dateUploaded
+                    viewTabText = "View - " + ownerName + ", " + filenameForQuery + " | " + dateUploaded
 
                     i = 0
                     while i < self.tabs.count():
