@@ -8,6 +8,11 @@ def generalTabUI(self):
     generalTab = QWidget()
     self.generalLayout = QGridLayout()
 
+    self.desktop = QApplication.desktop()
+    self.screenRect = self.desktop.screenGeometry()
+    self.height = self.screenRect.height()
+    self.width = self.screenRect.width()
+
     # palette = self.palette()
     # palette.setBrush(QPalette.Window, QColor(94, 37, 204))  
     # self.setPalette(palette)
@@ -15,8 +20,8 @@ def generalTabUI(self):
     self.modelHasCounted = False
 
     self.photo = CoralImage(isViewOnly=False)
-    self.photo.view.setFixedWidth(800)
-    self.photo.view.setFixedHeight(500)
+    self.photo.view.setFixedWidth(700)
+    self.photo.view.setFixedHeight(650)
 
     self.generalLayout.addWidget(self.photo, 0, 0)
     self.photo.clicked.connect(self.updateMarkerCount)
@@ -29,15 +34,15 @@ def generalTabUI(self):
     
     self.instructionsButton = QPushButton("Instructions")
     self.instructionsButton.clicked.connect(self.instruct)
-    self.instructionsButton.setFixedSize(300, 40)
+    self.instructionsButton.setFixedSize(400, 40)
 
     self.savePicButton = QPushButton("Save Picture to Record")
     self.savePicButton.clicked.connect(self.recordInfo)
-    self.savePicButton.setFixedSize(300, 40)
+    self.savePicButton.setFixedSize(400, 40)
     
     self.countButton = QPushButton("Count")
     self.countButton.clicked.connect(self.countTentacles)
-    self.countButton.setFixedSize(300, 40)
+    self.countButton.setFixedSize(400, 40)
     
     self.countLabel = QLabel("Tentacle Count:")
     self.countDisplay = QLineEdit("{0}".format(int(self.photo.get_marker_count())))
@@ -46,16 +51,16 @@ def generalTabUI(self):
     self.removeMarkerButton = QPushButton('Remove Marker')
     self.removeMarkerButton.clicked.connect(self.photo.remove_marker)
     self.removeMarkerButton.clicked.connect(self.updateMarkerCount)
-    self.removeMarkerButton.setFixedSize(300, 40)
+    self.removeMarkerButton.setFixedSize(400, 40)
 
     self.undoMarkerButton = QPushButton('Undo Last Marker')
     self.undoMarkerButton.clicked.connect(self.photo.undo_last_marker)
     self.undoMarkerButton.clicked.connect(self.updateMarkerCount)
-    self.undoMarkerButton.setFixedSize(300, 40)
+    self.undoMarkerButton.setFixedSize(400, 40)
 
     self.clearAllMarkersButton = QPushButton('Delete All Markers')
     self.clearAllMarkersButton.clicked.connect(self.confirmForClearCoordinates)
-    self.clearAllMarkersButton.setFixedSize(300, 40)
+    self.clearAllMarkersButton.setFixedSize(400, 40)
 
     self.photo.view.setDragMode(QGraphicsView.ScrollHandDrag)
     self.photo.view.setRenderHint(QPainter.Antialiasing)
@@ -65,10 +70,10 @@ def generalTabUI(self):
     self.photo.view.setTransformationAnchor(QGraphicsView.AnchorUnderMouse)
 
     self.zoomInButton = QPushButton('Zoom In')
-    self.zoomInButton.setFixedSize(300, 40)
+    self.zoomInButton.setFixedSize(400, 40)
 
     self.zoomOutButton = QPushButton('Zoom Out')
-    self.zoomOutButton.setFixedSize(300, 40)
+    self.zoomOutButton.setFixedSize(400, 40)
     self.zoomInButton.clicked.connect(self.photo.zoom_in)
     self.zoomOutButton.clicked.connect(self.photo.zoom_out)
 
@@ -77,7 +82,7 @@ def generalTabUI(self):
     self.smallerGridLayout = QGridLayout()
     self.smallerGridLayout.addWidget(self.countLabel, 0, 0)
     self.smallerGridLayout.addWidget(self.countDisplay, 1, 0)
-    self.countDisplay.setFixedSize(300, 40)
+    self.countDisplay.setFixedSize(400, 40)
     
     self.smallGridLayout = QGridLayout()
     self.smallGridLayout.addWidget(self.instructionsButton, 0, 0)
@@ -92,7 +97,7 @@ def generalTabUI(self):
     
     self.smallerGridLayout.addWidget(self.photo.colorChange_Label, 9, 0)
     self.smallerGridLayout.addWidget(self.photo.colorChange, 10, 0)
-    self.photo.colorChange.setFixedSize(300, 40)
+    self.photo.colorChange.setFixedSize(400, 40)
     
     self.generalLayout.addLayout(self.smallGridLayout, 0, 1)
     
@@ -123,7 +128,7 @@ def generalTabUI(self):
         "QLabel {"
         " color: #00adb5;"
         " font-family: 'Lucida Sans Typewriter';"
-        " font-size: 15px;"
+        " font-size: 20px;"
         " font-weight: bold;"
         "}"
 
@@ -131,9 +136,9 @@ def generalTabUI(self):
         " color: white;"
         " background-color: #3f72af;"
         " font-family: 'Lucida Sans Typewriter';"
-        " font-size: 15px;"
+        " font-size: 20px;"
         " font-weight: bold;"
-        " border-radius: 10px;"
+        " border-radius: 15px;"
         " padding: 10px 20px;"
         "}"
 
@@ -142,7 +147,7 @@ def generalTabUI(self):
         "}"
 
         "QLineEdit {"
-        " font-size: 15px;"
+        " font-size: 25px;"
         " font-family: 'Lucida Sans Typewriter';"
         "}"
 
