@@ -37,8 +37,8 @@ class Coral_Window(QWidget):
         self.setLayout(layout)
         self.coordinate_list = []
 
-        self.closeAllViewTabsButton = QPushButton("Close All View Only Tabs")
-        self.closeAllViewTabsButton.clicked.connect(lambda: self.closeViewOnlyTabs("All"))
+        # self.closeAllViewTabsButton = QPushButton("Close All View Only Tabs")
+        # self.closeAllViewTabsButton.clicked.connect(lambda: self.closeViewOnlyTabs("All"))
 
         # Create the tab widget with two tabs
         self.tabs = QTabWidget()
@@ -48,7 +48,7 @@ class Coral_Window(QWidget):
         self.tabs.addTab(self.general_tab, "Main")
         self.tabs.addTab(self.record_tab, "Record")
         layout.addWidget(self.username_Label)
-        layout.addWidget(self.closeAllViewTabsButton)
+        # layout.addWidget(self.closeAllViewTabsButton)
         layout.addWidget(self.tabs)
 
         self.photo.clicked.connect(self.updateMarkerCount)
@@ -274,6 +274,7 @@ class Coral_Window(QWidget):
                     file.close()
                 
                 if (ownerName != self.username):
+                    self.closeViewOnlyTabs()
                     self.view_tab = viewOnlyTabUI(
                         self, filenameForQuery, tentacleCount, coordinates, ownerName, ownerNotes
                     )
@@ -288,9 +289,7 @@ class Coral_Window(QWidget):
                         "background-color: none;"
                         "padding: 0px;"
                     )
-                    self.closeViewTabButton.clicked.connect(
-                        lambda: self.closeViewOnlyTabs(self.tabs.count()-1)
-                    )
+                    self.closeViewTabButton.clicked.connect(self.closeViewOnlyTabs)
 
                     self.tabs.addTab(self.view_tab, "View - " + ownerName + ", " + filenameForQuery)
                     self.tabs.tabBar().setTabButton(
@@ -496,11 +495,6 @@ class Coral_Window(QWidget):
         else:
             question.close()
 
-    def closeViewOnlyTabs(self, index):
-        if index == "All":
-            while self.tabs.count() > 2:
-                self.tabs.removeTab(self.tabs.count()-1)
-            return None
-        
-        if index > 1:
-            self.tabs.removeTab(index)
+    def closeViewOnlyTabs(self):
+        if self.tabs.count() == 3:
+            self.tabs.removeTab(2)
