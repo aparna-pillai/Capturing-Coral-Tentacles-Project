@@ -33,14 +33,17 @@ def generalTabUI(self):
     self.w = None
     
     self.instructionsButton = QPushButton("Instructions")
+    self.instructionsButton.setCursor(Qt.PointingHandCursor)
     self.instructionsButton.clicked.connect(self.instruct)
     self.instructionsButton.setFixedSize(400, 40)
 
     self.savePicButton = QPushButton("Save Picture to Record")
+    self.savePicButton.setCursor(Qt.PointingHandCursor)
     self.savePicButton.clicked.connect(self.recordInfo)
     self.savePicButton.setFixedSize(400, 40)
     
     self.countButton = QPushButton("Count")
+    self.countButton.setCursor(Qt.PointingHandCursor)
     self.countButton.clicked.connect(self.countTentacles)
     self.countButton.setFixedSize(400, 40)
     
@@ -49,16 +52,19 @@ def generalTabUI(self):
     self.countDisplay.setReadOnly(True)
 
     self.removeMarkerButton = QPushButton('Remove Marker')
+    self.removeMarkerButton.setCursor(Qt.PointingHandCursor)
     self.removeMarkerButton.clicked.connect(self.photo.remove_marker)
     self.removeMarkerButton.clicked.connect(self.updateMarkerCount)
     self.removeMarkerButton.setFixedSize(400, 40)
 
     self.undoMarkerButton = QPushButton('Undo Last Marker')
+    self.undoMarkerButton.setCursor(Qt.PointingHandCursor)
     self.undoMarkerButton.clicked.connect(self.photo.undo_last_marker)
     self.undoMarkerButton.clicked.connect(self.updateMarkerCount)
     self.undoMarkerButton.setFixedSize(400, 40)
 
     self.clearAllMarkersButton = QPushButton('Delete All Markers')
+    self.clearAllMarkersButton.setCursor(Qt.PointingHandCursor)
     self.clearAllMarkersButton.clicked.connect(self.confirmForClearCoordinates)
     self.clearAllMarkersButton.setFixedSize(400, 40)
 
@@ -70,9 +76,11 @@ def generalTabUI(self):
     self.photo.view.setTransformationAnchor(QGraphicsView.AnchorUnderMouse)
 
     self.zoomInButton = QPushButton('Zoom In')
+    self.zoomInButton.setCursor(Qt.PointingHandCursor)
     self.zoomInButton.setFixedSize(400, 40)
 
     self.zoomOutButton = QPushButton('Zoom Out')
+    self.zoomOutButton.setCursor(Qt.PointingHandCursor)
     self.zoomOutButton.setFixedSize(400, 40)
     self.zoomInButton.clicked.connect(self.photo.zoom_in)
     self.zoomOutButton.clicked.connect(self.photo.zoom_out)

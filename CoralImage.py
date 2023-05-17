@@ -19,6 +19,7 @@ class CoralImage(QWidget):
         self.photo.setFixedHeight(500)
         
         self.browse_btn = QPushButton('Browse')
+        self.browse_btn.setCursor(Qt.PointingHandCursor)
         self.browse_btn.setFixedWidth(800)
         self.browse_btn.setFixedHeight(50)
         

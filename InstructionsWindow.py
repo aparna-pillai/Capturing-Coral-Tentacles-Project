@@ -62,6 +62,7 @@ Ctrl+W (Windows), Command+W (Mac) - Close application or the
         )
         
         self.closeButton = QPushButton("Close")
+        self.closeButton.setCursor(Qt.PointingHandCursor)
 
         self.instruct_close_shortcut = QShortcut(Qt.Key_Return, self)
         self.instruct_close_shortcut.activated.connect(self.close)

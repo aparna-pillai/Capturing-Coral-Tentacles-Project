@@ -31,6 +31,7 @@ class Capturing_Coral_Manager(QMainWindow):
 
         self.login = Login_Window()
 
+        self.login.pushButton.setCursor(Qt.PointingHandCursor)
         self.login.pushButton.clicked.connect(self.moveToNextScreen)
         self.username = ""
         self.main = Coral_Window(self.username)

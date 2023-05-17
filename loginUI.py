@@ -63,6 +63,7 @@ class Ui_Form(object):
         self.lineEdit_2.setEchoMode(QtWidgets.QLineEdit.Password)
         self.lineEdit_2.setObjectName("lineEdit_2")
         self.pushButton = QtWidgets.QPushButton(self.widget)
+        self.pushButton.setCursor(QtCore.Qt.PointingHandCursor)
         self.pushButton.setGeometry(QtCore.QRect(80, 310, 200, 40))
         font = QtGui.QFont()
         font.setFamily("Lucida Sans Typewriter")

@@ -59,7 +59,9 @@ def viewOnlyTabUI(self, load_image, load_count, load_coordinates, owner_name, ow
     self.notesGridLayout.addWidget(self.notesDisplay, 0, 1)
 
     self.zoomInButton = QPushButton('Zoom In')
+    self.zoomInButton.setCursor(Qt.PointingHandCursor)
     self.zoomOutButton = QPushButton('Zoom Out')
+    self.zoomOutButton.setCursor(Qt.PointingHandCursor)
     self.zoomInButton.clicked.connect(self.view_photo.zoom_in)
     self.zoomOutButton.clicked.connect(self.view_photo.zoom_out)
 
@@ -85,25 +87,25 @@ def viewOnlyTabUI(self, load_image, load_count, load_coordinates, owner_name, ow
 
     
     # Stylesheets
-    self.zoomInButton.setStyleSheet(
-        " color: white;"
-        " background-color: #3f72af;"
-        " font-family: 'Lucida Sans Typewriter';"
-        " font-size: 15px;"
-        " font-weight: bold;"
-        " border-radius: 10px;"
-        " padding: 10px 20px;"
-    )
+    # self.zoomInButton.setStyleSheet(
+    #     " color: white;"
+    #     " background-color: #3f72af;"
+    #     " font-family: 'Lucida Sans Typewriter';"
+    #     " font-size: 15px;"
+    #     " font-weight: bold;"
+    #     " border-radius: 10px;"
+    #     " padding: 10px 20px;"
+    # )
 
-    self.zoomOutButton.setStyleSheet(
-        " color: white;"
-        " background-color: #3f72af;"
-        " font-family: 'Lucida Sans Typewriter';"
-        " font-size: 15px;"
-        " font-weight: bold;"
-        " border-radius: 10px;"
-        " padding: 10px 20px;"
-    )
+    # self.zoomOutButton.setStyleSheet(
+    #     " color: white;"
+    #     " background-color: #3f72af;"
+    #     " font-family: 'Lucida Sans Typewriter';"
+    #     " font-size: 15px;"
+    #     " font-weight: bold;"
+    #     " border-radius: 10px;"
+    #     " padding: 10px 20px;"
+    # )
 
     self.setStyleSheet(
         "QLabel {color: white;}"

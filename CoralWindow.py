@@ -38,6 +38,7 @@ class Coral_Window(QWidget):
         self.coordinate_list = []
 
         self.closeAllViewTabsButton = QPushButton("Close All View Only Tabs")
+        self.closeAllViewTabsButton.setCursor(Qt.PointingHandCursor)
         self.closeAllViewTabsButton.clicked.connect(lambda: self.closeViewOnlyTabs("All"))
 
         # Create the tab widget with two tabs
@@ -151,8 +152,12 @@ class Coral_Window(QWidget):
                 mycursor.execute(sql_delete, sql_data)
                 self.tableWidget.removeRow(currentRow)
                 self.codeDelete.close()
+            elif (self.codeDelete.codeTextBox.text() == ""):
+                QMessageBox.about(self, "Warning", "Please enter a code.")
+                self.codeDelete.close()
+                self.codeBeforeDeleteRow()
             else: 
-                QMessageBox.about(self, "Warning", "Wrong Code!")
+                QMessageBox.about(self, "Warning", "Wrong code!")
                 self.codeDelete.close()
         
             mydb.commit()
@@ -167,9 +172,12 @@ class Coral_Window(QWidget):
                 
         if response == question.Yes:
             self.codeDeleteAllWindow = CodeDeleteWindow()
+            self.codeDeleteAllWindow.label.setText("Enter ADMIN code:")
             self.codeDeleteAllWindow.setGeometry(int(self.frameGeometry().width()/2) - 150, int(self.frameGeometry().height()/2) - 150, 300, 300)
             self.codeDeleteAllWindow.show()
-            self.codeDeleteAllWindow.submitButtonLogin.clicked.connect(self.deleteAllRows)    
+
+            self.codeDeleteAllWindow.submitButtonLogin.clicked.connect(self.deleteAllRows) 
+            self.codeDeleteAllWindow.submit_shortcut.activated.connect(self.deleteAllRows)   
         else:
             question.close()
                 
@@ -191,7 +199,7 @@ class Coral_Window(QWidget):
                     self.tableWidget.removeRow(0)
                 self.codeDeleteAllWindow.close()
             else:
-                QMessageBox.about(self, "Warning", "ONLY THE ADMIN CAN DELETE ALL THE ROWS!")
+                QMessageBox.about(self, "Warning", "Wrong code.\nONLY THE ADMIN CAN DELETE ALL THE ROWS!")
                 self.codeDeleteAllWindow.close()
                 
             
@@ -279,6 +287,7 @@ class Coral_Window(QWidget):
                         self, filenameForQuery, tentacleCount, coordinates, ownerName, ownerNotes
                     )
                     self.closeViewTabButton = QPushButton()
+                    self.closeViewTabButton.setCursor(Qt.PointingHandCursor)
                     self.closeViewTabButton.setIcon(
                         self.style().standardIcon(QStyle.SP_TitleBarCloseButton)
                     )
@@ -412,42 +421,47 @@ class Coral_Window(QWidget):
         return binaryData
             
     def gatheringInfo(self):  
-        try:
-            mydb = connectToDatabase()
-            
-                
-            mycursor = mydb.cursor()
-                    
-            for i, marker in enumerate(self.photo.markers):
-                self.coordinate_list.append(
-                    str(marker.x()) + ', ' + str(marker.y()) 
-                    + ' ; ' + str(self.photo.marker_colors[i])
-                )
-
-            coordstring = ' | '.join(self.coordinate_list)
-
-            with open(self.photo.get_path(), "rb") as file:
-                binaryData = file.read()       
-                                        
-            mycursor.execute(
-                "INSERT INTO image_info VALUES (%s, %s, %s, %s, %s, %s, %s)", 
-                (
-                    self.photo.get_filename(), self.photo.marker_count, 
-                    self.username, datetime.today(), 
-                    coordstring, self.g.get_notes(), binaryData
-                )
-            )
-            
-            self.tableWidget.resizeRowsToContents()
-        
-            mydb.commit()
-            
-            self.DBConnect()
+        if self.g.notes_Display.text() == "":
+            QMessageBox.about(self, "Warning", "Please enter notes.")
             self.g.close()
-            mydb.close()
+            self.recordInfo()
+        else:
+            try:
+                mydb = connectToDatabase()
+                
+                    
+                mycursor = mydb.cursor()
+                        
+                for i, marker in enumerate(self.photo.markers):
+                    self.coordinate_list.append(
+                        str(marker.x()) + ', ' + str(marker.y()) 
+                        + ' ; ' + str(self.photo.marker_colors[i])
+                    )
+
+                coordstring = ' | '.join(self.coordinate_list)
+
+                with open(self.photo.get_path(), "rb") as file:
+                    binaryData = file.read()       
+                                            
+                mycursor.execute(
+                    "INSERT INTO image_info VALUES (%s, %s, %s, %s, %s, %s, %s)", 
+                    (
+                        self.photo.get_filename(), self.photo.marker_count, 
+                        self.username, datetime.today(), 
+                        coordstring, self.g.get_notes(), binaryData
+                    )
+                )
+                
+                self.tableWidget.resizeRowsToContents()
             
-        except mydb.Error as e:
-            print("Failed To Connect to Database")
+                mydb.commit()
+                
+                self.DBConnect()
+                self.g.close()
+                mydb.close()
+                
+            except mydb.Error as e:
+                print("Failed To Connect to Database")
 
     def countTentacles(self):
         if "YOLO Red" not in self.photo.marker_colors:

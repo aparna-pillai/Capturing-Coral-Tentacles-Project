@@ -52,7 +52,9 @@ def recordTabUI(self):
     self.searchLabel = QLabel("Search:")
     self.searchBar = QLineEdit()
     self.searchButton = QPushButton("Go")
+    self.searchButton.setCursor(Qt.PointingHandCursor)
     self.reloadButton = QPushButton("Reload")
+    self.reloadButton.setCursor(Qt.PointingHandCursor)
 
     self.searchBar.returnPressed.connect(lambda: self.searchRecord(self.searchBar.text()))
     self.searchButton.clicked.connect(lambda: self.searchRecord(self.searchBar.text()))
@@ -74,15 +76,21 @@ def recordTabUI(self):
     self.DBConnect()
     
     self.btnDelete = QPushButton("Delete")
+    self.btnDelete.setCursor(Qt.PointingHandCursor)
     load_dotenv('config.env')
     self.btnDelete.clicked.connect(self.codeBeforeDeleteRow)
+
     self.btnDeleteAll = QPushButton("Delete All")
+    self.btnDeleteAll.setCursor(Qt.PointingHandCursor)
     load_dotenv('config.env')
     self.btnDeleteAll.clicked.connect(self.codeBeforeDeleteAllRows)
+    
     self.btnReopen = QPushButton("Reopen")
+    self.btnReopen.setCursor(Qt.PointingHandCursor)
     self.btnReopen.clicked.connect(self.reopen)
     
     self.exportButton = QPushButton("Export")
+    self.exportButton.setCursor(Qt.PointingHandCursor)
     load_dotenv('config.env')
     self.exportButton.clicked.connect(self.export)
 

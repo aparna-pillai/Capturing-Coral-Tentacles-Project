@@ -29,7 +29,8 @@ class RecordInfoWindow(QWidget):
         self.notesGridLayout.addWidget(self.notes_Display, 0, 1)
         
         self.submitButton = None
-        self.submitButton = QPushButton("SUBMIT!")
+        self.submitButton = QPushButton("Submit")
+        self.submitButton.setCursor(Qt.PointingHandCursor)
         self.submit_shortcut = QShortcut(Qt.Key_Return, self)
         
         self.close_shortcut = QShortcut(QKeySequence("Ctrl+W"), self)
