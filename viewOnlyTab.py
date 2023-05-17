@@ -8,13 +8,14 @@ from PyQt5.QtGui import *
 
 from CoralImage import *
 
-def viewOnlyTabUI(self, load_image, load_count, load_coordinates, owner_name, owner_notes):
+def viewOnlyTabUI(self, load_image, load_count, load_coordinates, owner_name, owner_notes, upload_date):
     viewOnlyTab = QWidget()
     self.generalLayout = QGridLayout()
 
     self.loadImageName = load_image
     self.tentacleCount = load_count
     self.ownerName = owner_name
+    self.uploadDate = upload_date
     self.coordString = load_coordinates
     self.coordList = load_coordinates.split("|")
 
@@ -32,7 +33,7 @@ def viewOnlyTabUI(self, load_image, load_count, load_coordinates, owner_name, ow
 
     placeLoadedCoordinates(self.coordList, self.view_photo, True)
 
-    self.generalLayout.addWidget(self.view_photo, 0, 0)
+    self.generalLayout.addWidget(self.view_photo, 1, 0)
 
     self.view_photo.view.setFixedWidth(800)
     self.view_photo.view.setFixedHeight(500)
@@ -43,6 +44,13 @@ def viewOnlyTabUI(self, load_image, load_count, load_coordinates, owner_name, ow
     self.view_photo.view.setViewportUpdateMode(QGraphicsView.FullViewportUpdate)
     self.view_photo.view.setResizeAnchor(QGraphicsView.AnchorUnderMouse)
     self.view_photo.view.setTransformationAnchor(QGraphicsView.AnchorUnderMouse)
+
+    self.view_dateLabel = QLabel("Date & Time Uploaded:")
+    self.view_dateDisplay = QLineEdit(self.uploadDate)
+    self.view_dateDisplay.setReadOnly(True)
+    self.view_dateGridLayout = QGridLayout()
+    self.view_dateGridLayout.addWidget(self.view_dateLabel, 0, 0)
+    self.view_dateGridLayout.addWidget(self.view_dateDisplay, 0, 1)
 
     self.view_countLabel = QLabel("Tentacle Count:")
     self.view_countDisplay = QLineEdit("{0}".format(self.tentacleCount))
@@ -79,34 +87,15 @@ def viewOnlyTabUI(self, load_image, load_count, load_coordinates, owner_name, ow
     self.rightGridLayout = QGridLayout()
     self.rightGridLayout.addLayout(self.view_photo.fileGridLayout, 1, 0)
     self.rightGridLayout.addLayout(self.view_photo.ownerGridLayout, 2, 0)
-    self.rightGridLayout.addLayout(self.view_countGridLayout, 3, 0)
-    self.rightGridLayout.addLayout(self.notesGridLayout, 4, 0)
-    self.rightGridLayout.addLayout(self.smallGridLayout, 5, 0)
+    self.rightGridLayout.addLayout(self.view_dateGridLayout, 3, 0)
+    self.rightGridLayout.addLayout(self.view_countGridLayout, 4, 0)
+    self.rightGridLayout.addLayout(self.notesGridLayout, 5, 0)
+    self.rightGridLayout.addLayout(self.smallGridLayout, 6, 0)
 
-    self.generalLayout.addLayout(self.rightGridLayout, 0, 1)
+    self.generalLayout.addLayout(self.rightGridLayout, 1, 1)
 
     
     # Stylesheets
-    # self.zoomInButton.setStyleSheet(
-    #     " color: white;"
-    #     " background-color: #3f72af;"
-    #     " font-family: 'Lucida Sans Typewriter';"
-    #     " font-size: 15px;"
-    #     " font-weight: bold;"
-    #     " border-radius: 10px;"
-    #     " padding: 10px 20px;"
-    # )
-
-    # self.zoomOutButton.setStyleSheet(
-    #     " color: white;"
-    #     " background-color: #3f72af;"
-    #     " font-family: 'Lucida Sans Typewriter';"
-    #     " font-size: 15px;"
-    #     " font-weight: bold;"
-    #     " border-radius: 10px;"
-    #     " padding: 10px 20px;"
-    # )
-
     self.setStyleSheet(
         "QLabel {color: white;}"
     )
@@ -115,6 +104,9 @@ def viewOnlyTabUI(self, load_image, load_count, load_coordinates, owner_name, ow
         "border: none;"
     )
     self.notesDisplay.setStyleSheet(
+        "border: none;"
+    )
+    self.view_dateDisplay.setStyleSheet(
         "border: none;"
     )
 

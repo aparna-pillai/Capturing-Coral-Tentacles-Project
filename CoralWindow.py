@@ -45,9 +45,14 @@ class Coral_Window(QWidget):
         self.tabs = QTabWidget()
         self.general_tab = generalTabUI(self)
         self.record_tab = recordTabUI(self)
-
         self.tabs.addTab(self.general_tab, "Main")
         self.tabs.addTab(self.record_tab, "Record")
+
+        self.tabs.setStyleSheet(
+            "QTabBar::tab { width: 75px; height: 20px; }"
+            "font-family: 'Lucida Sans Typewriter';"
+        )
+
         layout.addWidget(self.username_Label)
         layout.addWidget(self.closeAllViewTabsButton)
         layout.addWidget(self.tabs)
@@ -284,7 +289,8 @@ class Coral_Window(QWidget):
                 
                 if (ownerName != self.username):
                     self.view_tab = viewOnlyTabUI(
-                        self, filenameForQuery, tentacleCount, coordinates, ownerName, ownerNotes
+                        self, filenameForQuery, tentacleCount, 
+                        coordinates, ownerName, ownerNotes, dateUploaded
                     )
                     self.closeViewTabButton = QPushButton()
                     self.closeViewTabButton.setCursor(Qt.PointingHandCursor)
@@ -317,6 +323,7 @@ class Coral_Window(QWidget):
                     self.tabs.tabBar().setTabButton(
                         self.tabs.count()-1, QTabBar.RightSide, self.closeViewTabButton
                     )
+                    self.tabs.setTabToolTip(self.tabs.count()-1, viewTabText)
                     self.tabs.setCurrentIndex(self.tabs.count()-1)
 
                     self.closeViewTabButton.clicked.connect(lambda: self.closeViewOnlyTabs(viewTabText))
