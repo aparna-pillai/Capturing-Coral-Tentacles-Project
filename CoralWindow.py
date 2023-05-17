@@ -37,8 +37,8 @@ class Coral_Window(QWidget):
         self.setLayout(layout)
         self.coordinate_list = []
 
-        # self.closeAllViewTabsButton = QPushButton("Close All View Only Tabs")
-        # self.closeAllViewTabsButton.clicked.connect(lambda: self.closeViewOnlyTabs("All"))
+        self.closeAllViewTabsButton = QPushButton("Close All View Only Tabs")
+        self.closeAllViewTabsButton.clicked.connect(lambda: self.closeViewOnlyTabs("All"))
 
         # Create the tab widget with two tabs
         self.tabs = QTabWidget()
@@ -48,7 +48,7 @@ class Coral_Window(QWidget):
         self.tabs.addTab(self.general_tab, "Main")
         self.tabs.addTab(self.record_tab, "Record")
         layout.addWidget(self.username_Label)
-        # layout.addWidget(self.closeAllViewTabsButton)
+        layout.addWidget(self.closeAllViewTabsButton)
         layout.addWidget(self.tabs)
 
         self.photo.clicked.connect(self.updateMarkerCount)
@@ -266,6 +266,7 @@ class Coral_Window(QWidget):
                 myresult = mycursor.fetchone()[6]
                 tentacleCount = self.tableWidget.item(row, 1).text()
                 ownerName = self.tableWidget.item(row, 2).text()
+                dateUploaded = self.tableWidget.item(row, 3).text()
                 coordinates = self.tableWidget.item(row, 4).text()
                 ownerNotes = self.tableWidget.item(row, 5).text()
 
@@ -274,7 +275,6 @@ class Coral_Window(QWidget):
                     file.close()
                 
                 if (ownerName != self.username):
-                    self.closeViewOnlyTabs()
                     self.view_tab = viewOnlyTabUI(
                         self, filenameForQuery, tentacleCount, coordinates, ownerName, ownerNotes
                     )
@@ -289,13 +289,28 @@ class Coral_Window(QWidget):
                         "background-color: none;"
                         "padding: 0px;"
                     )
-                    self.closeViewTabButton.clicked.connect(self.closeViewOnlyTabs)
+                    
+                    viewTabText = "View - " + ownerName + ", " + filenameForQuery + "| " + dateUploaded
 
-                    self.tabs.addTab(self.view_tab, "View - " + ownerName + ", " + filenameForQuery)
+                    i = 0
+                    while i < self.tabs.count():
+                        if self.tabs.tabText(i) == viewTabText:
+                            self.tabs.setCurrentIndex(i)
+
+                            if (os.path.exists(filenameForQuery)):
+                                os.remove(filenameForQuery)
+
+                            return
+                        else:
+                            i += 1
+
+                    self.tabs.addTab(self.view_tab, viewTabText)
                     self.tabs.tabBar().setTabButton(
                         self.tabs.count()-1, QTabBar.RightSide, self.closeViewTabButton
                     )
                     self.tabs.setCurrentIndex(self.tabs.count()-1)
+
+                    self.closeViewTabButton.clicked.connect(lambda: self.closeViewOnlyTabs(viewTabText))
 
                     if (os.path.exists(filenameForQuery)):
                         os.remove(filenameForQuery)
@@ -495,6 +510,15 @@ class Coral_Window(QWidget):
         else:
             question.close()
 
-    def closeViewOnlyTabs(self):
-        if self.tabs.count() == 3:
-            self.tabs.removeTab(2)
+    def closeViewOnlyTabs(self, text):
+        if text != "All":
+            i = 0
+            while i < self.tabs.count():
+                if self.tabs.tabText(i) == text:
+                    self.tabs.removeTab(i)
+                    return
+                else:
+                    i += 1
+        else:
+            while self.tabs.count() > 2:
+                self.tabs.removeTab(2)
