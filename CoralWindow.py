@@ -30,7 +30,7 @@ class Coral_Window(QWidget):
         self.setWindowTitle("Capturing Coral Tentacles")
         
         self.username = username
-        self.username_Label = QLabel("Welcome, " + self.username + "!")
+        self.username_Label = QLabel("WELCOME, " + self.username.upper() + "!")
                 
         self.move(0,0)
         layout = QVBoxLayout()
