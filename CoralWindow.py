@@ -49,7 +49,7 @@ class Coral_Window(QWidget):
         self.tabs.addTab(self.record_tab, "Record")
 
         self.tabs.setStyleSheet(
-            "QTabBar::tab { width: 75px; height: 20px; }"
+            # "QTabBar::tab { width: 75px; height: 20px; }"
             "font-family: 'Lucida Sans Typewriter';"
         )
 

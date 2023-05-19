@@ -114,7 +114,8 @@ def viewOnlyTabUI(self, load_image, load_count, load_coordinates, owner_name, ow
         "QLabel {"
         " color: #00adb5;"
         " font-family: 'Lucida Sans Typewriter';"
-        " font-size: 15px;"
+        # " font-size: 15px;"
+        " font-size: 17px;"
         " font-weight: bold;"
         "}"
 
@@ -122,7 +123,8 @@ def viewOnlyTabUI(self, load_image, load_count, load_coordinates, owner_name, ow
         " color: white;"
         " background-color: #3f72af;"
         " font-family: 'Lucida Sans Typewriter';"
-        " font-size: 15px;"
+        # " font-size: 15px;"
+        " font-size: 17px;"
         " font-weight: bold;"
         " border-radius: 10px;"
         " padding: 10px 20px;"
@@ -133,7 +135,8 @@ def viewOnlyTabUI(self, load_image, load_count, load_coordinates, owner_name, ow
         "}"
 
         "QLineEdit {"
-        " font-size: 15px;"
+        # " font-size: 15px;"
+        " font-size: 17px;"
         " font-family: 'Lucida Sans Typewriter';"
         "}"
 

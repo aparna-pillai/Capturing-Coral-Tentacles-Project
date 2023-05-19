@@ -128,7 +128,8 @@ def generalTabUI(self):
         "padding-right: 8px;"
         "width: 250px;"
         " font-family: 'Lucida Sans Typewriter';"
-        " font-size: 13px;"
+        # " font-size: 13px;"
+        " font-size: 15px;"
         
     )
 
@@ -136,7 +137,9 @@ def generalTabUI(self):
         "QLabel {"
         " color: #00adb5;"
         " font-family: 'Lucida Sans Typewriter';"
-        " font-size: 20px;"
+        # " font-size: 20px;"
+        # " font-size: 15px;"
+        " font-size: 17px;"
         " font-weight: bold;"
         "}"
 
@@ -144,7 +147,9 @@ def generalTabUI(self):
         " color: white;"
         " background-color: #3f72af;"
         " font-family: 'Lucida Sans Typewriter';"
-        " font-size: 20px;"
+        # " font-size: 20px;"
+        # " font-size: 15px;"
+        " font-size: 17px;"
         " font-weight: bold;"
         " border-radius: 15px;"
         " padding: 10px 20px;"
@@ -155,7 +160,9 @@ def generalTabUI(self):
         "}"
 
         "QLineEdit {"
-        " font-size: 25px;"
+        # " font-size: 25px;"
+        # " font-size: 15px;"
+        " font-size: 17px;"
         " font-family: 'Lucida Sans Typewriter';"
         "}"
 

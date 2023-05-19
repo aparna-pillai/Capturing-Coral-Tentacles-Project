@@ -31,7 +31,8 @@ class CodeDeleteWindow(QWidget):
         "QLabel {"
         " color: #00adb5;"
         " font-family: 'Lucida Sans Typewriter';"
-        " font-size: 15px;"
+        # " font-size: 15px;"
+        " font-size: 17px;"
         " font-weight: bold;"
         "}"
 
@@ -39,7 +40,8 @@ class CodeDeleteWindow(QWidget):
         " color: white;"
         " background-color: #3f72af;"
         " font-family: 'Lucida Sans Typewriter';"
-        " font-size: 15px;"
+        # " font-size: 15px;"
+        " font-size: 17px;"
         " font-weight: bold;"
         " border-radius: 10px;"
         " padding: 10px 20px;"
@@ -50,7 +52,8 @@ class CodeDeleteWindow(QWidget):
         "}"
 
         "QLineEdit {"
-        " font-size: 15px;"
+        # " font-size: 15px;"
+        " font-size: 17px;"
         " font-family: 'Lucida Sans Typewriter';"
         "}"
 

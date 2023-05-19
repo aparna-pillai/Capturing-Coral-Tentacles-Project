@@ -109,6 +109,7 @@ def recordTabUI(self):
         "border-right-color: #00adb5;"
         "border-bottom-color: #00adb5;"
         "color: #112d4e;"
+        " font-size: 17px;"
         " font-family: 'Lucida Sans Typewriter';"
     )
 
