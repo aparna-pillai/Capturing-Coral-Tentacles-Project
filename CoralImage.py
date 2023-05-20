@@ -50,8 +50,12 @@ class CoralImage(QWidget):
         self.view.setStyleSheet(
             "background: transparent;"
         )
+        self.view.setHorizontalScrollBarPolicy(Qt.ScrollBarAlwaysOff)
+        self.view.setVerticalScrollBarPolicy(Qt.ScrollBarAlwaysOff)
+        
         self.photo_grid.addWidget(self.view, 1, 0)
 
+        # Set up loading image but hide it
         if platform.system() == "Windows":
             self.loading_image = os.getcwd() + "\style_images\loading_image.png"
         else:
@@ -60,6 +64,10 @@ class CoralImage(QWidget):
         self.loading_scene = QGraphicsScene()
         self.loading_scene.addPixmap(self.loading_pixmap)
         self.loading_view = QGraphicsView(self.loading_scene)
+        self.loading_view.setFixedSize(800, 500)
+
+        self.loading_view.setHorizontalScrollBarPolicy(Qt.ScrollBarAlwaysOff)
+        self.loading_view.setVerticalScrollBarPolicy(Qt.ScrollBarAlwaysOff)
         self.photo_grid.addWidget(self.loading_view, 1, 0)
         self.loading_view.hide()
 
@@ -157,6 +165,16 @@ class CoralImage(QWidget):
         self.scene.clear()
         self.scene.addPixmap(self.smaller_pixmap)
         self.filenameDisplay.setText("{0}".format(self.get_filename()))
+
+    def set_loading_image(self):
+        self.photo.hide()
+        self.view.hide()
+        self.loading_view.show()
+
+    def hide_loading_image(self):
+        self.loading_view.hide()
+        self.photo.show()
+        self.view.show()
         
     def get_filename(self):
         return self.file

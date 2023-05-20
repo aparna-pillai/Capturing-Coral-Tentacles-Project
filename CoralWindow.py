@@ -77,10 +77,11 @@ class Coral_Window(QWidget):
         layout.addLayout(self.tabOptionsLayout)
         layout.addWidget(self.tabs)
 
+        # Signal slot connections
         self.photo.clicked.connect(self.updateMarkerCount)
         self.photo.openedImage.connect(lambda: self.photo.modelDisplay.setText("Inactive"))
-        self.showLoadingImage.connect(self.photo.loading_view.show)
-        self.hideLoadingImage.connect(self.photo.loading_view.hide)
+        self.showLoadingImage.connect(self.photo.set_loading_image)
+        self.hideLoadingImage.connect(self.photo.hide_loading_image)
 
         self.placeMarkersCall.connect(self.placeInitialMarkers)
 
@@ -271,19 +272,20 @@ class Coral_Window(QWidget):
         rowsToDelete = []
 
         for row in range(self.tableWidget.rowCount()):
-            item_name = self.tableWidget.item(row, 2).text().lower()
-            item_file = self.tableWidget.item(row, 0).text().lower()
-            item_date = self.tableWidget.item(row, 3).text().lower()
-            item_notes = self.tableWidget.item(row, 5).text().lower()
+            columns = [0, 1, 2, 3, 5]
+            noMatchFound = True
 
-            if (search_text.lower() not in item_name and search_text.lower() not in item_file 
-                and search_text.lower() not in item_date and search_text.lower() not in item_notes):
-                    rowsToDelete.append(row)
+            for i in columns:
+                if search_text.lower() in self.tableWidget.item(row, i).text().lower():
+                    noMatchFound = False
+            
+            if noMatchFound:
+                rowsToDelete.append(row)
 
         # Counter: adjust for the fact that we're removing a row each time
         counter = 0
         for row in rowsToDelete:
-            self.tableWidget.removeRow(row-counter)
+            self.tableWidget.removeRow(row - counter)
             counter += 1
     
     def reopen(self):
