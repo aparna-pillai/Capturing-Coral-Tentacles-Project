@@ -98,11 +98,6 @@ class SplashScreen(QMainWindow):
 
 
 if __name__ == '__main__':
-    # app = QApplication(sys.argv)
-    # gui = Capturing_Coral_Manager()
-    # gui.show()
-    # sys.exit(app.exec_())
-
     app = QApplication(sys.argv)
     window = SplashScreen()
     sys.exit(app.exec_())

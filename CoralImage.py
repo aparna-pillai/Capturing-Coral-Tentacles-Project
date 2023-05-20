@@ -38,19 +38,30 @@ class CoralImage(QWidget):
         self.file = ""
         self.isViewOnly = isViewOnly
 
-        grid = QGridLayout(self)
+        self.photo_grid = QGridLayout(self)
 
         if not isViewOnly:
-            grid.addWidget(self.browse_btn, 0, 0, Qt.AlignTop)
+            self.photo_grid.addWidget(self.browse_btn, 0, 0, Qt.AlignTop)
 
-        grid.addWidget(self.photo, 1, 0)
+        self.photo_grid.addWidget(self.photo, 1, 0)
         self.scene = QGraphicsScene()
         self.view = QGraphicsView(self.scene)
         
         self.view.setStyleSheet(
             "background: transparent;"
         )
-        grid.addWidget(self.view, 1, 0)
+        self.photo_grid.addWidget(self.view, 1, 0)
+
+        if platform.system() == "Windows":
+            self.loading_image = os.getcwd() + "\style_images\loading_image.png"
+        else:
+            self.loading_image = os.getcwd() + "/style_images/loading_image.png"
+        self.loading_pixmap = QPixmap(self.loading_image)
+        self.loading_scene = QGraphicsScene()
+        self.loading_scene.addPixmap(self.loading_pixmap)
+        self.loading_view = QGraphicsView(self.loading_scene)
+        self.photo_grid.addWidget(self.loading_view, 1, 0)
+        self.loading_view.hide()
 
         self.marker_count = 0
         self.markers = []
@@ -68,7 +79,7 @@ class CoralImage(QWidget):
         self.fileGridLayout.addWidget(self.filenameDisplay, 0, 1)
         
         if not isViewOnly:
-            grid.addLayout(self.fileGridLayout, 2, 0)
+            self.photo_grid.addLayout(self.fileGridLayout, 2, 0)
 
         self.modelGridLayout = QGridLayout()
         self.modelLabel = QLabel("Model Status:")
@@ -78,7 +89,7 @@ class CoralImage(QWidget):
         self.modelGridLayout.addWidget(self.modelDisplay, 0, 1)
 
         if not isViewOnly:
-            grid.addLayout(self.modelGridLayout, 3, 0)
+            self.photo_grid.addLayout(self.modelGridLayout, 3, 0)
 
         self.ownerGridLayout = QGridLayout()
         self.imageOwnerLabel = QLabel("Image Owner:")
@@ -146,7 +157,6 @@ class CoralImage(QWidget):
         self.scene.clear()
         self.scene.addPixmap(self.smaller_pixmap)
         self.filenameDisplay.setText("{0}".format(self.get_filename()))
-        
         
     def get_filename(self):
         return self.file
