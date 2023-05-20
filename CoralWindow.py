@@ -68,7 +68,7 @@ class Coral_Window(QWidget):
         layout.addWidget(self.tabs)
 
         self.photo.clicked.connect(self.updateMarkerCount)
-        self.photo.openedImage.connect(lambda: self.updateModelDisplay("Inactive"))
+        self.photo.openedImage.connect(lambda: self.photo.modelDisplay.setText("Inactive"))
 
         # Keyboard shortcuts
         self.instructions_shortcut = QShortcut(Qt.Key_I, self)
@@ -533,15 +533,12 @@ class Coral_Window(QWidget):
     def updateMarkerCount(self):
         self.countDisplay.setText("{0}".format(self.photo.marker_count))
 
-    def updateModelDisplay(self, text):
-        self.photo.modelDisplay.setText(text)
-
     def clearOldCoordinates(self):
         self.photo.marker_count = 0
         self.photo.markers.clear()
         self.photo.marker_colors.clear()
         self.coordinate_list.clear()
-        self.updateModelDisplay("Inactive")
+        self.photo.modelDisplay.setText("Inactive")
         self.updateMarkerCount()
 
     def confirmForClearCoordinates(self):
