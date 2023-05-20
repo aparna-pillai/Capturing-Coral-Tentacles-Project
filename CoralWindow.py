@@ -49,6 +49,19 @@ class Coral_Window(QWidget):
         self.closeAllViewTabsButton.setCursor(Qt.PointingHandCursor)
         self.closeAllViewTabsButton.clicked.connect(lambda: self.closeViewOnlyTabs("All"))
 
+        self.chooseTab_Label = QLabel("Navigate to Tab:")
+        self.tabChooseMenu = QComboBox()
+        self.tabChooseMenu.addItems(["Main", "Record"])
+        self.tabChooseMenu.activated[str].connect(self.navigateToTab)
+
+        self.tabChoiceGridLayout = QGridLayout()
+        self.tabChoiceGridLayout.addWidget(self.chooseTab_Label, 0, 0)
+        self.tabChoiceGridLayout.addWidget(self.tabChooseMenu, 0, 1)
+
+        self.tabOptionsLayout = QGridLayout()
+        self.tabOptionsLayout.addLayout(self.tabChoiceGridLayout, 0, 0)
+        self.tabOptionsLayout.addWidget(self.closeAllViewTabsButton, 0, 1)
+
         # Create the tab widget with two tabs
         self.tabs = QTabWidget()
         self.general_tab = generalTabUI(self)
@@ -57,12 +70,11 @@ class Coral_Window(QWidget):
         self.tabs.addTab(self.record_tab, "Record")
 
         self.tabs.setStyleSheet(
-            # "QTabBar::tab { width: 75px; height: 20px; }"
             "font-family: 'Lucida Sans Typewriter';"
         )
 
         layout.addWidget(self.username_Label)
-        layout.addWidget(self.closeAllViewTabsButton)
+        layout.addLayout(self.tabOptionsLayout)
         layout.addWidget(self.tabs)
 
         self.photo.clicked.connect(self.updateMarkerCount)
@@ -333,6 +345,7 @@ class Coral_Window(QWidget):
                             i += 1
 
                     self.tabs.addTab(self.view_tab, viewTabText)
+                    self.tabChooseMenu.addItem(viewTabText)
                     self.tabs.tabBar().setTabButton(
                         self.tabs.count()-1, QTabBar.RightSide, self.closeViewTabButton
                     )
@@ -562,15 +575,23 @@ class Coral_Window(QWidget):
         else:
             question.close()
 
+    def navigateToTab(self, tab_name):
+        for i in range(self.tabs.count()):
+            if self.tabs.tabText(i) == tab_name:
+                self.tabs.setCurrentIndex(i)
+                return
+
     def closeViewOnlyTabs(self, text):
         if text != "All":
             i = 0
             while i < self.tabs.count():
                 if self.tabs.tabText(i) == text:
                     self.tabs.removeTab(i)
+                    self.tabChooseMenu.removeItem(i)
                     return
                 else:
                     i += 1
         else:
             while self.tabs.count() > 2:
                 self.tabs.removeTab(2)
+                self.tabChooseMenu.removeItem(2)
