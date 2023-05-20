@@ -44,7 +44,7 @@ def generalTabUI(self):
     
     self.countButton = QPushButton("Count")
     self.countButton.setCursor(Qt.PointingHandCursor)
-    self.countButton.clicked.connect(self.countTentacles)
+    self.countButton.clicked.connect(self.modelStart)
     self.countButton.setFixedSize(400, 40)
     
     self.countLabel = QLabel("Tentacle Count:")

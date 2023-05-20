@@ -7,10 +7,12 @@ from main import SplashScreen
 
 import platform
 import os.path
+import PIL
 
 class CoralImage(QWidget):
     
     clicked = pyqtSignal()
+    openedImage = pyqtSignal()
     
     def __init__(self, isViewOnly):
         super().__init__()
@@ -30,11 +32,12 @@ class CoralImage(QWidget):
         
         self.pix = QPixmap()
         self.browse_btn.clicked.connect(self.open_image)
+        self.browse_btn.clicked.connect(self.openedImage.emit)
         
         self.path = ""
         self.file = ""
         self.isViewOnly = isViewOnly
-        
+
         grid = QGridLayout(self)
 
         if not isViewOnly:
@@ -67,6 +70,16 @@ class CoralImage(QWidget):
         if not isViewOnly:
             grid.addLayout(self.fileGridLayout, 2, 0)
 
+        self.modelGridLayout = QGridLayout()
+        self.modelLabel = QLabel("Model Status:")
+        self.modelDisplay = QLineEdit("Inactive")
+        self.modelDisplay.setReadOnly(True)
+        self.modelGridLayout.addWidget(self.modelLabel, 0, 0)
+        self.modelGridLayout.addWidget(self.modelDisplay, 0, 1)
+
+        if not isViewOnly:
+            grid.addLayout(self.modelGridLayout, 3, 0)
+
         self.ownerGridLayout = QGridLayout()
         self.imageOwnerLabel = QLabel("Image Owner:")
         self.imageOwnerDisplay = QLineEdit("{0}".format("-"))
@@ -95,11 +108,15 @@ class CoralImage(QWidget):
         # Keyboard shortcuts
         self.browse_shortcut = QShortcut(QKeySequence("Ctrl+O"), self)
         self.browse_shortcut.activated.connect(self.open_image)
+        self.browse_shortcut.activated.connect(self.openedImage.emit)
 
         self.filenameDisplay.setStyleSheet(
             "border: none;"
         )        
         self.imageOwnerDisplay.setStyleSheet(
+            "border: none;"
+        )
+        self.modelDisplay.setStyleSheet(
             "border: none;"
         )
 
