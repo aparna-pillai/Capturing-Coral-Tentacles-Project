@@ -16,27 +16,22 @@ class Ui_SplashScreen(object):
         self.dropShadowFrame.setStyleSheet("QFrame{\n"
 "    \n"
 "    \n"
-"    image: url(:/title/splash-title.png);\n"
+"    \n"
+"    image: url(:/res_splash/cscapstone_splashscreen_img.png);\n"
 "    color: rgba(243, 4, 151, 100);\n"
 "    border-radius: 20px;\n"
 "}")
         self.dropShadowFrame.setFrameShape(QtWidgets.QFrame.StyledPanel)
         self.dropShadowFrame.setFrameShadow(QtWidgets.QFrame.Raised)
         self.dropShadowFrame.setObjectName("dropShadowFrame")
-        self.fish = QtWidgets.QGraphicsView(self.dropShadowFrame)
-        self.fish.setGeometry(QtCore.QRect(300, 190, 51, 41))
-        self.fish.setAcceptDrops(False)
-        self.fish.setStyleSheet("border-image: url(:/fish/splash-fish.png);")
-        self.fish.setInteractive(False)
-        self.fish.setObjectName("fish")
         self.progressBar = QtWidgets.QProgressBar(self.dropShadowFrame)
-        self.progressBar.setGeometry(QtCore.QRect(50, 250, 561, 23))
+        self.progressBar.setGeometry(QtCore.QRect(50, 264, 560, 25))
         self.progressBar.setStyleSheet("QProgressBar {\n"
 "    \n"
 "    background-color: rgb(94, 37, 204);\n"
 "    color: rgb(255, 255, 255);\n"
 "    border-style: none;\n"
-"    border-radius: 20px;\n"
+"    border-radius: 10px;\n"
 "    text-align: center;\n"
 "}\n"
 "\n"

@@ -36,7 +36,8 @@
        <string notr="true">QFrame{
 	
 	
-	image: url(:/title/splash-title.png);
+	
+	image: url(:/res_splash/cscapstone_splashscreen_img.png);
 	color: rgba(243, 4, 151, 100);
 	border-radius: 20px;
 }</string>
@@ -47,32 +48,13 @@
       <property name="frameShadow">
        <enum>QFrame::Raised</enum>
       </property>
-      <widget class="QGraphicsView" name="fish">
-       <property name="geometry">
-        <rect>
-         <x>300</x>
-         <y>190</y>
-         <width>51</width>
-         <height>41</height>
-        </rect>
-       </property>
-       <property name="acceptDrops">
-        <bool>false</bool>
-       </property>
-       <property name="styleSheet">
-        <string notr="true">border-image: url(:/fish/splash-fish.png);</string>
-       </property>
-       <property name="interactive">
-        <bool>false</bool>
-       </property>
-      </widget>
       <widget class="QProgressBar" name="progressBar">
        <property name="geometry">
         <rect>
          <x>50</x>
-         <y>250</y>
-         <width>561</width>
-         <height>23</height>
+         <y>264</y>
+         <width>560</width>
+         <height>25</height>
         </rect>
        </property>
        <property name="styleSheet">
@@ -81,12 +63,12 @@
 	background-color: rgb(94, 37, 204);
 	color: rgb(255, 255, 255);
 	border-style: none;
-	border-radius: 30px;
+	border-radius: 10px;
 	text-align: center;
 }
 
 QProgressBar::chunk {
-	border-radius: 20px;
+	border-radius: 10px;
 	background-color: qlineargradient(spread:pad, x1:0, y1:0.67, x2:1, y2:0, stop:0 rgba(247, 99, 12, 255), stop:1 rgba(243, 4, 151, 100));
 }
 </string>
@@ -117,7 +99,7 @@ QProgressBar::chunk {
         <string notr="true">color: rgb(255, 69, 224)</string>
        </property>
        <property name="text">
-        <string>loading...</string>
+        <string>Loading...</string>
        </property>
        <property name="alignment">
         <set>Qt::AlignCenter</set>

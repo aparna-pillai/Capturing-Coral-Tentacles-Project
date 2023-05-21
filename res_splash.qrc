@@ -1,0 +1,5 @@
+<RCC>
+  <qresource prefix="res_splash">
+    <file>cscapstone_splashscreen_img.png</file>
+  </qresource>
+</RCC>
