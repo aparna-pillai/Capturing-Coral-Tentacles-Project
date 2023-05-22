@@ -1,8 +1,5 @@
 <RCC>
-  <qresource prefix="fish">
-    <file>splash-fish.png</file>
-  </qresource>
-  <qresource prefix="title">
-    <file>splash-title.png</file>
+  <qresource prefix="res_splash">
+    <file>cscapstone_splashscreen_img.png</file>
   </qresource>
 </RCC>
