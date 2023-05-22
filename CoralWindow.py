@@ -188,7 +188,7 @@ class Coral_Window(QWidget):
                 self.codeDelete.close()
                 self.codeBeforeDeleteRow()
             else: 
-                QMessageBox.about(self, "Warning", "Wrong code!")
+                QMessageBox.about(self, "Warning", "Wrong code.")
                 self.codeDelete.close()
         
             mydb.commit()
@@ -230,7 +230,7 @@ class Coral_Window(QWidget):
                     self.tableWidget.removeRow(0)
                 self.codeDeleteAllWindow.close()
             else:
-                QMessageBox.about(self, "Warning", "Wrong code.\nONLY THE ADMIN CAN DELETE ALL THE ROWS!")
+                QMessageBox.about(self, "Warning", "Wrong code.\nOnly the admin can delete all the rows.")
                 self.codeDeleteAllWindow.close()
                 
             
@@ -430,8 +430,8 @@ class Coral_Window(QWidget):
                         file.close()                
 
             QMessageBox.about(self, "Notice", 
-                """Check your desktop for the csv file and all image files!
-                \n(Windows: See temp folder in C: drive)"""
+                """Check your desktop for the csv file and all image files.
+\n(Windows: See temp folder in C: drive)"""
             )
             mydb.close()
         except mydb.Error as e:
@@ -440,7 +440,7 @@ class Coral_Window(QWidget):
     def recordInfo(self):   
         if self.tabs.currentIndex() == 0:
             if not self.photo.get_filename():
-                QMessageBox.about(self, "Warning", "You did not upload an image!")
+                QMessageBox.about(self, "Warning", "Please upload an image.")
             else:
                 self.g = RecordInfoWindow(self.username)
                 self.g.submitButton.clicked.connect(self.gatheringInfo)
@@ -562,19 +562,20 @@ class Coral_Window(QWidget):
         self.updateMarkerCount()
 
     def confirmForClearCoordinates(self):
-        question = QMessageBox()
-        response = question.question(
-            self,'', "Are you sure you want to delete all the markers?", 
-            question.Yes | question.No)
-    
-        if response == question.Yes:
-            while (len(self.photo.markers)) > 0:
-                self.photo.scene.removeItem(self.photo.markers[0])
-                self.photo.markers.pop(0)
+        if self.photo.marker_count != 0:
+            question = QMessageBox()
+            response = question.question(
+                self,'', "Are you sure you want to delete all the markers?", 
+                question.Yes | question.No)
+        
+            if response == question.Yes:
+                while (len(self.photo.markers)) > 0:
+                    self.photo.scene.removeItem(self.photo.markers[0])
+                    self.photo.markers.pop(0)
 
-            self.clearOldCoordinates()
-        else:
-            question.close()
+                self.clearOldCoordinates()
+            else:
+                question.close()
 
     def navigateToTab(self, tab_name):
         for i in range(self.tabs.count()):
