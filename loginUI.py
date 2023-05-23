@@ -1,5 +1,5 @@
 from PyQt5 import QtCore, QtGui, QtWidgets
-import sys, res_login
+import sys, res_login   # These imports are needed!
 
 
 class Ui_Form(object):

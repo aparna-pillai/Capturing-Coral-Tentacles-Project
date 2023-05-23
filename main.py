@@ -1,6 +1,4 @@
 import sys
-import platform
-import typing
 from PyQt5 import QtCore
 
 from PyQt5.QtWidgets import *

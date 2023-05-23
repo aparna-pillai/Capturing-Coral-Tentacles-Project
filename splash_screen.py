@@ -1,5 +1,5 @@
 from PyQt5 import QtCore, QtGui, QtWidgets
-import sys, res_splash
+import sys, res_splash  # These imports are needed!
 
 
 class Ui_SplashScreen(object):

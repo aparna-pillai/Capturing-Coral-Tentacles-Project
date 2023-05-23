@@ -1,9 +1,7 @@
 from PyQt5.QtWidgets import *
 from PyQt5.QtCore import *
 from PyQt5.QtGui import *
-from PyQt5 import QtCore
 from loginUI import Ui_Form
-import sys
 
 from connectToDatabase import *
 from basic_styling import *

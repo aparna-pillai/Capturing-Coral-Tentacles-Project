@@ -13,6 +13,8 @@ class PhotoLabel(QLabel):
             border: 4px dashed #00adb5;
             color: #3f72af;
         }''')
+
+        self.setToolTip("To add markers, double click on coral photo.")
         
     def setPixmap(self, *args, **kwargs):
         super().setPixmap(*args, **kwargs)

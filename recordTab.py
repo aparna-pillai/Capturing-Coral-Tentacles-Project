@@ -23,8 +23,8 @@ class RecordTab(QWidget):
         self.record_username = username
 
         self.directions = QLabel("""
-                                You can search by filename, name of person, and date uploaded. 
-                                To delete a row, please click directly on the specific filename. 
+        You can search by any column besides coordinates of markers. 
+        To delete a row, please click directly on the specific filename. 
                                 """)
 
         self.tableWidget = QTableWidget()

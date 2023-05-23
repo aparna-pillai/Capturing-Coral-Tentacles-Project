@@ -100,6 +100,8 @@ class Coral_Window(QWidget):
 
                 for column_number, data in enumerate(row_data):
                     item = QTableWidgetItem(str(data))
+                    item.setFlags(item.flags() & ~Qt.ItemIsEditable)
+
                     # Only filename should be selectable
                     if column_number != 0:
                         item.setFlags(item.flags() & ~Qt.ItemIsSelectable)

@@ -40,6 +40,10 @@ Instructions:
         a. Windows: Saved files will be in C:\\temp.
         b. Mac: Saved files will be on the Desktop.
 
+** Several components of the interface include additional information.
+Hover on them if you need help! **
+
+
 Here are some useful keyboard shortcuts. Some may only work 
 when a photo is loaded:
 
@@ -48,7 +52,11 @@ On Main tab:
     C - Count
     Double click - Add marker
     R - Remove selected marker
-    Ctrl+Z (Windows), Command+Z (Mac) - Undo most recently placed marker
+    Ctrl+Z (Windows), Command+Z (Mac) - Undo most recently placed 
+        marker
+    Ctrl+= (Windows), Command+= (Mac) - Zoom in
+    Ctrl+- (Windows), Command+- (Mac) - Zoom out
+        These two shortcuts also work in the View Only tab.
     Ctrl+S (Windows), Command+S (Mac) - Save photo to record
     I - Instructions
 
@@ -59,8 +67,8 @@ On Record tab:
     Ctrl+R (Windows), Command+R (Mac) - Reload all database entries
 
 Tab - Switch between tabs
-Ctrl+W (Windows), Command+W (Mac) - Close application or the
-    Instructions or Save window
+Ctrl+W (Windows), Command+W (Mac) - Close application or any related 
+    window
             """ 
         )
         
@@ -84,8 +92,8 @@ Ctrl+W (Windows), Command+W (Mac) - Close application or the
         layout = QGridLayout()
         layout.addWidget(self.instructions_Label, 0, 0)
         layout.addWidget(QLabel(
-"""Note: Make sure your coral image is of a similar size and at least this 
-quality!"""), 1, 0)
+"""NOTE: Make sure your coral image is of a similar size and at least 
+this quality!"""), 1, 0)
         layout.addWidget(sample_image_label, 2, 0)
         
 

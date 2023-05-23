@@ -3,11 +3,9 @@ from PyQt5.QtCore import *
 from PyQt5.QtGui import *
 
 from PhotoLabel import *
-from main import SplashScreen
 
 import platform
 import os.path
-import PIL
 
 class CoralImage(QWidget):
     
@@ -95,6 +93,9 @@ class CoralImage(QWidget):
         self.modelDisplay.setReadOnly(True)
         self.modelGridLayout.addWidget(self.modelLabel, 0, 0)
         self.modelGridLayout.addWidget(self.modelDisplay, 0, 1)
+        self.modelDisplay.setToolTip(
+            "Inactive - Model has not run yet.\nRunning - Counting in process.\nFinished - Model has completed counting."
+        )
 
         if not isViewOnly:
             self.photo_grid.addLayout(self.modelGridLayout, 3, 0)
@@ -122,6 +123,9 @@ class CoralImage(QWidget):
                 self.colorChange.addItem(key)
         
         self.colorChange.setCurrentIndex(2)
+        self.colorChange.setToolTip(
+            "Newly added markers will be the currently displayed color. \
+            \nHowever, already placed markers can be changed to any color.")
         self.colorChange.activated[str].connect(self.change_color)
         
         # Keyboard shortcuts
@@ -161,10 +165,12 @@ class CoralImage(QWidget):
         )
         self.pix = QPixmap(filename)
         self.smaller_pixmap = self.pix.scaled(self.view.width(), self.view.height())
-        self.browse_btn.setFixedWidth(self.view.width())
         self.scene.clear()
         self.scene.addPixmap(self.smaller_pixmap)
         self.filenameDisplay.setText("{0}".format(self.get_filename()))
+
+        if not self.isViewOnly:
+            self.view.setToolTip("Double click to add marker")
 
     def set_loading_image(self):
         self.photo.hide()

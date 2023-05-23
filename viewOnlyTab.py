@@ -121,6 +121,6 @@ def placeLoadedCoordinates(coordList, coralImage, isViewOnly):
             point_x = float(coord.split(",")[0].strip())
             point_y = float(coord.split(",")[1].strip())
             if isViewOnly:
-                point_x /= 1.3
+                point_x /= 1.28
 
             coralImage.add_marker(point_x, point_y, color)
