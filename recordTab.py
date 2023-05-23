@@ -5,6 +5,7 @@ from PyQt5.QtGui import *
 from ViewOnlyTab import *
 from CodeDeleteWindow import *
 from connectToDatabase import *
+from basic_styling import *
 
 from dotenv import load_dotenv
 import pandas as pd
@@ -121,34 +122,7 @@ class RecordTab(QWidget):
         self.delete_shortcut.activated.connect(self.codeBeforeDeleteRow)
         self.tableWidget.doubleClicked.connect(self.reopen)
 
-        self.setStyleSheet(
-            "QLabel {"
-            " color: #00adb5;"
-            " font-family: 'Lucida Sans Typewriter';"
-            " font-size: 17px;"
-            " font-weight: bold;"
-            "}"
-
-            "QPushButton {"
-            " color: white;"
-            " background-color: #3f72af;"
-            " font-family: 'Lucida Sans Typewriter';"
-            " font-size: 17px;"
-            " font-weight: bold;"
-            " border-radius: 15px;"
-            " padding: 10px 20px;"
-            "}"
-
-            "QPushButton:hover {"
-            " background-color: #00adb5;"
-            "}"
-
-            "QLineEdit {"
-            " font-size: 17px;"
-            " font-family: 'Lucida Sans Typewriter';"
-            "}"
-
-        )
+        self.setStyleSheet(get_basic_styling())
 
         self.tableWidget.setStyleSheet(
             "border: 1px solid;"
@@ -195,7 +169,9 @@ class RecordTab(QWidget):
             currentRow = self.tableWidget.currentRow()
             item = self.tableWidget.selectedItems()
             if (len(item) < 1):
-                QMessageBox.about(self, "Warning", "Please select an entry to delete.")
+                msg = QMessageBox(QMessageBox.Warning, "Warning", "Please select an entry to delete.")
+                msg.setStyleSheet(get_basic_styling())
+                msg.exec_()
             else:             
                 question = QMessageBox()
                 response = question.question(
@@ -208,7 +184,8 @@ class RecordTab(QWidget):
                     for x in range(headercount):
                         headertext = self.tableWidget.horizontalHeaderItem(x).text()
                         if headertext == "NAME OF PERSON":
-                            nameOfPerson = self.tableWidget.item(currentRow, x).text()  # get cell at row, col
+                            # Get cell at row, col
+                            nameOfPerson = self.tableWidget.item(currentRow, x).text()  
                         if headertext == "DATE UPLOADED":
                             dateUploaded = self.tableWidget.item(currentRow, x).text()
                     
@@ -260,11 +237,17 @@ class RecordTab(QWidget):
                 self.tableWidget.removeRow(currentRow)
                 self.codeDelete.close()
             elif (self.codeDelete.codeTextBox.text() == ""):
-                QMessageBox.about(self, "Warning", "Please enter a code.")
+                msg = QMessageBox(QMessageBox.Warning, "Warning", "Please enter a code.")
+                msg.setStyleSheet(get_basic_styling())
+                msg.exec_()
+
                 self.codeDelete.close()
                 self.codeBeforeDeleteRow()
             else: 
-                QMessageBox.about(self, "Warning", "Wrong code.")
+                msg = QMessageBox(QMessageBox.Critical, "Error", "Wrong code.")
+                msg.setStyleSheet(get_basic_styling())
+                msg.exec_()
+                
                 self.codeDelete.close()
         
             mydb.commit()
@@ -310,9 +293,12 @@ class RecordTab(QWidget):
                     self.tableWidget.removeRow(0)
                 self.codeDeleteAllWindow.close()
             else:
-                QMessageBox.about(self, "Warning", "Wrong code.\nOnly the admin can delete all the rows.")
+                msg = QMessageBox(QMessageBox.Critical, "Error", 
+                """Wrong code.\nOnly the admin can delete all the rows.""")
+                msg.setStyleSheet(get_basic_styling())
+                msg.exec_()
+
                 self.codeDeleteAllWindow.close()
-                
             
             mydb.close()
                 
@@ -321,7 +307,9 @@ class RecordTab(QWidget):
 
     def reopen(self):
         if not self.tableWidget.selectedItems():
-            QMessageBox.about(self, "Warning", "Please select an entry to reopen.")
+            msg = QMessageBox(QMessageBox.Warning, "Warning", "Please select an entry to reopen.")
+            msg.setStyleSheet(get_basic_styling())
+            msg.exec_()
         else:
             try:
                 mydb = connectToDatabase()
@@ -432,12 +420,14 @@ class RecordTab(QWidget):
                 else:
                     with open(os.path.join(mac_dirname, filename), "wb") as file:
                         file.write(myresult)
-                        file.close()                
+                        file.close()         
 
-            QMessageBox.about(self, "Notice", 
-                """Check your desktop for the csv file and all image files.
-\n(Windows: See temp folder in C: drive)"""
-            )
+            msg = QMessageBox(QMessageBox.Information, "Notice", 
+            """Check your desktop for the CSV file and all image files.
+\n(Windows: See temp folder in C: drive)""")
+            msg.setStyleSheet(get_basic_styling())
+            msg.exec_()       
+
             mydb.close()
         except mydb.Error as e:
            print("Failed To Connect to Database")

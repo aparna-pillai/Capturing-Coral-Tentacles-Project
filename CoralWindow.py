@@ -8,6 +8,7 @@ from PyQt5.QtGui import *
 from GeneralTab import *
 from RecordTab import *
 from connectToDatabase import *
+from basic_styling import *
 
 class Coral_Window(QWidget):
 
@@ -64,34 +65,7 @@ class Coral_Window(QWidget):
             "color: #11e5f0;"
         )
 
-        self.setStyleSheet(
-            "QLabel {"
-            " color: #00adb5;"
-            " font-family: 'Lucida Sans Typewriter';"
-            " font-size: 17px;"
-            " font-weight: bold;"
-            "}"
-
-            "QPushButton {"
-            " color: white;"
-            " background-color: #3f72af;"
-            " font-family: 'Lucida Sans Typewriter';"
-            " font-size: 17px;"
-            " font-weight: bold;"
-            " border-radius: 15px;"
-            " padding: 10px 20px;"
-            "}"
-
-            "QPushButton:hover {"
-            " background-color: #00adb5;"
-            "}"
-
-            "QLineEdit {"
-            " font-size: 17px;"
-            " font-family: 'Lucida Sans Typewriter';"
-            "}"
-
-            "QComboBox {"
+        self.tabChooseMenu.setStyleSheet(
             " border: 3px solid;"
             " border-top-color: #00adb5;"
             " border-left-color: #00adb5;"
@@ -103,9 +77,9 @@ class Coral_Window(QWidget):
             " width: 400px;"
             " font-family: 'Lucida Sans Typewriter';"
             " font-size: 14px;"
-            "}"
-
         )
+
+        self.setStyleSheet(get_basic_styling())
 
         self.tab_shortcut = QShortcut(Qt.Key_Tab, self)
         self.tab_shortcut.activated.connect(self.switchTabs)

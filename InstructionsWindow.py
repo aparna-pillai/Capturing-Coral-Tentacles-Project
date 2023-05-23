@@ -1,11 +1,14 @@
 from PyQt5.QtWidgets import *
 from PyQt5.QtCore import *
 from PyQt5.QtGui import *
+from basic_styling import *
 
 class InstructionsWindow(QWidget):
     def __init__(self):
         super().__init__()
         self.setWindowTitle("Instructions")
+        icon_pixmap = QPixmap("style_images/Actual Final Logo.png")
+        self.setWindowIcon(QIcon(icon_pixmap))
         
         layout = QGridLayout()
 
@@ -66,47 +69,37 @@ Ctrl+W (Windows), Command+W (Mac) - Close application or the
 
         self.instruct_close_shortcut = QShortcut(Qt.Key_Return, self)
         self.instruct_close_shortcut.activated.connect(self.close)
-
-        #layout.addWidget(self.instructions_Label, 0, 0)
-        layout.addWidget(self.closeButton, 1, 0)
         
-        scroll = QScrollArea()
-        scroll.setWidget(self.instructions_Label)
-        scroll.setWidgetResizable(True)
-        scroll.setFixedWidth(600)
-        scroll.setFixedHeight(600)
+        scroll_widget = QWidget()
+
+        scroll_area = QScrollArea()
+        scroll_area.setWidgetResizable(True)
+        scroll_area.setFixedWidth(750)
+        scroll_area.setFixedHeight(600)
+
+        sample_image = QPixmap("style_images/example_coral.JPG")
+        sample_image_label = QLabel()
+        sample_image_label.setPixmap(sample_image.scaled(700, 400))
         
         layout = QGridLayout()
-        layout.addWidget(scroll, 0, 0)
-        layout.addWidget(self.closeButton, 1, 0)
+        layout.addWidget(self.instructions_Label, 0, 0)
+        layout.addWidget(QLabel(
+"""Note: Make sure your coral image is of a similar size and at least this 
+quality!"""), 1, 0)
+        layout.addWidget(sample_image_label, 2, 0)
         
-        self.setLayout(layout)
+
+        scroll_widget.setLayout(layout)
+        scroll_area.setWidget(scroll_widget)
+        
+        full_layout = QGridLayout()
+        full_layout.addWidget(scroll_area, 0, 0)
+        full_layout.addWidget(self.closeButton, 1, 0)
+        self.setLayout(full_layout)
 
         self.setStyleSheet(
-            "QLabel {"
-            " color: #3f72af;"
-            " font-family: 'Lucida Sans Typewriter';"
-            # " font-size: 15px;"
-            " font-size: 17px;"
-            " font-weight: bold;"
-            "}"
-
             "QScrollArea {"
-            "   border: none;"
+            " border: none;"
             "}"
-
-            "QPushButton {"
-            " color: white;"
-            " background-color: #3f72af;"
-            " font-family: 'Lucida Sans Typewriter';"
-            # " font-size: 15px;"
-            " font-size: 17px;"
-            " font-weight: bold;"
-            " border-radius: 10px;"
-            " padding: 10px 20px;"
-            "}"
-
-            "QPushButton:hover {"
-            " background-color: #00adb5;"
-            "}"
-    )
+            + get_basic_styling()
+        )

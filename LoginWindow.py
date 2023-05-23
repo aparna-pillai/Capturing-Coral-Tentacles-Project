@@ -6,6 +6,7 @@ from loginUI import Ui_Form
 import sys
 
 from connectToDatabase import *
+from basic_styling import *
 
 class Login_Window(QWidget, Ui_Form):
     
@@ -19,35 +20,31 @@ class Login_Window(QWidget, Ui_Form):
                               "Incorrect code. Try again."]
 
     def check_code_on_initial_login(self):
-        # try:
-            #self.lineEdit = self.userTextBox.text()
-            #self.lineEdit_2 = self.codeTextBox.text()
-            
-            mydb = connectToDatabase()
-            
-            mycursor = mydb.cursor()
+        mydb = connectToDatabase()
+        
+        mycursor = mydb.cursor()
 
-            sql =  "SELECT users_name, users_code FROM users WHERE users_name = '%s'" % self.lineEdit.text()
-            mycursor.execute(sql)
-            myresult1 = mycursor.fetchall()
+        sql =  "SELECT users_name, users_code FROM users WHERE users_name = '%s'" % self.lineEdit.text()
+        mycursor.execute(sql)
+        myresult1 = mycursor.fetchall()
+        
+        if len(myresult1) == 0:
+            msg = QMessageBox(QMessageBox.Critical, "Error", self.error_messages[0])
+            msg.setStyleSheet(get_basic_styling())
+            msg.exec_()
+        else:
+            code = ''.join(myresult1[0])
             
-            if len(myresult1) == 0:
-                QMessageBox.about(self, "Error", self.error_messages[0])
+            mydb.close()
 
+            if self.lineEdit_2.text() == code[-10:]:
+                return code[:-10]
             else:
-                code = ''.join(myresult1[0])
-               
-                mydb.close()
+                msg = QMessageBox(QMessageBox.Critical, "Error", self.error_messages[1])
+                msg.setStyleSheet(get_basic_styling())
+                msg.exec_()
 
-                if self.lineEdit_2.text() == code[-10:]:
-                    return code[:-10]
-                else:
-                    QMessageBox.about(self, "Error", self.error_messages[1])
-                    return None
-
-
-        # except mydb.Error as e:
-        #    print("Failed To Connect to Database")
+                return None
 
     def show_popup(self):
         msg = QMessageBox()

@@ -1,7 +1,6 @@
 import os
 import mysql.connector as mc
 
-# function
 def connectToDatabase():
     mydb = mc.connect(
         host=os.environ.get('HOST'),

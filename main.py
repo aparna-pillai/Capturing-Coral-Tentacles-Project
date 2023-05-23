@@ -20,6 +20,8 @@ class Capturing_Coral_Manager(QMainWindow):
     def __init__(self):
         super().__init__()
         self.setWindowTitle("Capturing Coral Tentacles")
+        icon_pixmap = QPixmap("style_images/Actual Final Logo.png")
+        self.setWindowIcon(QIcon(icon_pixmap))
         
         self.resize(380, 500)
 
@@ -78,7 +80,7 @@ class SplashScreen(QMainWindow):
 
         self.timer = QtCore.QTimer()
         self.timer.timeout.connect(self.progress)
-        self.timer.start(35)
+        self.timer.start(20)
 
         self.show()
 

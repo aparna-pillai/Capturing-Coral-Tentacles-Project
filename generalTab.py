@@ -9,6 +9,7 @@ from ViewOnlyTab import *
 
 from coral_count import *
 from connectToDatabase import *
+from basic_styling import *
 
 from threading import Thread
 
@@ -168,34 +169,7 @@ class GeneralTab(QWidget):
             
         )
 
-        self.setStyleSheet(
-            "QLabel {"
-            " color: #00adb5;"
-            " font-family: 'Lucida Sans Typewriter';"
-            " font-size: 17px;"
-            " font-weight: bold;"
-            "}"
-
-            "QPushButton {"
-            " color: white;"
-            " background-color: #3f72af;"
-            " font-family: 'Lucida Sans Typewriter';"
-            " font-size: 17px;"
-            " font-weight: bold;"
-            " border-radius: 15px;"
-            " padding: 10px 20px;"
-            "}"
-
-            "QPushButton:hover {"
-            " background-color: #00adb5;"
-            "}"
-
-            "QLineEdit {"
-            " font-size: 17px;"
-            " font-family: 'Lucida Sans Typewriter';"
-            "}"
-
-        )
+        self.setStyleSheet(get_basic_styling())
 
 
     # Instructions
@@ -215,12 +189,16 @@ class GeneralTab(QWidget):
 
         if "YOLO Red" not in self.photo.marker_colors:
             if (self.photo.get_filename() == ""):
-                QMessageBox.about(self, "Warning", "Please upload an image.")
+                msg = QMessageBox(QMessageBox.Warning, "Warning", "Please upload an image.")
+                msg.setStyleSheet(get_basic_styling())
+                msg.exec_()
             else:
                 self.photo.modelDisplay.setText("Running...")
                 self._modelThread.start()
         else:
-            QMessageBox.about(self, "Error", "The model has already run.")
+            msg = QMessageBox(QMessageBox.Critical, "Error", "The model has already run.")
+            msg.setStyleSheet(get_basic_styling())
+            msg.exec_()
 
         return self
     
@@ -247,10 +225,11 @@ class GeneralTab(QWidget):
         coordinates = get_coordinates()
 
         if not coordinates or len(coordinates) <= 5:
-            QMessageBox.about(
-                self, "Error", 
-                """Few to no tentacles were found.\nMake sure you have chosen a clear coral image."""
-            )
+            msg = QMessageBox(QMessageBox.Warning, "Warning", 
+            """Few to no tentacles were found.\nMake sure you have chosen a clear coral image.""")
+            msg.setStyleSheet(get_basic_styling())
+            msg.exec_()
+
             if not coordinates:
                 return None
 
@@ -266,7 +245,9 @@ class GeneralTab(QWidget):
     def recordInfo(self):   
         if self.general_tabs.currentIndex() == 0:
             if not self.photo.get_filename():
-                QMessageBox.about(self, "Warning", "Please upload an image.")
+                msg = QMessageBox(QMessageBox.Warning, "Warning", "Please upload an image.")
+                msg.setStyleSheet(get_basic_styling())
+                msg.exec_()
             else:
                 self.g = RecordInfoWindow(self.general_username)
                 self.g.submitButton.clicked.connect(self.gatheringInfo)
@@ -277,7 +258,10 @@ class GeneralTab(QWidget):
 
     def gatheringInfo(self):  
         if self.g.notes_Display.text() == "":
-            QMessageBox.about(self, "Warning", "Please enter notes.")
+            msg = QMessageBox(QMessageBox.Warning, "Warning", "Please enter notes.")
+            msg.setStyleSheet(get_basic_styling())
+            msg.exec_()
+
             self.g.close()
             self.recordInfo()
         else:

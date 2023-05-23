@@ -4,11 +4,15 @@ from PyQt5.QtWidgets import *
 from PyQt5.QtCore import *
 from PyQt5.QtGui import *
 
+from basic_styling import *
+
 class CodeDeleteWindow(QWidget):
     
     def __init__(self):
         super().__init__()
         self.setWindowTitle("Delete")
+        icon_pixmap = QPixmap("style_images/Actual Final Logo.png")
+        self.setWindowIcon(QIcon(icon_pixmap))
         self.generalLayout = QGridLayout()
 
         self.label = QLabel("Enter your code")
@@ -27,37 +31,7 @@ class CodeDeleteWindow(QWidget):
 
         self.setLayout(self.generalLayout)
 
-        self.setStyleSheet(
-        "QLabel {"
-        " color: #00adb5;"
-        " font-family: 'Lucida Sans Typewriter';"
-        # " font-size: 15px;"
-        " font-size: 17px;"
-        " font-weight: bold;"
-        "}"
-
-        "QPushButton {"
-        " color: white;"
-        " background-color: #3f72af;"
-        " font-family: 'Lucida Sans Typewriter';"
-        # " font-size: 15px;"
-        " font-size: 17px;"
-        " font-weight: bold;"
-        " border-radius: 10px;"
-        " padding: 10px 20px;"
-        "}"
-
-        "QPushButton:hover {"
-        " background-color: #00adb5;"
-        "}"
-
-        "QLineEdit {"
-        # " font-size: 15px;"
-        " font-size: 17px;"
-        " font-family: 'Lucida Sans Typewriter';"
-        "}"
-
-    )
+        self.setStyleSheet(get_basic_styling())
 
 if __name__ == "__main__":
     app = QApplication(sys.argv)

@@ -7,6 +7,7 @@ from PyQt5.QtCore import *
 from PyQt5.QtGui import *
 
 from CoralImage import *
+from basic_styling import *
 
 class ViewOnlyTab(QWidget):
 
@@ -75,8 +76,6 @@ class ViewOnlyTab(QWidget):
         self.zoomInButton.clicked.connect(self.view_photo.zoom_in)
         self.zoomOutButton.clicked.connect(self.view_photo.zoom_out)
 
-        # self.setMouseTracking(True)
-
         self.smallGridLayout = QGridLayout()
         self.smallGridLayout.addWidget(self.zoomInButton, 0, 0)
         self.smallGridLayout.addWidget(self.zoomOutButton, 0, 1)
@@ -96,12 +95,6 @@ class ViewOnlyTab(QWidget):
 
         self.generalLayout.addLayout(self.rightGridLayout, 1, 1)
 
-        
-        # Stylesheets
-        self.setStyleSheet(
-            "QLabel {color: white;}"
-        )
-
         self.view_countDisplay.setStyleSheet(
             "border: none;"
         )
@@ -112,34 +105,7 @@ class ViewOnlyTab(QWidget):
             "border: none;"
         )
 
-        self.setStyleSheet(
-            "QLabel {"
-            " color: #00adb5;"
-            " font-family: 'Lucida Sans Typewriter';"
-            " font-size: 17px;"
-            " font-weight: bold;"
-            "}"
-
-            "QPushButton {"
-            " color: white;"
-            " background-color: #3f72af;"
-            " font-family: 'Lucida Sans Typewriter';"
-            " font-size: 17px;"
-            " font-weight: bold;"
-            " border-radius: 10px;"
-            " padding: 10px 20px;"
-            "}"
-
-            "QPushButton:hover {"
-            " background-color: #00adb5;"
-            "}"
-
-            "QLineEdit {"
-            " font-size: 17px;"
-            " font-family: 'Lucida Sans Typewriter';"
-            "}"
-
-        )
+        self.setStyleSheet(get_basic_styling())
 
         self.setLayout(self.generalLayout)
 
