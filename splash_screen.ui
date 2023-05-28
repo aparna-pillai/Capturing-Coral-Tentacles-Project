@@ -37,7 +37,8 @@
 	
 	
 	
-	image: url(:/res_splash/cscapstone_splashscreen_img.png);
+	
+	image: url(:/res_splash/splashscreen_background.png);
 	color: rgba(243, 4, 151, 100);
 	border-radius: 20px;
 }</string>
@@ -52,7 +53,7 @@
        <property name="geometry">
         <rect>
          <x>50</x>
-         <y>264</y>
+         <y>255</y>
          <width>560</width>
          <height>25</height>
         </rect>
@@ -81,9 +82,9 @@ QProgressBar::chunk {
        <property name="geometry">
         <rect>
          <x>0</x>
-         <y>300</y>
+         <y>280</y>
          <width>661</width>
-         <height>20</height>
+         <height>31</height>
         </rect>
        </property>
        <property name="font">

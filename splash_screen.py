@@ -1,5 +1,5 @@
+import res_splash, sys #these imports are needed!!
 from PyQt5 import QtCore, QtGui, QtWidgets
-import sys, res_splash  # These imports are needed!
 
 
 class Ui_SplashScreen(object):
@@ -17,7 +17,8 @@ class Ui_SplashScreen(object):
 "    \n"
 "    \n"
 "    \n"
-"    image: url(:/res_splash/cscapstone_splashscreen_img.png);\n"
+"    \n"
+"    image: url(:/res_splash/splashscreen_background.png);\n"
 "    color: rgba(243, 4, 151, 100);\n"
 "    border-radius: 20px;\n"
 "}")
@@ -25,7 +26,7 @@ class Ui_SplashScreen(object):
         self.dropShadowFrame.setFrameShadow(QtWidgets.QFrame.Raised)
         self.dropShadowFrame.setObjectName("dropShadowFrame")
         self.progressBar = QtWidgets.QProgressBar(self.dropShadowFrame)
-        self.progressBar.setGeometry(QtCore.QRect(50, 264, 560, 25))
+        self.progressBar.setGeometry(QtCore.QRect(50, 255, 560, 25))
         self.progressBar.setStyleSheet("QProgressBar {\n"
 "    \n"
 "    background-color: rgb(94, 37, 204);\n"
@@ -43,7 +44,7 @@ class Ui_SplashScreen(object):
         self.progressBar.setProperty("value", 24)
         self.progressBar.setObjectName("progressBar")
         self.label = QtWidgets.QLabel(self.dropShadowFrame)
-        self.label.setGeometry(QtCore.QRect(0, 300, 661, 20))
+        self.label.setGeometry(QtCore.QRect(0, 280, 661, 31))
         font = QtGui.QFont()
         font.setFamily("Lucida Sans Typewriter")
         font.setPointSize(12)
@@ -67,3 +68,4 @@ class Ui_SplashScreen(object):
         _translate = QtCore.QCoreApplication.translate
         SplashScreen.setWindowTitle(_translate("SplashScreen", "MainWindow"))
         self.label.setText(_translate("SplashScreen", "Loading..."))
+

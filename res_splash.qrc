@@ -1,5 +1,5 @@
 <RCC>
   <qresource prefix="res_splash">
-    <file>cscapstone_splashscreen_img.png</file>
+    <file>splashscreen_background.png</file>
   </qresource>
 </RCC>
