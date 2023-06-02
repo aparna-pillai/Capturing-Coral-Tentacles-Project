@@ -77,9 +77,16 @@ class RecordTab(QWidget):
         self.searchGridLayout.addWidget(self.searchButton, 0, 2)
         self.searchGridLayout.addWidget(self.reloadButton, 0, 3)
 
+        self.checkbox = QCheckBox("Show only my entries", self)
+        self.checkbox.toggled.connect(lambda: self.showOnlyMyEntries(self.record_username))
+
+        self.mini_layout = QGridLayout()
+        self.mini_layout.addWidget(self.checkbox, 0, 0)
+        self.mini_layout.addWidget(self.tableWidget, 1, 0)
+
         self.record_layout.addLayout(self.searchGridLayout, 0, 0)
         self.record_layout.addWidget(self.directions, 1, 0)
-        self.record_layout.addWidget(self.tableWidget, 2, 0)
+        self.record_layout.addLayout(self.mini_layout, 2, 0)
         
         load_dotenv('config.env')
         self.recordDbConnectCalled.emit(self.tableWidget)
@@ -162,6 +169,22 @@ class RecordTab(QWidget):
         for row in rowsToDelete:
             self.tableWidget.removeRow(row - counter)
             counter += 1
+
+
+    def showOnlyMyEntries(self, username):
+        if self.checkbox.isChecked():
+            rowsToDelete = []
+
+            for row in range(self.tableWidget.rowCount()):
+                if self.tableWidget.item(row, 2).text() != username:
+                    rowsToDelete.append(row)
+
+            counter = 0
+            for row in rowsToDelete:
+                self.tableWidget.removeRow(row - counter)
+                counter += 1
+        else:
+            self.recordDbConnectCalled.emit(self.tableWidget)
 
 
     def codeBeforeDeleteRow(self):

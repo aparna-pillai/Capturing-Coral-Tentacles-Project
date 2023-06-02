@@ -108,6 +108,9 @@ class Coral_Window(QWidget):
 
                     tableWidgetParameter.setItem(row_number, column_number, item)
 
+            if self.record_tab.checkbox.isChecked():
+                self.record_tab.showOnlyMyEntries(self.username)
+
             mydb.close()
         except mydb.Error as e:
            print("Failed To Connect to Database")
