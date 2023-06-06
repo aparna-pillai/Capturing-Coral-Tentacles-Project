@@ -246,7 +246,8 @@ class RecordTab(QWidget):
             str = ''.join(myresult[0])
 
             mycursor.execute(
-                "SELECT users_code FROM users WHERE users_name = '%s'" % os.getenv('ADMIN')
+                # "SELECT users_code FROM users WHERE users_name = '%s'" % os.getenv('ADMIN')
+                "SELECT users_code FROM users WHERE users_name = '%s'" % getAdminName()
             )
             myresult_admin = mycursor.fetchall()
             str_admin = ''.join(myresult_admin[0])
@@ -302,7 +303,8 @@ class RecordTab(QWidget):
             mycursor = mydb.cursor()
             
             mycursor.execute(
-                "SELECT users_code FROM users WHERE users_name = '%s'" % os.getenv('ADMIN')
+                # "SELECT users_code FROM users WHERE users_name = '%s'" % os.getenv('ADMIN')
+                "SELECT users_code FROM users WHERE users_name = '%s'" % getAdminName()                
             )
             myresult = mycursor.fetchall()
 

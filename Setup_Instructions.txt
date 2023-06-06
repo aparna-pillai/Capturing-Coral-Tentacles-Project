@@ -12,7 +12,7 @@ To be able to run this project in VS Code, please complete the following steps.
         git clone https://github.com/ultralytics/yolov5
         pip install -r yolov5/requirements.txt
 
-        git lfs install
+        git lfs install (If the model needs to be modified at any point)
 
 *Dataset Download*
     Open a Python shell in terminal and run the following lines:
@@ -21,7 +21,7 @@ To be able to run this project in VS Code, please complete the following steps.
         project = rf.workspace("capstone-capturing-coral-tentacles").project("coral-tentacle-detection")
         dataset = project.version(1).download("yolov5")
 
-    (If it doesn't work, the program should still run fine without it.)
+    (As long as the Coral-Tentacle-Detection-1 is somewhere on your computer, it should work.)
 
 *Shortcut Guide*
     On Main tab:

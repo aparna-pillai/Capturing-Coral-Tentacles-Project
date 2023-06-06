@@ -11,3 +11,6 @@ def connectToDatabase():
     )
 
     return mydb
+
+def getAdminName():
+    return getAdmin()
