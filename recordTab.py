@@ -2,7 +2,7 @@ from PyQt5.QtWidgets import *
 from PyQt5.QtCore import *
 from PyQt5.QtGui import *
 
-from ViewOnlyTab import *
+from viewOnlyTab import *
 from CodeDeleteWindow import *
 from connectToDatabase import *
 from basic_styling import *

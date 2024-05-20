@@ -5,8 +5,8 @@ from PyQt5.QtWidgets import *
 from PyQt5.QtCore import *
 from PyQt5.QtGui import *
 
-from GeneralTab import *
-from RecordTab import *
+from generalTab import *
+from recordTab import *
 from connectToDatabase import *
 from basic_styling import *
 

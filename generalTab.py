@@ -5,7 +5,7 @@ from PyQt5.QtGui import *
 from CoralImage import *
 from InstructionsWindow import *
 from RecordInfoWindow import *
-from ViewOnlyTab import *
+from viewOnlyTab import *
 
 from coral_count import *
 from connectToDatabase import *
